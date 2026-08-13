@@ -30,6 +30,8 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m secguard.demo
 .\.venv\Scripts\python.exe scripts\fetch_5guard.py
 .\.venv\Scripts\python.exe -m secguard.fiveguard_demo
+.\.venv\Scripts\python.exe -m pip install -e ".[fiveguard]"
+.\.venv\Scripts\python.exe -m secguard.security_experiment
 ```
 
 Generated outputs are written to `artifacts/`:
@@ -40,6 +42,8 @@ Generated outputs are written to `artifacts/`:
 - `slice_decisions.json`: sample dynamic isolation decisions.
 - `risk_model.joblib`: trained model (ignored by Git).
 - `fiveguard_adapter.json`: SecGuard decisions applied to 5Guard requests.
+- `security_experiment.json`: static versus adaptive isolation experiment.
+- `security_tradeoff.png`: presentation-ready pilot trade-off plot.
 
 ## Milestone documentation
 

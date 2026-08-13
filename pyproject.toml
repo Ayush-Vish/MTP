@@ -16,11 +16,17 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest==9.1.1"]
+fiveguard = [
+  "gurobipy==13.0.2",
+  "networkx==3.6.1",
+  "tabulate==0.10.0",
+]
 
 [project.scripts]
 secguard-train = "secguard.train:main"
 secguard-demo = "secguard.demo:main"
 secguard-fiveguard-demo = "secguard.fiveguard_demo:main"
+secguard-security-experiment = "secguard.security_experiment:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -1,0 +1,114 @@
+{
+  "experiment": "synthetic_topology_iar_four_requests",
+  "exposure_metric": {
+    "name": "isolation_exposure_proxy",
+    "formula": "sum(risk * service_impact * sharing_factor)",
+    "sharing_factor": {
+      "L0": 1.0,
+      "L1": 0.5,
+      "L2": 0.0,
+      "quarantine": 0.0
+    },
+    "baseline": 0.6875007327148833,
+    "secguard": 0.09375064112552292,
+    "reduction": 0.8636355764228651
+  },
+  "baseline": {
+    "policy": "static_5guard",
+    "requests": 4,
+    "admitted": 3,
+    "quarantined": 0,
+    "final_profit": 2915.9949648241204,
+    "allocation_seconds": 0.0028425999998944462,
+    "steps": [
+      {
+        "slice_id": "slice-embb-01",
+        "status": "admitted",
+        "gamma": 0,
+        "profit": -4.60502512562814,
+        "allocation_seconds": 0.0008175000002665911
+      },
+      {
+        "slice_id": "slice-mmtc-07",
+        "status": "admitted",
+        "gamma": 0,
+        "profit": 35.9949648241206,
+        "allocation_seconds": 0.0003108000000793254
+      },
+      {
+        "slice_id": "slice-urllc-03",
+        "status": "admitted",
+        "gamma": 1,
+        "profit": 2915.9949648241204,
+        "allocation_seconds": 0.0011072999996031285
+      },
+      {
+        "slice_id": "slice-mc-01",
+        "status": "rejected",
+        "gamma": 2,
+        "profit": 2915.9949648241204,
+        "allocation_seconds": 0.0006069999999454012
+      }
+    ],
+    "final_violation_cost": 0.0,
+    "final_migrations": 1.0,
+    "final_deployment_cost": 50.5100703517588,
+    "final_overhead_cost": 1443.5,
+    "mean_resource_efficiency": 24.63816237049371
+  },
+  "secguard": {
+    "policy": "secguard",
+    "requests": 4,
+    "admitted": 2,
+    "quarantined": 1,
+    "final_profit": 2740.685974874372,
+    "allocation_seconds": 0.0010073999992528115,
+    "steps": [
+      {
+        "slice_id": "slice-embb-01",
+        "status": "admitted",
+        "gamma": 0,
+        "profit": -4.60502512562814,
+        "allocation_seconds": 0.00035969999953522347
+      },
+      {
+        "slice_id": "slice-mmtc-07",
+        "status": "rejected",
+        "gamma": 1,
+        "profit": -4.60502512562814,
+        "allocation_seconds": 0.00028759999986505136
+      },
+      {
+        "slice_id": "slice-urllc-03",
+        "status": "admitted",
+        "gamma": 2,
+        "profit": 2740.685974874372,
+        "allocation_seconds": 0.0003600999998525367
+      },
+      {
+        "slice_id": "slice-mc-01",
+        "status": "quarantined",
+        "gamma": null
+      }
+    ],
+    "final_violation_cost": 0.0,
+    "final_migrations": 2.0,
+    "final_deployment_cost": 1708.6280502512564,
+    "final_overhead_cost": 30.0,
+    "mean_resource_efficiency": 0.710989934662646
+  },
+  "delta": {
+    "profit": -175.3089899497486,
+    "admitted": -1,
+    "allocation_seconds": -0.0018352000006416347
+  },
+  "limitations": [
+    "Four-request feasibility experiment; not statistically representative.",
+    "Exposure is an isolation-level proxy, not measured attack propagation.",
+    "Uses IAR on the synthetic topology, not the full 5Guard ensemble or BRAIN topology.",
+    "Sequential smoke-test runtimes include order and warm-up effects and are not compared as a performance claim."
+  ],
+  "artifacts": {
+    "tradeoff_plot": "artifacts\\security_tradeoff.png"
+  }
+}
