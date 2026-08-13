@@ -10,8 +10,8 @@ result, known limitations, blockers, and the exact next step.
 |---|---|---|---|
 | M0: Scope selection | Complete | Selected anomaly detection plus dynamic isolation | N/A |
 | M1: Risk model and policy | Complete | Traffic-to-risk-to-isolation pipeline works | `65699ff` |
-| M2: 5Guard input integration | In progress | Convert decisions into 5Guard slice updates | Pending |
-| M3: Security-aware allocation experiment | Planned | Measure security/resource/profit trade-offs | Pending |
+| M2: 5Guard input integration | Complete | Decisions become valid 5Guard requests | `fa3b25b` |
+| M3: Security-aware allocation experiment | Blocked | Measure security/resource/profit trade-offs | Pending |
 | M4: Generalization and ablation | Planned | Validate on unseen scenarios and remove components | Pending |
 
 ## M0: Scope selection
@@ -70,7 +70,9 @@ These are dataset-specific baseline results, not a generalization claim.
 
 ## M2: SecGuard-to-5Guard input integration
 
-Status: **In progress**.
+Status: **Complete** on 2026-08-14.
+
+Detailed report: [`milestones/02-fiveguard-adapter.md`](milestones/02-fiveguard-adapter.md)
 
 ### Baseline
 
@@ -85,7 +87,26 @@ with a numeric `gamma` isolation field. There is currently no tested connection.
 - Prove through tests that SLA isolation can never be downgraded.
 - Run an adapter demonstration with all four policy actions.
 
-### Current blocker
+All completion criteria passed.
+
+### Work completed
+
+- Added a non-mutating adapter for the original 5Guard `sr` class.
+- Updated only the optimizer copy's numeric `gamma` isolation value.
+- Withheld quarantine decisions instead of creating an invalid `gamma`.
+- Pinned upstream 5Guard revision `adadaccf` for repeatability.
+- Added six adapter tests and a real-class compatibility demonstration.
+
+### Measured improvement
+
+- Before: 0/4 SecGuard actions could be submitted safely to 5Guard.
+- After: 4/4 actions are handled; three yield valid `sr` inputs and quarantine
+  is intercepted before optimization.
+- Original input mutation: zero across all four demonstration requests.
+- Non-security field preservation: 4/4 demonstration requests.
+- Total test suite increased from 5 to 11 passing tests.
+
+### Remaining limitation
 
 `gurobipy` and `gurobi_cl` are not installed in the current environment. Adapter
 development and unit testing can proceed, but real 5Guard optimization and its
@@ -93,7 +114,7 @@ profit/resource metrics require Gurobi plus a valid licence.
 
 ## M3: Security-aware allocation experiment
 
-Status: **Planned**.
+Status: **Blocked by missing Gurobi installation/licence**.
 
 ### Metrics
 
@@ -120,4 +141,3 @@ Status: **Planned**.
 - Compare Random Forest with a simple logistic baseline.
 - Remove SLA flooring, risk aggregation, and quarantine one at a time.
 - Report confidence intervals over repeated slice-arrival simulations.
-
