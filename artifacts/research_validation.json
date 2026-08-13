@@ -1,0 +1,4561 @@
+{
+  "design": {
+    "training_scenarios": 5,
+    "test_scenarios": 30,
+    "total_candidate_policies": 165,
+    "ml_evaluated_policies": 81,
+    "gurobi_evaluation_reduction": 0.509090909090909,
+    "minimum_exposure_reduction": 0.6
+  },
+  "selected_thresholds": {
+    "fixed": [
+      0.15,
+      0.4,
+      0.75
+    ],
+    "learned": [
+      0.3,
+      0.35,
+      0.9
+    ],
+    "training_oracle": [
+      0.2,
+      0.3,
+      0.9
+    ],
+    "equal_budget_random": [
+      0.2,
+      0.3,
+      0.9
+    ]
+  },
+  "training": {
+    "pareto_policies": 28,
+    "candidate_evaluations": [
+      {
+        "thresholds": [
+          0.1,
+          0.3,
+          0.7
+        ],
+        "mean_profit": 2740.685974874372,
+        "mean_exposure": 0.10000073271488333,
+        "exposure_reduction": 0.8688517123218762
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.3,
+          0.75
+        ],
+        "mean_profit": 2740.685974874372,
+        "mean_exposure": 0.10000073271488333,
+        "exposure_reduction": 0.8688517123218762
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.3,
+          0.8
+        ],
+        "mean_profit": 5379.285974874372,
+        "mean_exposure": 0.10000073271488333,
+        "exposure_reduction": 0.8688517123218762
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.3,
+          0.85
+        ],
+        "mean_profit": 8017.485974874372,
+        "mean_exposure": 0.10000073271488333,
+        "exposure_reduction": 0.8688517123218762
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.3,
+          0.9
+        ],
+        "mean_profit": 10656.085974874371,
+        "mean_exposure": 0.10000073271488333,
+        "exposure_reduction": 0.8688517123218762
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.35,
+          0.7
+        ],
+        "mean_profit": 2740.685974874372,
+        "mean_exposure": 0.16250078766849957,
+        "exposure_reduction": 0.7868845610378389
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.35,
+          0.75
+        ],
+        "mean_profit": 2740.685974874372,
+        "mean_exposure": 0.16250078766849957,
+        "exposure_reduction": 0.7868845610378389
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.35,
+          0.8
+        ],
+        "mean_profit": 5379.285974874372,
+        "mean_exposure": 0.16250078766849957,
+        "exposure_reduction": 0.7868845610378389
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.35,
+          0.85
+        ],
+        "mean_profit": 8017.485974874372,
+        "mean_exposure": 0.16250078766849957,
+        "exposure_reduction": 0.7868845610378389
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.35,
+          0.9
+        ],
+        "mean_profit": 10656.085974874371,
+        "mean_exposure": 0.16250078766849957,
+        "exposure_reduction": 0.7868845610378389
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.4,
+          0.7
+        ],
+        "mean_profit": 2794.169574874372,
+        "mean_exposure": 0.31250089757573213,
+        "exposure_reduction": 0.5901634267842291
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.4,
+          0.75
+        ],
+        "mean_profit": 2794.169574874372,
+        "mean_exposure": 0.31250089757573213,
+        "exposure_reduction": 0.5901634267842291
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.4,
+          0.8
+        ],
+        "mean_profit": 5406.027774874373,
+        "mean_exposure": 0.31250089757573213,
+        "exposure_reduction": 0.5901634267842291
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.4,
+          0.85
+        ],
+        "mean_profit": 8044.227774874373,
+        "mean_exposure": 0.31250089757573213,
+        "exposure_reduction": 0.5901634267842291
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.4,
+          0.9
+        ],
+        "mean_profit": 10682.827774874373,
+        "mean_exposure": 0.31250089757573213,
+        "exposure_reduction": 0.5901634267842291
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.45,
+          0.7
+        ],
+        "mean_profit": 2794.169574874372,
+        "mean_exposure": 0.31250089757573213,
+        "exposure_reduction": 0.5901634267842291
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.45,
+          0.75
+        ],
+        "mean_profit": 2794.169574874372,
+        "mean_exposure": 0.31250089757573213,
+        "exposure_reduction": 0.5901634267842291
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.45,
+          0.8
+        ],
+        "mean_profit": 5406.027774874373,
+        "mean_exposure": 0.31250089757573213,
+        "exposure_reduction": 0.5901634267842291
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.45,
+          0.85
+        ],
+        "mean_profit": 8044.227774874373,
+        "mean_exposure": 0.31250089757573213,
+        "exposure_reduction": 0.5901634267842291
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.45,
+          0.9
+        ],
+        "mean_profit": 10682.827774874373,
+        "mean_exposure": 0.31250089757573213,
+        "exposure_reduction": 0.5901634267842291
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.5,
+          0.7
+        ],
+        "mean_profit": 2820.9113748743716,
+        "mean_exposure": 0.4093759708472204,
+        "exposure_reduction": 0.46311435790918126
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.5,
+          0.75
+        ],
+        "mean_profit": 2820.9113748743716,
+        "mean_exposure": 0.4093759708472204,
+        "exposure_reduction": 0.46311435790918126
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.5,
+          0.8
+        ],
+        "mean_profit": 5432.769574874372,
+        "mean_exposure": 0.4093759708472204,
+        "exposure_reduction": 0.46311435790918126
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.5,
+          0.85
+        ],
+        "mean_profit": 8070.969574874372,
+        "mean_exposure": 0.4093759708472204,
+        "exposure_reduction": 0.46311435790918126
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.5,
+          0.9
+        ],
+        "mean_profit": 10709.569574874371,
+        "mean_exposure": 0.4093759708472204,
+        "exposure_reduction": 0.46311435790918126
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.55,
+          0.7
+        ],
+        "mean_profit": 2820.9113748743716,
+        "mean_exposure": 0.4093759708472204,
+        "exposure_reduction": 0.46311435790918126
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.55,
+          0.75
+        ],
+        "mean_profit": 2820.9113748743716,
+        "mean_exposure": 0.4093759708472204,
+        "exposure_reduction": 0.46311435790918126
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.55,
+          0.8
+        ],
+        "mean_profit": 5432.769574874372,
+        "mean_exposure": 0.4093759708472204,
+        "exposure_reduction": 0.46311435790918126
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.55,
+          0.85
+        ],
+        "mean_profit": 8070.969574874372,
+        "mean_exposure": 0.4093759708472204,
+        "exposure_reduction": 0.46311435790918126
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.55,
+          0.9
+        ],
+        "mean_profit": 10709.569574874371,
+        "mean_exposure": 0.4093759708472204,
+        "exposure_reduction": 0.46311435790918126
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.3,
+          0.7
+        ],
+        "mean_profit": 2746.2059728643217,
+        "mean_exposure": 0.11406328766849957,
+        "exposure_reduction": 0.8504090474285638
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.3,
+          0.75
+        ],
+        "mean_profit": 2746.2059728643217,
+        "mean_exposure": 0.11406328766849957,
+        "exposure_reduction": 0.8504090474285638
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.3,
+          0.8
+        ],
+        "mean_profit": 5384.805972864322,
+        "mean_exposure": 0.11406328766849957,
+        "exposure_reduction": 0.8504090474285638
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.3,
+          0.85
+        ],
+        "mean_profit": 8023.005972864322,
+        "mean_exposure": 0.11406328766849957,
+        "exposure_reduction": 0.8504090474285638
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.3,
+          0.9
+        ],
+        "mean_profit": 10661.605972864321,
+        "mean_exposure": 0.11406328766849957,
+        "exposure_reduction": 0.8504090474285638
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.35,
+          0.7
+        ],
+        "mean_profit": 2746.2059728643217,
+        "mean_exposure": 0.17656334262211582,
+        "exposure_reduction": 0.7684418961445266
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.35,
+          0.75
+        ],
+        "mean_profit": 2746.2059728643217,
+        "mean_exposure": 0.17656334262211582,
+        "exposure_reduction": 0.7684418961445266
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.35,
+          0.8
+        ],
+        "mean_profit": 5384.805972864322,
+        "mean_exposure": 0.17656334262211582,
+        "exposure_reduction": 0.7684418961445266
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.35,
+          0.85
+        ],
+        "mean_profit": 8023.005972864322,
+        "mean_exposure": 0.17656334262211582,
+        "exposure_reduction": 0.7684418961445266
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.35,
+          0.9
+        ],
+        "mean_profit": 10661.605972864321,
+        "mean_exposure": 0.17656334262211582,
+        "exposure_reduction": 0.7684418961445266
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.4,
+          0.7
+        ],
+        "mean_profit": 2799.6895728643217,
+        "mean_exposure": 0.3265634525293484,
+        "exposure_reduction": 0.5717207618909168
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.4,
+          0.75
+        ],
+        "mean_profit": 2799.6895728643217,
+        "mean_exposure": 0.3265634525293484,
+        "exposure_reduction": 0.5717207618909168
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.4,
+          0.8
+        ],
+        "mean_profit": 5411.547772864322,
+        "mean_exposure": 0.3265634525293484,
+        "exposure_reduction": 0.5717207618909168
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.4,
+          0.85
+        ],
+        "mean_profit": 8049.7477728643225,
+        "mean_exposure": 0.3265634525293484,
+        "exposure_reduction": 0.5717207618909168
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.4,
+          0.9
+        ],
+        "mean_profit": 10688.347772864323,
+        "mean_exposure": 0.3265634525293484,
+        "exposure_reduction": 0.5717207618909168
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.45,
+          0.7
+        ],
+        "mean_profit": 2799.6895728643217,
+        "mean_exposure": 0.3265634525293484,
+        "exposure_reduction": 0.5717207618909168
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.45,
+          0.75
+        ],
+        "mean_profit": 2799.6895728643217,
+        "mean_exposure": 0.3265634525293484,
+        "exposure_reduction": 0.5717207618909168
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.45,
+          0.8
+        ],
+        "mean_profit": 5411.547772864322,
+        "mean_exposure": 0.3265634525293484,
+        "exposure_reduction": 0.5717207618909168
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.45,
+          0.85
+        ],
+        "mean_profit": 8049.7477728643225,
+        "mean_exposure": 0.3265634525293484,
+        "exposure_reduction": 0.5717207618909168
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.45,
+          0.9
+        ],
+        "mean_profit": 10688.347772864323,
+        "mean_exposure": 0.3265634525293484,
+        "exposure_reduction": 0.5717207618909168
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.5,
+          0.7
+        ],
+        "mean_profit": 2826.4313728643215,
+        "mean_exposure": 0.42343852580083663,
+        "exposure_reduction": 0.4446716930158689
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.5,
+          0.75
+        ],
+        "mean_profit": 2826.4313728643215,
+        "mean_exposure": 0.42343852580083663,
+        "exposure_reduction": 0.4446716930158689
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.5,
+          0.8
+        ],
+        "mean_profit": 5438.289572864322,
+        "mean_exposure": 0.42343852580083663,
+        "exposure_reduction": 0.4446716930158689
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.5,
+          0.85
+        ],
+        "mean_profit": 8076.489572864322,
+        "mean_exposure": 0.42343852580083663,
+        "exposure_reduction": 0.4446716930158689
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.5,
+          0.9
+        ],
+        "mean_profit": 10715.089572864323,
+        "mean_exposure": 0.42343852580083663,
+        "exposure_reduction": 0.4446716930158689
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.55,
+          0.7
+        ],
+        "mean_profit": 2826.4313728643215,
+        "mean_exposure": 0.42343852580083663,
+        "exposure_reduction": 0.4446716930158689
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.55,
+          0.75
+        ],
+        "mean_profit": 2826.4313728643215,
+        "mean_exposure": 0.42343852580083663,
+        "exposure_reduction": 0.4446716930158689
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.55,
+          0.8
+        ],
+        "mean_profit": 5438.289572864322,
+        "mean_exposure": 0.42343852580083663,
+        "exposure_reduction": 0.4446716930158689
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.55,
+          0.85
+        ],
+        "mean_profit": 8076.489572864322,
+        "mean_exposure": 0.42343852580083663,
+        "exposure_reduction": 0.4446716930158689
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.55,
+          0.9
+        ],
+        "mean_profit": 10715.089572864323,
+        "mean_exposure": 0.42343852580083663,
+        "exposure_reduction": 0.4446716930158689
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.3,
+          0.7
+        ],
+        "mean_profit": 2756.8459688442213,
+        "mean_exposure": 0.14687587925786,
+        "exposure_reduction": 0.8073762107243009
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.3,
+          0.75
+        ],
+        "mean_profit": 2756.8459688442213,
+        "mean_exposure": 0.14687587925786,
+        "exposure_reduction": 0.8073762107243009
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.3,
+          0.8
+        ],
+        "mean_profit": 5395.44596884422,
+        "mean_exposure": 0.14687587925786,
+        "exposure_reduction": 0.8073762107243009
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.3,
+          0.85
+        ],
+        "mean_profit": 8033.645968844221,
+        "mean_exposure": 0.14687587925786,
+        "exposure_reduction": 0.8073762107243009
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.3,
+          0.9
+        ],
+        "mean_profit": 10672.245968844221,
+        "mean_exposure": 0.14687587925786,
+        "exposure_reduction": 0.8073762107243009
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.35,
+          0.7
+        ],
+        "mean_profit": 2756.8459688442213,
+        "mean_exposure": 0.2093759342114762,
+        "exposure_reduction": 0.7254090594402637
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.35,
+          0.75
+        ],
+        "mean_profit": 2756.8459688442213,
+        "mean_exposure": 0.2093759342114762,
+        "exposure_reduction": 0.7254090594402637
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.35,
+          0.8
+        ],
+        "mean_profit": 5395.44596884422,
+        "mean_exposure": 0.2093759342114762,
+        "exposure_reduction": 0.7254090594402637
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.35,
+          0.85
+        ],
+        "mean_profit": 8033.645968844221,
+        "mean_exposure": 0.2093759342114762,
+        "exposure_reduction": 0.7254090594402637
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.35,
+          0.9
+        ],
+        "mean_profit": 10672.245968844221,
+        "mean_exposure": 0.2093759342114762,
+        "exposure_reduction": 0.7254090594402637
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.4,
+          0.7
+        ],
+        "mean_profit": 2810.329568844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.4,
+          0.75
+        ],
+        "mean_profit": 2810.329568844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.4,
+          0.8
+        ],
+        "mean_profit": 5422.187768844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.4,
+          0.85
+        ],
+        "mean_profit": 8060.387768844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.4,
+          0.9
+        ],
+        "mean_profit": 10698.987768844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.45,
+          0.7
+        ],
+        "mean_profit": 2810.329568844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.45,
+          0.75
+        ],
+        "mean_profit": 2810.329568844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.45,
+          0.8
+        ],
+        "mean_profit": 5422.187768844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.45,
+          0.85
+        ],
+        "mean_profit": 8060.387768844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.45,
+          0.9
+        ],
+        "mean_profit": 10698.987768844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.5,
+          0.7
+        ],
+        "mean_profit": 2840.0713688442215,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.5,
+          0.75
+        ],
+        "mean_profit": 2840.0713688442215,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.5,
+          0.8
+        ],
+        "mean_profit": 5451.929568844222,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.5,
+          0.85
+        ],
+        "mean_profit": 8090.1295688442215,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.5,
+          0.9
+        ],
+        "mean_profit": 10728.729568844221,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.55,
+          0.7
+        ],
+        "mean_profit": 2840.0713688442215,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.55,
+          0.75
+        ],
+        "mean_profit": 2840.0713688442215,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.55,
+          0.8
+        ],
+        "mean_profit": 5451.929568844222,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.55,
+          0.85
+        ],
+        "mean_profit": 8090.1295688442215,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.55,
+          0.9
+        ],
+        "mean_profit": 10728.729568844221,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.3,
+          0.7
+        ],
+        "mean_profit": 2756.8459688442213,
+        "mean_exposure": 0.14687587925786,
+        "exposure_reduction": 0.8073762107243009
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.3,
+          0.75
+        ],
+        "mean_profit": 2756.8459688442213,
+        "mean_exposure": 0.14687587925786,
+        "exposure_reduction": 0.8073762107243009
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.3,
+          0.8
+        ],
+        "mean_profit": 5395.44596884422,
+        "mean_exposure": 0.14687587925786,
+        "exposure_reduction": 0.8073762107243009
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.3,
+          0.85
+        ],
+        "mean_profit": 8033.645968844221,
+        "mean_exposure": 0.14687587925786,
+        "exposure_reduction": 0.8073762107243009
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.3,
+          0.9
+        ],
+        "mean_profit": 10672.245968844221,
+        "mean_exposure": 0.14687587925786,
+        "exposure_reduction": 0.8073762107243009
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.35,
+          0.7
+        ],
+        "mean_profit": 2756.8459688442213,
+        "mean_exposure": 0.2093759342114762,
+        "exposure_reduction": 0.7254090594402637
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.35,
+          0.75
+        ],
+        "mean_profit": 2756.8459688442213,
+        "mean_exposure": 0.2093759342114762,
+        "exposure_reduction": 0.7254090594402637
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.35,
+          0.8
+        ],
+        "mean_profit": 5395.44596884422,
+        "mean_exposure": 0.2093759342114762,
+        "exposure_reduction": 0.7254090594402637
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.35,
+          0.85
+        ],
+        "mean_profit": 8033.645968844221,
+        "mean_exposure": 0.2093759342114762,
+        "exposure_reduction": 0.7254090594402637
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.35,
+          0.9
+        ],
+        "mean_profit": 10672.245968844221,
+        "mean_exposure": 0.2093759342114762,
+        "exposure_reduction": 0.7254090594402637
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.4,
+          0.7
+        ],
+        "mean_profit": 2810.329568844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.4,
+          0.75
+        ],
+        "mean_profit": 2810.329568844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.4,
+          0.8
+        ],
+        "mean_profit": 5422.187768844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.4,
+          0.85
+        ],
+        "mean_profit": 8060.387768844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.4,
+          0.9
+        ],
+        "mean_profit": 10698.987768844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.45,
+          0.7
+        ],
+        "mean_profit": 2810.329568844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.45,
+          0.75
+        ],
+        "mean_profit": 2810.329568844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.45,
+          0.8
+        ],
+        "mean_profit": 5422.187768844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.45,
+          0.85
+        ],
+        "mean_profit": 8060.387768844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.45,
+          0.9
+        ],
+        "mean_profit": 10698.987768844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.5,
+          0.7
+        ],
+        "mean_profit": 2840.0713688442215,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.5,
+          0.75
+        ],
+        "mean_profit": 2840.0713688442215,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.5,
+          0.8
+        ],
+        "mean_profit": 5451.929568844222,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.5,
+          0.85
+        ],
+        "mean_profit": 8090.1295688442215,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.5,
+          0.9
+        ],
+        "mean_profit": 10728.729568844221,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.55,
+          0.7
+        ],
+        "mean_profit": 2840.0713688442215,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.55,
+          0.75
+        ],
+        "mean_profit": 2840.0713688442215,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.55,
+          0.8
+        ],
+        "mean_profit": 5451.929568844222,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.55,
+          0.85
+        ],
+        "mean_profit": 8090.1295688442215,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.55,
+          0.9
+        ],
+        "mean_profit": 10728.729568844221,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.35,
+          0.7
+        ],
+        "mean_profit": 2756.8459688442213,
+        "mean_exposure": 0.2093759342114762,
+        "exposure_reduction": 0.7254090594402637
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.35,
+          0.75
+        ],
+        "mean_profit": 2756.8459688442213,
+        "mean_exposure": 0.2093759342114762,
+        "exposure_reduction": 0.7254090594402637
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.35,
+          0.8
+        ],
+        "mean_profit": 5395.44596884422,
+        "mean_exposure": 0.2093759342114762,
+        "exposure_reduction": 0.7254090594402637
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.35,
+          0.85
+        ],
+        "mean_profit": 8033.645968844221,
+        "mean_exposure": 0.2093759342114762,
+        "exposure_reduction": 0.7254090594402637
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.35,
+          0.9
+        ],
+        "mean_profit": 10672.245968844221,
+        "mean_exposure": 0.2093759342114762,
+        "exposure_reduction": 0.7254090594402637
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.4,
+          0.7
+        ],
+        "mean_profit": 2810.329568844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.4,
+          0.75
+        ],
+        "mean_profit": 2810.329568844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.4,
+          0.8
+        ],
+        "mean_profit": 5422.187768844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.4,
+          0.85
+        ],
+        "mean_profit": 8060.387768844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.4,
+          0.9
+        ],
+        "mean_profit": 10698.987768844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.45,
+          0.7
+        ],
+        "mean_profit": 2810.329568844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.45,
+          0.75
+        ],
+        "mean_profit": 2810.329568844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.45,
+          0.8
+        ],
+        "mean_profit": 5422.187768844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.45,
+          0.85
+        ],
+        "mean_profit": 8060.387768844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.45,
+          0.9
+        ],
+        "mean_profit": 10698.987768844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.5,
+          0.7
+        ],
+        "mean_profit": 2840.0713688442215,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.5,
+          0.75
+        ],
+        "mean_profit": 2840.0713688442215,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.5,
+          0.8
+        ],
+        "mean_profit": 5451.929568844222,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.5,
+          0.85
+        ],
+        "mean_profit": 8090.1295688442215,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.5,
+          0.9
+        ],
+        "mean_profit": 10728.729568844221,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.55,
+          0.7
+        ],
+        "mean_profit": 2840.0713688442215,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.55,
+          0.75
+        ],
+        "mean_profit": 2840.0713688442215,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.55,
+          0.8
+        ],
+        "mean_profit": 5451.929568844222,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.55,
+          0.85
+        ],
+        "mean_profit": 8090.1295688442215,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.55,
+          0.9
+        ],
+        "mean_profit": 10728.729568844221,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.35,
+          0.4,
+          0.7
+        ],
+        "mean_profit": 2827.3695648241205,
+        "mean_exposure": 0.421876099072325,
+        "exposure_reduction": 0.4467207739026166
+      },
+      {
+        "thresholds": [
+          0.35,
+          0.4,
+          0.75
+        ],
+        "mean_profit": 2827.3695648241205,
+        "mean_exposure": 0.421876099072325,
+        "exposure_reduction": 0.4467207739026166
+      },
+      {
+        "thresholds": [
+          0.35,
+          0.4,
+          0.8
+        ],
+        "mean_profit": 5435.827764824121,
+        "mean_exposure": 0.421876099072325,
+        "exposure_reduction": 0.4467207739026166
+      },
+      {
+        "thresholds": [
+          0.35,
+          0.4,
+          0.85
+        ],
+        "mean_profit": 8074.027764824122,
+        "mean_exposure": 0.421876099072325,
+        "exposure_reduction": 0.4467207739026166
+      },
+      {
+        "thresholds": [
+          0.35,
+          0.4,
+          0.9
+        ],
+        "mean_profit": 10712.627764824121,
+        "mean_exposure": 0.421876099072325,
+        "exposure_reduction": 0.4467207739026166
+      },
+      {
+        "thresholds": [
+          0.35,
+          0.45,
+          0.7
+        ],
+        "mean_profit": 2827.3695648241205,
+        "mean_exposure": 0.421876099072325,
+        "exposure_reduction": 0.4467207739026166
+      },
+      {
+        "thresholds": [
+          0.35,
+          0.45,
+          0.75
+        ],
+        "mean_profit": 2827.3695648241205,
+        "mean_exposure": 0.421876099072325,
+        "exposure_reduction": 0.4467207739026166
+      },
+      {
+        "thresholds": [
+          0.35,
+          0.45,
+          0.8
+        ],
+        "mean_profit": 5435.827764824121,
+        "mean_exposure": 0.421876099072325,
+        "exposure_reduction": 0.4467207739026166
+      },
+      {
+        "thresholds": [
+          0.35,
+          0.45,
+          0.85
+        ],
+        "mean_profit": 8074.027764824122,
+        "mean_exposure": 0.421876099072325,
+        "exposure_reduction": 0.4467207739026166
+      },
+      {
+        "thresholds": [
+          0.35,
+          0.45,
+          0.9
+        ],
+        "mean_profit": 10712.627764824121,
+        "mean_exposure": 0.421876099072325,
+        "exposure_reduction": 0.4467207739026166
+      },
+      {
+        "thresholds": [
+          0.35,
+          0.5,
+          0.7
+        ],
+        "mean_profit": 2857.1113648241208,
+        "mean_exposure": 0.5187511723438134,
+        "exposure_reduction": 0.31967170502756853
+      },
+      {
+        "thresholds": [
+          0.35,
+          0.5,
+          0.75
+        ],
+        "mean_profit": 2857.1113648241208,
+        "mean_exposure": 0.5187511723438134,
+        "exposure_reduction": 0.31967170502756853
+      },
+      {
+        "thresholds": [
+          0.35,
+          0.5,
+          0.8
+        ],
+        "mean_profit": 5465.569564824121,
+        "mean_exposure": 0.5187511723438134,
+        "exposure_reduction": 0.31967170502756853
+      },
+      {
+        "thresholds": [
+          0.35,
+          0.5,
+          0.85
+        ],
+        "mean_profit": 8103.769564824121,
+        "mean_exposure": 0.5187511723438134,
+        "exposure_reduction": 0.31967170502756853
+      },
+      {
+        "thresholds": [
+          0.35,
+          0.5,
+          0.9
+        ],
+        "mean_profit": 10742.369564824121,
+        "mean_exposure": 0.5187511723438134,
+        "exposure_reduction": 0.31967170502756853
+      },
+      {
+        "thresholds": [
+          0.35,
+          0.55,
+          0.7
+        ],
+        "mean_profit": 2857.1113648241208,
+        "mean_exposure": 0.5187511723438134,
+        "exposure_reduction": 0.31967170502756853
+      },
+      {
+        "thresholds": [
+          0.35,
+          0.55,
+          0.75
+        ],
+        "mean_profit": 2857.1113648241208,
+        "mean_exposure": 0.5187511723438134,
+        "exposure_reduction": 0.31967170502756853
+      },
+      {
+        "thresholds": [
+          0.35,
+          0.55,
+          0.8
+        ],
+        "mean_profit": 5465.569564824121,
+        "mean_exposure": 0.5187511723438134,
+        "exposure_reduction": 0.31967170502756853
+      },
+      {
+        "thresholds": [
+          0.35,
+          0.55,
+          0.85
+        ],
+        "mean_profit": 8103.769564824121,
+        "mean_exposure": 0.5187511723438134,
+        "exposure_reduction": 0.31967170502756853
+      },
+      {
+        "thresholds": [
+          0.35,
+          0.55,
+          0.9
+        ],
+        "mean_profit": 10742.369564824121,
+        "mean_exposure": 0.5187511723438134,
+        "exposure_reduction": 0.31967170502756853
+      }
+    ],
+    "pareto_frontier": [
+      {
+        "thresholds": [
+          0.1,
+          0.3,
+          0.9
+        ],
+        "mean_profit": 10656.085974874371,
+        "mean_exposure": 0.10000073271488333,
+        "exposure_reduction": 0.8688517123218762
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.3,
+          0.9
+        ],
+        "mean_profit": 10661.605972864321,
+        "mean_exposure": 0.11406328766849957,
+        "exposure_reduction": 0.8504090474285638
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.3,
+          0.9
+        ],
+        "mean_profit": 10672.245968844221,
+        "mean_exposure": 0.14687587925786,
+        "exposure_reduction": 0.8073762107243009
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.3,
+          0.9
+        ],
+        "mean_profit": 10672.245968844221,
+        "mean_exposure": 0.14687587925786,
+        "exposure_reduction": 0.8073762107243009
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.4,
+          0.9
+        ],
+        "mean_profit": 10682.827774874373,
+        "mean_exposure": 0.31250089757573213,
+        "exposure_reduction": 0.5901634267842291
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.45,
+          0.9
+        ],
+        "mean_profit": 10682.827774874373,
+        "mean_exposure": 0.31250089757573213,
+        "exposure_reduction": 0.5901634267842291
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.4,
+          0.9
+        ],
+        "mean_profit": 10688.347772864323,
+        "mean_exposure": 0.3265634525293484,
+        "exposure_reduction": 0.5717207618909168
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.45,
+          0.9
+        ],
+        "mean_profit": 10688.347772864323,
+        "mean_exposure": 0.3265634525293484,
+        "exposure_reduction": 0.5717207618909168
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.4,
+          0.9
+        ],
+        "mean_profit": 10698.987768844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.45,
+          0.9
+        ],
+        "mean_profit": 10698.987768844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.4,
+          0.9
+        ],
+        "mean_profit": 10698.987768844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.45,
+          0.9
+        ],
+        "mean_profit": 10698.987768844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.4,
+          0.9
+        ],
+        "mean_profit": 10698.987768844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.45,
+          0.9
+        ],
+        "mean_profit": 10698.987768844221,
+        "mean_exposure": 0.3593760441187087,
+        "exposure_reduction": 0.5286879251866539
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.5,
+          0.9
+        ],
+        "mean_profit": 10709.569574874371,
+        "mean_exposure": 0.4093759708472204,
+        "exposure_reduction": 0.46311435790918126
+      },
+      {
+        "thresholds": [
+          0.1,
+          0.55,
+          0.9
+        ],
+        "mean_profit": 10709.569574874371,
+        "mean_exposure": 0.4093759708472204,
+        "exposure_reduction": 0.46311435790918126
+      },
+      {
+        "thresholds": [
+          0.35,
+          0.4,
+          0.9
+        ],
+        "mean_profit": 10712.627764824121,
+        "mean_exposure": 0.421876099072325,
+        "exposure_reduction": 0.4467207739026166
+      },
+      {
+        "thresholds": [
+          0.35,
+          0.45,
+          0.9
+        ],
+        "mean_profit": 10712.627764824121,
+        "mean_exposure": 0.421876099072325,
+        "exposure_reduction": 0.4467207739026166
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.5,
+          0.9
+        ],
+        "mean_profit": 10715.089572864323,
+        "mean_exposure": 0.42343852580083663,
+        "exposure_reduction": 0.4446716930158689
+      },
+      {
+        "thresholds": [
+          0.15,
+          0.55,
+          0.9
+        ],
+        "mean_profit": 10715.089572864323,
+        "mean_exposure": 0.42343852580083663,
+        "exposure_reduction": 0.4446716930158689
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.5,
+          0.9
+        ],
+        "mean_profit": 10728.729568844221,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.2,
+          0.55,
+          0.9
+        ],
+        "mean_profit": 10728.729568844221,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.5,
+          0.9
+        ],
+        "mean_profit": 10728.729568844221,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.25,
+          0.55,
+          0.9
+        ],
+        "mean_profit": 10728.729568844221,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.5,
+          0.9
+        ],
+        "mean_profit": 10728.729568844221,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.3,
+          0.55,
+          0.9
+        ],
+        "mean_profit": 10728.729568844221,
+        "mean_exposure": 0.4562511173901971,
+        "exposure_reduction": 0.40163885631160584
+      },
+      {
+        "thresholds": [
+          0.35,
+          0.5,
+          0.9
+        ],
+        "mean_profit": 10742.369564824121,
+        "mean_exposure": 0.5187511723438134,
+        "exposure_reduction": 0.31967170502756853
+      },
+      {
+        "thresholds": [
+          0.35,
+          0.55,
+          0.9
+        ],
+        "mean_profit": 10742.369564824121,
+        "mean_exposure": 0.5187511723438134,
+        "exposure_reduction": 0.31967170502756853
+      }
+    ],
+    "oracle": {
+      "thresholds": [
+        0.2,
+        0.3,
+        0.9
+      ],
+      "mean_profit": 10672.245968844221,
+      "mean_exposure": 0.14687587925786,
+      "exposure_reduction": 0.8073762107243009
+    },
+    "equal_budget_random": {
+      "thresholds": [
+        0.2,
+        0.3,
+        0.9
+      ],
+      "mean_profit": 10672.245968844221,
+      "mean_exposure": 0.14687587925786,
+      "exposure_reduction": 0.8073762107243009
+    },
+    "learned": {
+      "thresholds": [
+        0.3,
+        0.35,
+        0.9
+      ],
+      "mean_profit": 10672.245968844221,
+      "mean_exposure": 0.2093759342114762,
+      "exposure_reduction": 0.7254090594402637
+    }
+  },
+  "test": {
+    "static": {
+      "profit": {
+        "mean": 8133.8446981574525,
+        "ci95_low": 5808.274081111598,
+        "ci95_high": 10459.415315203307
+      },
+      "exposure": {
+        "mean": 0.7729073307544528,
+        "ci95_low": 0.7219428434948529,
+        "ci95_high": 0.8238718180140527
+      },
+      "admitted": {
+        "mean": 3.0,
+        "ci95_low": 3.0,
+        "ci95_high": 3.0
+      },
+      "quarantined": {
+        "mean": 0.0,
+        "ci95_low": 0.0,
+        "ci95_high": 0.0
+      },
+      "migrations": {
+        "mean": 0.4666666666666667,
+        "ci95_low": 0.17348133305200025,
+        "ci95_high": 0.7598520002813332
+      },
+      "violation_cost": {
+        "mean": 0.0,
+        "ci95_low": 0.0,
+        "ci95_high": 0.0
+      },
+      "deployment_cost": {
+        "mean": 722.0772703517589,
+        "ci95_low": 422.71836744612284,
+        "ci95_high": 1021.436173257395
+      },
+      "overhead_cost": {
+        "mean": 890.1,
+        "ci95_low": 643.4155030978598,
+        "ci95_high": 1136.7844969021403
+      },
+      "resource_efficiency": {
+        "mean": 15.490186149642344,
+        "ci95_low": 11.412369178710897,
+        "ci95_high": 19.568003120573792
+      },
+      "allocation_seconds": {
+        "mean": 0.0020944133332401788,
+        "ci95_low": 0.0019632969816681086,
+        "ci95_high": 0.002225529684812249
+      }
+    },
+    "fixed": {
+      "profit": {
+        "mean": 2776.787772194305,
+        "ci95_low": 2754.5878383472127,
+        "ci95_high": 2798.9877060413974
+      },
+      "exposure": {
+        "mean": 0.24375079682743558,
+        "ci95_low": 0.19252424162016182,
+        "ci95_high": 0.2949773520347093
+      },
+      "admitted": {
+        "mean": 2.2666666666666666,
+        "ci95_low": 2.105716232850557,
+        "ci95_high": 2.427617100482776
+      },
+      "quarantined": {
+        "mean": 1.0,
+        "ci95_low": 1.0,
+        "ci95_high": 1.0
+      },
+      "migrations": {
+        "mean": 1.0333333333333334,
+        "ci95_low": 0.6293145180967976,
+        "ci95_high": 1.4373521485698693
+      },
+      "violation_cost": {
+        "mean": 0.0,
+        "ci95_low": 0.0,
+        "ci95_high": 0.0
+      },
+      "deployment_cost": {
+        "mean": 1378.3911222780566,
+        "ci95_low": 1134.8274119291364,
+        "ci95_high": 1621.954832626977
+      },
+      "overhead_cost": {
+        "mean": 317.7,
+        "ci95_low": 112.7869171090775,
+        "ci95_high": 522.6130828909224
+      },
+      "resource_efficiency": {
+        "mean": 5.512321104244204,
+        "ci95_low": 2.110679050424005,
+        "ci95_high": 8.913963158064403
+      },
+      "allocation_seconds": {
+        "mean": 0.0009724633329218098,
+        "ci95_low": 0.0008851997224486502,
+        "ci95_high": 0.0010597269433949693
+      }
+    },
+    "learned": {
+      "profit": {
+        "mean": 7356.28254083752,
+        "ci95_low": 4985.951170777929,
+        "ci95_high": 9726.613910897111
+      },
+      "exposure": {
+        "mean": 0.2541675489775053,
+        "ci95_low": 0.22506097476704626,
+        "ci95_high": 0.2832741231879644
+      },
+      "admitted": {
+        "mean": 2.9,
+        "ci95_low": 2.7908111411518934,
+        "ci95_high": 3.0091888588481064
+      },
+      "quarantined": {
+        "mean": 0.3,
+        "ci95_low": 0.13321126309423442,
+        "ci95_high": 0.46678873690576556
+      },
+      "migrations": {
+        "mean": 1.1333333333333333,
+        "ci95_low": 0.7054296667298321,
+        "ci95_high": 1.5612369999368345
+      },
+      "violation_cost": {
+        "mean": 0.0,
+        "ci95_low": 0.0,
+        "ci95_high": 0.0
+      },
+      "deployment_cost": {
+        "mean": 1760.584918324958,
+        "ci95_low": 1594.3242644473744,
+        "ci95_high": 1926.8455722025415
+      },
+      "overhead_cost": {
+        "mean": 101.11666666666666,
+        "ci95_low": 10.212012057599097,
+        "ci95_high": 192.02132127573424
+      },
+      "resource_efficiency": {
+        "mean": 2.1613720608233846,
+        "ci95_low": 0.6381642188564407,
+        "ci95_high": 3.6845799027903285
+      },
+      "allocation_seconds": {
+        "mean": 0.0012367366664572425,
+        "ci95_low": 0.0011451901915281299,
+        "ci95_high": 0.001328283141386355
+      }
+    },
+    "oracle": {
+      "profit": {
+        "mean": 7538.058519195978,
+        "ci95_low": 5060.435102268178,
+        "ci95_high": 10015.68193612378
+      },
+      "exposure": {
+        "mean": 0.19010494212325157,
+        "ci95_low": 0.16933492671012879,
+        "ci95_high": 0.21087495753637436
+      },
+      "admitted": {
+        "mean": 2.566666666666667,
+        "ci95_low": 2.3863101019914215,
+        "ci95_high": 2.7470232313419123
+      },
+      "quarantined": {
+        "mean": 0.3,
+        "ci95_low": 0.13321126309423442,
+        "ci95_high": 0.46678873690576556
+      },
+      "migrations": {
+        "mean": 1.0333333333333334,
+        "ci95_low": 0.6403957572511803,
+        "ci95_high": 1.4262709094154866
+      },
+      "violation_cost": {
+        "mean": 0.0,
+        "ci95_low": 0.0,
+        "ci95_high": 0.0
+      },
+      "deployment_cost": {
+        "mean": 1898.8162949413731,
+        "ci95_low": 1734.9210305029428,
+        "ci95_high": 2062.7115593798035
+      },
+      "overhead_cost": {
+        "mean": 43.0,
+        "ci95_low": 35.18538592741469,
+        "ci95_high": 50.81461407258531
+      },
+      "resource_efficiency": {
+        "mean": 1.1417677141905505,
+        "ci95_low": 1.001916779178744,
+        "ci95_high": 1.281618649202357
+      },
+      "allocation_seconds": {
+        "mean": 0.0012507100002646136,
+        "ci95_low": 0.0011393892031600276,
+        "ci95_high": 0.0013620307973691995
+      }
+    },
+    "random": {
+      "profit": {
+        "mean": 7538.058519195978,
+        "ci95_low": 5060.435102268178,
+        "ci95_high": 10015.68193612378
+      },
+      "exposure": {
+        "mean": 0.19010494212325157,
+        "ci95_low": 0.16933492671012879,
+        "ci95_high": 0.21087495753637436
+      },
+      "admitted": {
+        "mean": 2.566666666666667,
+        "ci95_low": 2.3863101019914215,
+        "ci95_high": 2.7470232313419123
+      },
+      "quarantined": {
+        "mean": 0.3,
+        "ci95_low": 0.13321126309423442,
+        "ci95_high": 0.46678873690576556
+      },
+      "migrations": {
+        "mean": 1.0333333333333334,
+        "ci95_low": 0.6403957572511803,
+        "ci95_high": 1.4262709094154866
+      },
+      "violation_cost": {
+        "mean": 0.0,
+        "ci95_low": 0.0,
+        "ci95_high": 0.0
+      },
+      "deployment_cost": {
+        "mean": 1898.8162949413731,
+        "ci95_low": 1734.9210305029428,
+        "ci95_high": 2062.7115593798035
+      },
+      "overhead_cost": {
+        "mean": 43.0,
+        "ci95_low": 35.18538592741469,
+        "ci95_high": 50.81461407258531
+      },
+      "resource_efficiency": {
+        "mean": 1.1417677141905505,
+        "ci95_low": 1.001916779178744,
+        "ci95_high": 1.281618649202357
+      },
+      "allocation_seconds": {
+        "mean": 0.0011609699999704996,
+        "ci95_low": 0.001051066880101,
+        "ci95_high": 0.0012708731198399993
+      }
+    },
+    "no_quarantine": {
+      "profit": {
+        "mean": 8772.362345343385,
+        "ci95_low": 6259.888764322746,
+        "ci95_high": 11284.835926364023
+      },
+      "exposure": {
+        "mean": 0.2541675489775053,
+        "ci95_low": 0.22506097476704626,
+        "ci95_high": 0.2832741231879644
+      },
+      "admitted": {
+        "mean": 2.8666666666666667,
+        "ci95_low": 2.742943084014795,
+        "ci95_high": 2.9903902493185384
+      },
+      "quarantined": {
+        "mean": 0.0,
+        "ci95_low": 0.0,
+        "ci95_high": 0.0
+      },
+      "migrations": {
+        "mean": 1.0,
+        "ci95_low": 0.5797318863435845,
+        "ci95_high": 1.4202681136564155
+      },
+      "violation_cost": {
+        "mean": 0.0,
+        "ci95_low": 0.0,
+        "ci95_high": 0.0
+      },
+      "deployment_cost": {
+        "mean": 1804.491975979899,
+        "ci95_low": 1618.2498779008174,
+        "ci95_high": 1990.7340740589807
+      },
+      "overhead_cost": {
+        "mean": 99.11666666666666,
+        "ci95_low": 8.007889050076543,
+        "ci95_high": 190.22544428325676
+      },
+      "resource_efficiency": {
+        "mean": 2.1663301982674765,
+        "ci95_low": 0.642210484034673,
+        "ci95_high": 3.69044991250028
+      },
+      "allocation_seconds": {
+        "mean": 0.001489653333434641,
+        "ci95_low": 0.0013629143888359335,
+        "ci95_high": 0.0016163922780333486
+      }
+    }
+  },
+  "per_scenario_test": {
+    "static": [
+      {
+        "profit": 15960.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.7968768317872083,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.0013681999989785254
+      },
+      {
+        "profit": 2916.9949648241204,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.9062509158936042,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 50.5100703517588,
+        "overhead_cost": 1443.5,
+        "resource_efficiency": 24.63816237049371,
+        "allocation_seconds": 0.0018243000013171695
+      },
+      {
+        "profit": 15960.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.6093755495361625,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.0015497000003961148
+      },
+      {
+        "profit": 2916.9949648241204,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.5937507327148834,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 50.5100703517588,
+        "overhead_cost": 1443.5,
+        "resource_efficiency": 24.63816237049371,
+        "allocation_seconds": 0.002240600000732229
+      },
+      {
+        "profit": 15960.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 1.0312505495361624,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.0020917000001645647
+      },
+      {
+        "profit": 2916.9949648241204,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.6406264654297666,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 50.5100703517588,
+        "overhead_cost": 1443.5,
+        "resource_efficiency": 24.63816237049371,
+        "allocation_seconds": 0.0021964999978081323
+      },
+      {
+        "profit": 2916.9949648241204,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.8125009158936042,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 50.5100703517588,
+        "overhead_cost": 1443.5,
+        "resource_efficiency": 24.63816237049371,
+        "allocation_seconds": 0.0020079999976587715
+      },
+      {
+        "profit": 15957.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.5156260990723249,
+        "migrations": 3.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.002509400001144968
+      },
+      {
+        "profit": 2915.9949648241204,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.7343766486084875,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 50.5100703517588,
+        "overhead_cost": 1443.5,
+        "resource_efficiency": 24.63816237049371,
+        "allocation_seconds": 0.0024360000006709015
+      },
+      {
+        "profit": 2916.9949648241204,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.843751099072325,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 50.5100703517588,
+        "overhead_cost": 1443.5,
+        "resource_efficiency": 24.63816237049371,
+        "allocation_seconds": 0.002160000001822482
+      },
+      {
+        "profit": 15959.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.8280219324056584,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.0020493000010901596
+      },
+      {
+        "profit": 2916.9949648241204,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.8906257327148834,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 50.5100703517588,
+        "overhead_cost": 1443.5,
+        "resource_efficiency": 24.63816237049371,
+        "allocation_seconds": 0.0026283999995939666
+      },
+      {
+        "profit": 2916.9949648241204,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.6562512822510458,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 50.5100703517588,
+        "overhead_cost": 1443.5,
+        "resource_efficiency": 24.63816237049371,
+        "allocation_seconds": 0.002623799999128096
+      },
+      {
+        "profit": 2915.9949648241204,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.8437509158936042,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 50.5100703517588,
+        "overhead_cost": 1443.5,
+        "resource_efficiency": 24.63816237049371,
+        "allocation_seconds": 0.002360700000281213
+      },
+      {
+        "profit": 2916.9949648241204,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.6093770149659291,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 50.5100703517588,
+        "overhead_cost": 1443.5,
+        "resource_efficiency": 24.63816237049371,
+        "allocation_seconds": 0.001905999997688923
+      },
+      {
+        "profit": 15960.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.8437510990723252,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.002411599998595193
+      },
+      {
+        "profit": 15960.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.9375010990723249,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.002866999997422681
+      },
+      {
+        "profit": 2916.9949648241204,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.5468762822510458,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 50.5100703517588,
+        "overhead_cost": 1443.5,
+        "resource_efficiency": 24.63816237049371,
+        "allocation_seconds": 0.0021408000011433614
+      },
+      {
+        "profit": 15960.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.7656260990723252,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.001704400001472095
+      },
+      {
+        "profit": 2916.9949648241204,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.7031255495361625,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 50.5100703517588,
+        "overhead_cost": 1443.5,
+        "resource_efficiency": 24.63816237049371,
+        "allocation_seconds": 0.0016525000010005897
+      },
+      {
+        "profit": 2916.9949648241204,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.8905213828694958,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 50.5100703517588,
+        "overhead_cost": 1443.5,
+        "resource_efficiency": 24.63816237049371,
+        "allocation_seconds": 0.0021410000008472707
+      },
+      {
+        "profit": 2916.9949648241204,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.9062516486084875,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 50.5100703517588,
+        "overhead_cost": 1443.5,
+        "resource_efficiency": 24.63816237049371,
+        "allocation_seconds": 0.0017381000016030157
+      },
+      {
+        "profit": 2916.9949648241204,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 1.0156260990723252,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 50.5100703517588,
+        "overhead_cost": 1443.5,
+        "resource_efficiency": 24.63816237049371,
+        "allocation_seconds": 0.0017705000027490314
+      },
+      {
+        "profit": 15959.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.9062514654297666,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.0021139999971637735
+      },
+      {
+        "profit": 15957.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.7186471155843792,
+        "migrations": 3.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.002091399999699206
+      },
+      {
+        "profit": 15959.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.7187501831787209,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.0024362999974982813
+      },
+      {
+        "profit": 2915.9949648241204,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.7343764654297666,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 50.5100703517588,
+        "overhead_cost": 1443.5,
+        "resource_efficiency": 24.63816237049371,
+        "allocation_seconds": 0.0016789000001153909
+      },
+      {
+        "profit": 2915.9949648241204,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.8750007327148834,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 50.5100703517588,
+        "overhead_cost": 1443.5,
+        "resource_efficiency": 24.63816237049371,
+        "allocation_seconds": 0.0015257999984896742
+      },
+      {
+        "profit": 2916.9949648241204,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.8125010990723249,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 50.5100703517588,
+        "overhead_cost": 1443.5,
+        "resource_efficiency": 24.63816237049371,
+        "allocation_seconds": 0.002240600000732229
+      },
+      {
+        "profit": 15959.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.5000009158936042,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.0023669000001973473
+      }
+    ],
+    "fixed": [
+      {
+        "profit": 2742.685974874372,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.15625109907232498,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.0015304999997169944
+      },
+      {
+        "profit": 2742.685974874372,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.1796881411255229,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.0014213999984349357
+      },
+      {
+        "profit": 2766.2859648241206,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.2031255495361625,
+        "migrations": 3.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0010436999982630368
+      },
+      {
+        "profit": 2874.3949748743717,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.5078130495361626,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 29.71005025125628,
+        "overhead_cost": 1443.5,
+        "resource_efficiency": 23.751443391346115,
+        "allocation_seconds": 0.0008744000024307752
+      },
+      {
+        "profit": 2740.685974874372,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.2187505495361625,
+        "migrations": 2.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.0009436999989702599
+      },
+      {
+        "profit": 2875.3949748743717,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.5312513738404062,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 29.71005025125628,
+        "overhead_cost": 1443.5,
+        "resource_efficiency": 23.751443391346115,
+        "allocation_seconds": 0.000906100000065635
+      },
+      {
+        "profit": 2742.685974874372,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.1640630495361625,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.0008059000010689488
+      },
+      {
+        "profit": 2915.9949648241204,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.5156260990723249,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 50.5100703517588,
+        "overhead_cost": 1443.5,
+        "resource_efficiency": 24.63816237049371,
+        "allocation_seconds": 0.000997499997538398
+      },
+      {
+        "profit": 2740.685974874372,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.12500100748296458,
+        "migrations": 2.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.000812700000096811
+      },
+      {
+        "profit": 2769.2859648241206,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.17187591589360415,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0009226999991369667
+      },
+      {
+        "profit": 2740.685974874372,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.14843850748296458,
+        "migrations": 2.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.0009492999997746665
+      },
+      {
+        "profit": 2740.685974874372,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.1250004579468021,
+        "migrations": 2.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.0007654000000911765
+      },
+      {
+        "profit": 2742.685974874372,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.16406323271488332,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.0012607999979081796
+      },
+      {
+        "profit": 2766.2859648241206,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.15625091589360418,
+        "migrations": 3.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0013734000003751134
+      },
+      {
+        "profit": 2875.3949748743717,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.5156268317872084,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 29.71005025125628,
+        "overhead_cost": 1443.5,
+        "resource_efficiency": 23.751443391346115,
+        "allocation_seconds": 0.0014991999996709637
+      },
+      {
+        "profit": 2742.685974874372,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.2031255495361625,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.0007643000008101808
+      },
+      {
+        "profit": 2742.685974874372,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.18750073271488332,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.0007953999993333127
+      },
+      {
+        "profit": 2916.9949648241204,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.5468762822510458,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 50.5100703517588,
+        "overhead_cost": 1443.5,
+        "resource_efficiency": 24.63816237049371,
+        "allocation_seconds": 0.0010651000011421274
+      },
+      {
+        "profit": 2769.2859648241206,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.23437573271488332,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0010204999998677522
+      },
+      {
+        "profit": 2742.685974874372,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.12500027476808123,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.0007697999990341486
+      },
+      {
+        "profit": 2742.685974874372,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.17187536635744166,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.0007469999982276931
+      },
+      {
+        "profit": 2740.685974874372,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.17187600748296455,
+        "migrations": 2.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.0007643000008101808
+      },
+      {
+        "profit": 2740.685974874372,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.2109380495361625,
+        "migrations": 2.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.000817599999209051
+      },
+      {
+        "profit": 2740.685974874372,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.14062628225104584,
+        "migrations": 2.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.0007617999999638414
+      },
+      {
+        "profit": 2740.685974874372,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.14843832430424375,
+        "migrations": 2.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.000669100001687184
+      },
+      {
+        "profit": 2740.685974874372,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.17187509158936043,
+        "migrations": 2.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.000678599997627316
+      },
+      {
+        "profit": 2766.2859648241206,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.20312609907232498,
+        "migrations": 3.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0010868999997910578
+      },
+      {
+        "profit": 2740.685974874372,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.20312518317872083,
+        "migrations": 2.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.0012616999993042555
+      },
+      {
+        "profit": 2742.685974874372,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.21093823271488332,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.0009715999985928647
+      },
+      {
+        "profit": 2916.9949648241204,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.5000009158936042,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 50.5100703517588,
+        "overhead_cost": 1443.5,
+        "resource_efficiency": 24.63816237049371,
+        "allocation_seconds": 0.0008934999987104675
+      }
+    ],
+    "learned": [
+      {
+        "profit": 15960.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.2968766486084875,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.0012533999979496002
+      },
+      {
+        "profit": 2769.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.2656257327148833,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.001110799999878509
+      },
+      {
+        "profit": 15960.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.2031255495361625,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.0011033999981009401
+      },
+      {
+        "profit": 2768.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.2031255495361625,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0012000999977317406
+      },
+      {
+        "profit": 2766.2859648241206,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.35937554953616246,
+        "migrations": 3.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.001158099998065154
+      },
+      {
+        "profit": 2769.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.265626099072325,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0013458000012178672
+      },
+      {
+        "profit": 2769.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.2812509158936042,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0012564000007841969
+      },
+      {
+        "profit": 15957.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.14062609907232498,
+        "migrations": 3.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.001469199998609838
+      },
+      {
+        "profit": 2766.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.21875146542976667,
+        "migrations": 3.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0012224000001879176
+      },
+      {
+        "profit": 18665.6801,
+        "admitted": 2,
+        "quarantined": 0,
+        "exposure": 0.17187591589360415,
+        "migrations": 2.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 3046.6398000000004,
+        "overhead_cost": 0.0,
+        "resource_efficiency": 0.6275047365220014,
+        "allocation_seconds": 0.0007033000001683831
+      },
+      {
+        "profit": 2768.2859648241206,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.23437609907232498,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0011969999995926628
+      },
+      {
+        "profit": 2768.2859648241206,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.2187505495361625,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0010675000012270175
+      },
+      {
+        "profit": 2768.2859648241206,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.2500009158936042,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.001351299999441835
+      },
+      {
+        "profit": 2766.2859648241206,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.15625091589360418,
+        "migrations": 3.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0012748000008286908
+      },
+      {
+        "profit": 2769.2859648241206,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.25000128225104584,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0014310000024124747
+      },
+      {
+        "profit": 18865.6801,
+        "admitted": 2,
+        "quarantined": 0,
+        "exposure": 0.2031255495361625,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 3046.6398000000004,
+        "overhead_cost": 0.0,
+        "resource_efficiency": 0.6275047365220014,
+        "allocation_seconds": 0.00120009999955073
+      },
+      {
+        "profit": 15960.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.312501099072325,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.0011950999996770406
+      },
+      {
+        "profit": 2916.9949648241204,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.5468762822510458,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 50.5100703517588,
+        "overhead_cost": 1443.5,
+        "resource_efficiency": 24.63816237049371,
+        "allocation_seconds": 0.0015577000012854114
+      },
+      {
+        "profit": 15960.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.23437573271488332,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.001105599998481921
+      },
+      {
+        "profit": 2769.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.2187505495361625,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.001097700000173063
+      },
+      {
+        "profit": 2769.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.26562554953616246,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.001260099999853992
+      },
+      {
+        "profit": 2740.685974874372,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.17187600748296455,
+        "migrations": 2.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.0010192999998253072
+      },
+      {
+        "profit": 2768.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.3281257327148833,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0010063999998237705
+      },
+      {
+        "profit": 15959.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.26562628225104584,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.0012819000003219116
+      },
+      {
+        "profit": 15957.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.250001099072325,
+        "migrations": 3.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.0012960999993083533
+      },
+      {
+        "profit": 15959.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.26562518317872086,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.0012218999981996603
+      },
+      {
+        "profit": 2766.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.20312609907232498,
+        "migrations": 3.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.002093699999022647
+      },
+      {
+        "profit": 2766.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.34375036635744166,
+        "migrations": 3.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0008892999994714046
+      },
+      {
+        "profit": 2768.2859648241206,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.3593759158936042,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0017438000013498822
+      },
+      {
+        "profit": 2768.2859648241206,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.14062573271488332,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0009889000011753524
+      }
+    ],
+    "oracle": [
+      {
+        "profit": 18865.6801,
+        "admitted": 2,
+        "quarantined": 0,
+        "exposure": 0.15625109907232498,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 3046.6398000000004,
+        "overhead_cost": 0.0,
+        "resource_efficiency": 0.6275047365220014,
+        "allocation_seconds": 0.0007469000011042226
+      },
+      {
+        "profit": 2769.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.2656257327148833,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0015179000019998057
+      },
+      {
+        "profit": 15960.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.2031255495361625,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.001067499999408028
+      },
+      {
+        "profit": 2768.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.2031255495361625,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0012455000014597317
+      },
+      {
+        "profit": 2740.685974874372,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.2187505495361625,
+        "migrations": 2.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.0008213000000978354
+      },
+      {
+        "profit": 2742.685974874372,
+        "admitted": 2,
+        "quarantined": 0,
+        "exposure": 0.15625100748296458,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.0008143999984895345
+      },
+      {
+        "profit": 2742.685974874372,
+        "admitted": 2,
+        "quarantined": 0,
+        "exposure": 0.1640630495361625,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.001037400001223432
+      },
+      {
+        "profit": 15957.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.14062609907232498,
+        "migrations": 3.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.0013133000011293916
+      },
+      {
+        "profit": 2766.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.21875146542976667,
+        "migrations": 3.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0014463000024989014
+      },
+      {
+        "profit": 18665.6801,
+        "admitted": 2,
+        "quarantined": 0,
+        "exposure": 0.17187591589360415,
+        "migrations": 2.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 3046.6398000000004,
+        "overhead_cost": 0.0,
+        "resource_efficiency": 0.6275047365220014,
+        "allocation_seconds": 0.0007862999991630204
+      },
+      {
+        "profit": 2768.2859648241206,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.23437609907232498,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.001197900002807728
+      },
+      {
+        "profit": 2768.2859648241206,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.2187505495361625,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0011889999987033661
+      },
+      {
+        "profit": 2768.2859648241206,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.2500009158936042,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.001251800000318326
+      },
+      {
+        "profit": 2766.2859648241206,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.15625091589360418,
+        "migrations": 3.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.001353300001937896
+      },
+      {
+        "profit": 2769.2859648241206,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.25000128225104584,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0009981999992305646
+      },
+      {
+        "profit": 18865.6801,
+        "admitted": 2,
+        "quarantined": 0,
+        "exposure": 0.04687536635744166,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 3046.6398000000004,
+        "overhead_cost": 0.0,
+        "resource_efficiency": 0.6275047365220014,
+        "allocation_seconds": 0.000769899999795598
+      },
+      {
+        "profit": 18865.6801,
+        "admitted": 2,
+        "quarantined": 0,
+        "exposure": 0.18750073271488332,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 3046.6398000000004,
+        "overhead_cost": 0.0,
+        "resource_efficiency": 0.6275047365220014,
+        "allocation_seconds": 0.0008361000018339837
+      },
+      {
+        "profit": 2768.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.20312573271488332,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.001382000000376138
+      },
+      {
+        "profit": 15960.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.23437573271488332,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.001463099999455153
+      },
+      {
+        "profit": 2769.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.2187505495361625,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.001354100000753533
+      },
+      {
+        "profit": 2769.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.26562554953616246,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0011171000005560927
+      },
+      {
+        "profit": 2740.685974874372,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.015625732714883336,
+        "migrations": 2.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.0011028999979316723
+      },
+      {
+        "profit": 2740.685974874372,
+        "admitted": 2,
+        "quarantined": 0,
+        "exposure": 0.2109380495361625,
+        "migrations": 2.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.0014678000025014626
+      },
+      {
+        "profit": 15933.685974874372,
+        "admitted": 2,
+        "quarantined": 0,
+        "exposure": 0.14062628225104584,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 1.1469886235831581,
+        "allocation_seconds": 0.0016193999999813968
+      },
+      {
+        "profit": 15931.685974874372,
+        "admitted": 2,
+        "quarantined": 0,
+        "exposure": 0.14843832430424375,
+        "migrations": 2.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 1.1469886235831581,
+        "allocation_seconds": 0.0015501999969274038
+      },
+      {
+        "profit": 15959.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.26562518317872086,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.0016426999991381308
+      },
+      {
+        "profit": 2766.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.20312609907232498,
+        "migrations": 3.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.001392899999700603
+      },
+      {
+        "profit": 2740.685974874372,
+        "admitted": 2,
+        "quarantined": 0,
+        "exposure": 0.20312518317872083,
+        "migrations": 2.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.001509699997768621
+      },
+      {
+        "profit": 2742.685974874372,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.21093823271488332,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.0015045000000100117
+      },
+      {
+        "profit": 2768.2859648241206,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.14062573271488332,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0020219000016368227
+      }
+    ],
+    "random": [
+      {
+        "profit": 18865.6801,
+        "admitted": 2,
+        "quarantined": 0,
+        "exposure": 0.15625109907232498,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 3046.6398000000004,
+        "overhead_cost": 0.0,
+        "resource_efficiency": 0.6275047365220014,
+        "allocation_seconds": 0.0009795999994821614
+      },
+      {
+        "profit": 2769.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.2656257327148833,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.001429199999620323
+      },
+      {
+        "profit": 15960.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.2031255495361625,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.0011050000011891825
+      },
+      {
+        "profit": 2768.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.2031255495361625,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.001513199998953496
+      },
+      {
+        "profit": 2740.685974874372,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.2187505495361625,
+        "migrations": 2.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.001173999999082298
+      },
+      {
+        "profit": 2742.685974874372,
+        "admitted": 2,
+        "quarantined": 0,
+        "exposure": 0.15625100748296458,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.0008887000003596768
+      },
+      {
+        "profit": 2742.685974874372,
+        "admitted": 2,
+        "quarantined": 0,
+        "exposure": 0.1640630495361625,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.0009765000013430836
+      },
+      {
+        "profit": 15957.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.14062609907232498,
+        "migrations": 3.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.0021495999990293058
+      },
+      {
+        "profit": 2766.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.21875146542976667,
+        "migrations": 3.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0018127000021195272
+      },
+      {
+        "profit": 18665.6801,
+        "admitted": 2,
+        "quarantined": 0,
+        "exposure": 0.17187591589360415,
+        "migrations": 2.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 3046.6398000000004,
+        "overhead_cost": 0.0,
+        "resource_efficiency": 0.6275047365220014,
+        "allocation_seconds": 0.0015871999985392904
+      },
+      {
+        "profit": 2768.2859648241206,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.23437609907232498,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0008903999969334109
+      },
+      {
+        "profit": 2768.2859648241206,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.2187505495361625,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0008605000020907028
+      },
+      {
+        "profit": 2768.2859648241206,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.2500009158936042,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0009339000025647692
+      },
+      {
+        "profit": 2766.2859648241206,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.15625091589360418,
+        "migrations": 3.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0008992000002763234
+      },
+      {
+        "profit": 2769.2859648241206,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.25000128225104584,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0010022999977081781
+      },
+      {
+        "profit": 18865.6801,
+        "admitted": 2,
+        "quarantined": 0,
+        "exposure": 0.04687536635744166,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 3046.6398000000004,
+        "overhead_cost": 0.0,
+        "resource_efficiency": 0.6275047365220014,
+        "allocation_seconds": 0.0007531999981438275
+      },
+      {
+        "profit": 18865.6801,
+        "admitted": 2,
+        "quarantined": 0,
+        "exposure": 0.18750073271488332,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 3046.6398000000004,
+        "overhead_cost": 0.0,
+        "resource_efficiency": 0.6275047365220014,
+        "allocation_seconds": 0.0011395000001357403
+      },
+      {
+        "profit": 2768.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.20312573271488332,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0012422000017977552
+      },
+      {
+        "profit": 15960.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.23437573271488332,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.001155599999037804
+      },
+      {
+        "profit": 2769.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.2187505495361625,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.001185899998745299
+      },
+      {
+        "profit": 2769.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.26562554953616246,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0011455999992904253
+      },
+      {
+        "profit": 2740.685974874372,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.015625732714883336,
+        "migrations": 2.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.000864499999806867
+      },
+      {
+        "profit": 2740.685974874372,
+        "admitted": 2,
+        "quarantined": 0,
+        "exposure": 0.2109380495361625,
+        "migrations": 2.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.0010102000014740042
+      },
+      {
+        "profit": 15933.685974874372,
+        "admitted": 2,
+        "quarantined": 0,
+        "exposure": 0.14062628225104584,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 1.1469886235831581,
+        "allocation_seconds": 0.0014881999995850492
+      },
+      {
+        "profit": 15931.685974874372,
+        "admitted": 2,
+        "quarantined": 0,
+        "exposure": 0.14843832430424375,
+        "migrations": 2.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 1.1469886235831581,
+        "allocation_seconds": 0.0010188000014750287
+      },
+      {
+        "profit": 15959.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.26562518317872086,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.0012826999991375487
+      },
+      {
+        "profit": 2766.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.20312609907232498,
+        "migrations": 3.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0012253000004420755
+      },
+      {
+        "profit": 2740.685974874372,
+        "admitted": 2,
+        "quarantined": 0,
+        "exposure": 0.20312518317872083,
+        "migrations": 2.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.0009184000009554438
+      },
+      {
+        "profit": 2742.685974874372,
+        "admitted": 2,
+        "quarantined": 1,
+        "exposure": 0.21093823271488332,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.0010497000002942514
+      },
+      {
+        "profit": 2768.2859648241206,
+        "admitted": 3,
+        "quarantined": 1,
+        "exposure": 0.14062573271488332,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0011472999995021382
+      }
+    ],
+    "no_quarantine": [
+      {
+        "profit": 15960.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.2968766486084875,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.0012552000007417519
+      },
+      {
+        "profit": 2769.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.2656257327148833,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0011348999996698694
+      },
+      {
+        "profit": 15960.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.2031255495361625,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.0015149000009841984
+      },
+      {
+        "profit": 2768.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.2031255495361625,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.001177300000563264
+      },
+      {
+        "profit": 15960.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.35937554953616246,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.00185570000030566
+      },
+      {
+        "profit": 2769.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.265626099072325,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0019503000021359185
+      },
+      {
+        "profit": 2769.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.2812509158936042,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.001749799999743118
+      },
+      {
+        "profit": 15957.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.14062609907232498,
+        "migrations": 3.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.001830500001233304
+      },
+      {
+        "profit": 2766.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.21875146542976667,
+        "migrations": 3.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0017471999999543186
+      },
+      {
+        "profit": 18665.6801,
+        "admitted": 2,
+        "quarantined": 0,
+        "exposure": 0.17187591589360415,
+        "migrations": 2.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 3046.6398000000004,
+        "overhead_cost": 0.0,
+        "resource_efficiency": 0.6275047365220014,
+        "allocation_seconds": 0.0010612999976729043
+      },
+      {
+        "profit": 15959.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.23437609907232498,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.002224099998784368
+      },
+      {
+        "profit": 2768.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.2187505495361625,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0019422999994276324
+      },
+      {
+        "profit": 2768.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.2500009158936042,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0017785999989428092
+      },
+      {
+        "profit": 2766.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.15625091589360418,
+        "migrations": 3.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0013448000008793315
+      },
+      {
+        "profit": 2769.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.25000128225104584,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0017561000004207017
+      },
+      {
+        "profit": 18865.6801,
+        "admitted": 2,
+        "quarantined": 0,
+        "exposure": 0.2031255495361625,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 3046.6398000000004,
+        "overhead_cost": 0.0,
+        "resource_efficiency": 0.6275047365220014,
+        "allocation_seconds": 0.0017408999974577455
+      },
+      {
+        "profit": 15960.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.312501099072325,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.0016238999996858183
+      },
+      {
+        "profit": 2916.9949648241204,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.5468762822510458,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 50.5100703517588,
+        "overhead_cost": 1443.5,
+        "resource_efficiency": 24.63816237049371,
+        "allocation_seconds": 0.001860399996076012
+      },
+      {
+        "profit": 15960.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.23437573271488332,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.0008618000010756077
+      },
+      {
+        "profit": 2769.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.2187505495361625,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0015290000010281801
+      },
+      {
+        "profit": 2769.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.26562554953616246,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0011251999985688599
+      },
+      {
+        "profit": 2740.685974874372,
+        "admitted": 2,
+        "quarantined": 0,
+        "exposure": 0.17187600748296455,
+        "migrations": 2.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1708.6280502512564,
+        "overhead_cost": 30.0,
+        "resource_efficiency": 0.710989934662646,
+        "allocation_seconds": 0.0013247999995655846
+      },
+      {
+        "profit": 2768.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.3281257327148833,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0014080999990255805
+      },
+      {
+        "profit": 15959.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.26562628225104584,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.001327100002527004
+      },
+      {
+        "profit": 15957.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.250001099072325,
+        "migrations": 3.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.0014322999995783903
+      },
+      {
+        "profit": 15959.285964824121,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.26562518317872086,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.76822181836529,
+        "allocation_seconds": 0.0014615000018238788
+      },
+      {
+        "profit": 2766.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.20312609907232498,
+        "migrations": 3.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0014233000019885367
+      },
+      {
+        "profit": 2766.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.34375036635744166,
+        "migrations": 3.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0010274000014760531
+      },
+      {
+        "profit": 2768.2859648241206,
+        "admitted": 3,
+        "quarantined": 0,
+        "exposure": 0.3593759158936042,
+        "migrations": 1.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 1729.4280703517586,
+        "overhead_cost": 60.0,
+        "resource_efficiency": 1.3384014166432694,
+        "allocation_seconds": 0.0015239000022120308
+      },
+      {
+        "profit": 18865.6801,
+        "admitted": 2,
+        "quarantined": 0,
+        "exposure": 0.14062573271488332,
+        "migrations": 0.0,
+        "violation_cost": 0.0,
+        "deployment_cost": 3046.6398000000004,
+        "overhead_cost": 0.0,
+        "resource_efficiency": 0.6275047365220014,
+        "allocation_seconds": 0.0006969999994907994
+      }
+    ]
+  },
+  "statistical_tests": {
+    "learned_vs_fixed_profit": {
+      "mean_difference": 4579.494768643217,
+      "median_difference": 26.59998994974876,
+      "wilcoxon_statistic": 58.0,
+      "p_value": 0.002798128569150964,
+      "paired_cohens_dz": 0.6905829307058032,
+      "positive": 22,
+      "negative": 4,
+      "ties": 4
+    },
+    "learned_vs_static_exposure": {
+      "mean_difference": -0.5187397817769476,
+      "median_difference": -0.5312501831787209,
+      "wilcoxon_statistic": 0.0,
+      "p_value": 2.5596332107133318e-06,
+      "paired_cohens_dz": -3.4313774727159836,
+      "positive": 0,
+      "negative": 29,
+      "ties": 1
+    },
+    "learned_vs_oracle_profit": {
+      "mean_difference": -181.77597835845899,
+      "median_difference": 0.0,
+      "wilcoxon_statistic": 21.0,
+      "p_value": 0.28433161482530667,
+      "paired_cohens_dz": -0.2453458116857842,
+      "positive": 9,
+      "negative": 2,
+      "ties": 19
+    },
+    "learned_vs_no_quarantine_profit": {
+      "mean_difference": -1416.0798045058627,
+      "median_difference": 0.0,
+      "wilcoxon_statistic": 0.0,
+      "p_value": 0.10880943004054568,
+      "paired_cohens_dz": -0.32604122817244374,
+      "positive": 0,
+      "negative": 3,
+      "ties": 27
+    }
+  },
+  "sample_efficiency": {
+    "gurobi_policies_avoided": 84,
+    "gurobi_scenario_allocations_avoided": 420,
+    "evaluation_reduction": 0.509090909090909,
+    "heldout_profit_regret_vs_training_oracle": 0.024114429185652757,
+    "heldout_profit_gain_vs_equal_budget_random": -0.024114429185652757
+  },
+  "online_policy_latency": {
+    "decisions": 100000,
+    "total_seconds": 0.12089080000077956,
+    "microseconds_per_decision": 1.2089080000077956,
+    "decisions_per_second": 827192.8054025215
+  },
+  "detector_latency": {
+    "model_file_bytes": 239568,
+    "batch_rows": 1024,
+    "repeats": 20,
+    "median_batch_seconds": 0.04880499999944732,
+    "microseconds_per_packet": 47.66113281196027,
+    "packets_per_second": 20981.45681818658,
+    "scope": "Warm local batch predict_proba; excludes disk I/O and model loading."
+  },
+  "limitations": [
+    "The exhaustive oracle is selected on training scenarios, not future-aware test outcomes.",
+    "All allocation policies still use IAR and the synthetic 5Guard topology.",
+    "Exposure is an isolation-level proxy, not measured attack propagation.",
+    "Scenario risks come from one intrusion dataset despite train/test file separation."
+  ],
+  "artifacts": {
+    "pareto_frontier": "artifacts\\pareto_frontier.png",
+    "extended_metrics": "artifacts\\extended_metrics.png"
+  }
+}

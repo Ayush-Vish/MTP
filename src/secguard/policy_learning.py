@@ -131,6 +131,12 @@ def _evaluate_policy(
                 "admitted": allocation["admitted"],
                 "quarantined": allocation["quarantined"],
                 "exposure": _exposure(decisions, adaptive=thresholds is not None),
+                "migrations": allocation.get("final_migrations", 0.0),
+                "violation_cost": allocation.get("final_violation_cost", 0.0),
+                "deployment_cost": allocation.get("final_deployment_cost", 0.0),
+                "overhead_cost": allocation.get("final_overhead_cost", 0.0),
+                "resource_efficiency": allocation.get("mean_resource_efficiency", 0.0),
+                "allocation_seconds": allocation.get("allocation_seconds", 0.0),
             }
         )
     return rows
@@ -142,7 +148,18 @@ def _mean(rows: list[dict], key: str) -> float:
 
 def _summary(rows: list[dict]) -> dict:
     result = {}
-    for key in ("profit", "exposure", "admitted", "quarantined"):
+    for key in (
+        "profit",
+        "exposure",
+        "admitted",
+        "quarantined",
+        "migrations",
+        "violation_cost",
+        "deployment_cost",
+        "overhead_cost",
+        "resource_efficiency",
+        "allocation_seconds",
+    ):
         values = np.asarray([row[key] for row in rows], dtype=float)
         margin = 0.0 if len(values) < 2 else 1.96 * float(values.std(ddof=1)) / np.sqrt(len(values))
         result[key] = {

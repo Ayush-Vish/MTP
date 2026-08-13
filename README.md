@@ -33,6 +33,7 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -e ".[fiveguard]"
 .\.venv\Scripts\python.exe -m secguard.security_experiment
 .\.venv\Scripts\python.exe -m secguard.policy_learning
+.\.venv\Scripts\python.exe -m secguard.research_validation
 ```
 
 Generated outputs are written to `artifacts/`:
@@ -47,6 +48,9 @@ Generated outputs are written to `artifacts/`:
 - `security_tradeoff.png`: presentation-ready pilot trade-off plot.
 - `learned_policy.json`: learned thresholds and held-out policy metrics.
 - `learned_policy_comparison.png`: learned-versus-fixed policy comparison.
+- `research_validation.json`: oracle, statistics, ablations, and extended metrics.
+- `pareto_frontier.png`: training security--profit frontier.
+- `extended_metrics.png`: six-metric reviewer-oriented comparison.
 
 ## Milestone documentation
 
