@@ -181,25 +181,31 @@ def _plot_pareto(
     selected: dict[str, tuple[float, float, float]],
     path: Path,
 ) -> None:
-    fig, axis = plt.subplots(figsize=(7, 5))
+    # IEEE double-column dimensions and a colorblind-safe categorical palette.
+    fig, axis = plt.subplots(figsize=(6.9, 4.1))
     axis.scatter(
         [row["mean_exposure"] for row in evaluations],
         [row["mean_profit"] for row in evaluations],
         s=20,
         alpha=0.35,
-        color="#777777",
+        color="#BBBBBB",
         label="Candidate policies",
     )
     axis.plot(
         [row["mean_exposure"] for row in frontier],
         [row["mean_profit"] for row in frontier],
         "o-",
-        color="#d62728",
+        color="#CC3311",
         label="Training Pareto frontier",
     )
     lookup = {tuple(row["thresholds"]): row for row in evaluations}
     markers = {"Fixed": "s", "Learned": "*", "Oracle": "D", "Random": "^"}
-    colors = {"Fixed": "#1f77b4", "Learned": "#2ca02c", "Oracle": "#9467bd", "Random": "#ff7f0e"}
+    colors = {
+        "Fixed": "#0077BB",
+        "Learned": "#009988",
+        "Oracle": "#EE3377",
+        "Random": "#EE7733",
+    }
     for name, thresholds in selected.items():
         row = lookup[thresholds]
         axis.scatter(
@@ -213,40 +219,39 @@ def _plot_pareto(
             label=name,
             zorder=5,
         )
-    axis.set_xlabel("Mean isolation exposure (lower is safer)")
-    axis.set_ylabel("Mean 5Guard profit (higher is better)")
-    axis.set_title("Training security--profit Pareto frontier")
+    axis.set_xlabel("Mean modeled isolation-exposure score (unitless; lower is safer)")
+    axis.set_ylabel("Mean 5Guard profit (synthetic units; higher is better)")
     axis.spines[["top", "right"]].set_visible(False)
-    axis.legend(fontsize=8)
+    axis.legend(fontsize=8, ncol=2, frameon=False)
     fig.tight_layout()
-    fig.savefig(path, dpi=180)
+    fig.savefig(path, dpi=300)
     plt.close(fig)
 
 
 def _plot_metrics(results: dict[str, dict], path: Path) -> None:
     names = ["Static", "Fixed", "Learned", "Train oracle", "Random", "No quarantine"]
     keys = ["static", "fixed", "learned", "oracle", "random", "no_quarantine"]
-    colors = ["#777777", "#1f77b4", "#2ca02c", "#9467bd", "#ff7f0e", "#8c564b"]
+    colors = ["#BBBBBB", "#0077BB", "#009988", "#EE3377", "#EE7733", "#33BBEE"]
     metrics = (
-        ("profit", "Mean profit", "Higher is better"),
-        ("exposure", "Mean exposure", "Lower is safer"),
-        ("admitted", "Mean admission", "Higher is better"),
-        ("migrations", "Mean migrations", "Lower is better"),
-        ("overhead_cost", "Mean overhead cost", "Lower is better"),
-        ("resource_efficiency", "Mean resource efficiency", "Higher is better"),
+        ("profit", "Mean profit", "Synthetic profit units"),
+        ("exposure", "Mean modeled exposure", "Exposure score (unitless)"),
+        ("admitted", "Mean admission", "Admitted slices (count)"),
+        ("migrations", "Mean migrations", "Migrations (count)"),
+        ("overhead_cost", "Mean overhead cost", "Synthetic cost units"),
+        ("resource_efficiency", "Mean resource efficiency", "Profit/cost ratio (unitless)"),
     )
     fig, axes = plt.subplots(2, 3, figsize=(15, 8))
     for axis, (metric, title, ylabel) in zip(axes.flat, metrics):
         values = [results[key][metric]["mean"] for key in keys]
         bars = axis.bar(names, values, color=colors)
-        axis.bar_label(bars, labels=[f"{value:.2f}" for value in values], padding=3, fontsize=7)
+        axis.bar_label(bars, labels=[f"{value:.2f}" for value in values], padding=3, fontsize=8)
         axis.set_title(title)
         axis.set_ylabel(ylabel)
         axis.tick_params(axis="x", rotation=24, labelsize=8)
         axis.spines[["top", "right"]].set_visible(False)
     fig.suptitle("SecGuard reviewer-oriented metric suite")
     fig.tight_layout()
-    fig.savefig(path, dpi=180)
+    fig.savefig(path, dpi=300)
     plt.close(fig)
 
 

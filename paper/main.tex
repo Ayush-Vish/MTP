@@ -9,7 +9,7 @@
 \usepackage{balance}
 \graphicspath{{../artifacts/}}
 
-\title{SecGuard: ML-Driven Risk-Adaptive Isolation for\\
+\title{SecGuard: Risk-Adaptive Isolation for\\
 Profit-Aware End-to-End 5G Network Slicing}
 
 \author{\IEEEauthorblockN{Anonymous Author(s)}
@@ -20,27 +20,28 @@ Institution and email to be added}}
 \maketitle
 
 \begin{abstract}
-End-to-end network slicing permits heterogeneous services to share radio,
-transport, and compute infrastructure, but this sharing creates a tension between
-security isolation and infrastructure efficiency. 5Guard addresses this tension
-by embedding slice requests at one of three isolation levels; however, the
-isolation level is supplied with the request and is not adapted to runtime attack
-evidence. This paper presents SecGuard, a preliminary machine-learning-driven
-extension that converts 5G packet and GTP telemetry into a per-slice attack-risk
-score, applies an SLA-safe isolation action, and feeds the resulting request to
-the original 5Guard allocator. A Random Forest classifier is trained on 30,288
-records and evaluated on a separate 3,787-record test file. A second pair of
-Random Forest regressors learns the relationship between isolation thresholds,
-5Guard profit, and a transparent isolation-exposure proxy from Gurobi-backed
-offline evaluations. The learned policy is chosen under a minimum predicted
-security-improvement constraint. On 30 held-out trace-derived scenarios using
-5Guard's IAR algorithm and synthetic topology, learned SecGuard improves mean
-profit by 164.92\% and slice admission by 27.94\% relative to a fixed-threshold
-SecGuard policy. Compared with static 5Guard, it retains 90.44\% of mean profit
-while reducing modeled isolation exposure by 67.12\%. These results establish
-feasibility and expose a useful security--profit trade-off; broader topologies,
-cross-dataset testing, and measured attack propagation remain necessary before
-deployment or generalization claims.
+End-to-end network slices share radio, transport, and compute infrastructure,
+creating an economic tension between multiplexing and cross-slice isolation.
+5Guard models three isolation levels but treats the requested level as fixed.
+This paper presents SecGuard, a proof-of-concept extension that maps 5G packet
+and GTP telemetry to slice risk, applies an SLA-safe isolation or quarantine
+action, and passes the adapted request to the unmodified 5Guard allocator. A
+Random Forest classifier supplies packet risk. Two Random Forest regressors then
+approximate profit and isolation exposure across 165 candidate threshold
+policies, selecting a policy subject to a 60\% predicted exposure-reduction
+constraint. On 30 held-out trace-derived scenarios, learned SecGuard increased
+mean profit by 164.92\% over a fixed-threshold controller (two-sided paired
+Wilcoxon $p=0.0028$, Cohen's $d_z=0.69$). Against static 5Guard, it retained
+90.44\% of mean profit while reducing a modeled isolation-exposure proxy by
+67.12\% ($p=2.56\times10^{-6}$, $d_z=-3.43$). Its held-out profit was 2.41\%
+below a training-set exhaustive oracle, a non-significant difference
+($p=0.284$). An equal-budget random search found the same training oracle, so
+the current experiment does not establish surrogate superiority over random
+search. A quarantine ablation also exposes a limitation: the proxy cannot
+distinguish quarantine from L2 isolation. SecGuard therefore demonstrates a
+reproducible risk-to-allocation integration and quantified trade-off, while
+leaving cross-dataset detection and measured attack propagation as required
+validation.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -49,94 +50,94 @@ resource allocation, security orchestration.
 \end{IEEEkeywords}
 
 \section{Introduction}
-Network slicing creates multiple logical networks over a common 5G
-infrastructure. This enables an infrastructure provider to serve heterogeneous
-verticals, but co-residency permits failures or attacks in one slice to influence
-other tenants. Standards therefore recognize differentiated security capabilities
-and runtime monitoring of isolation \cite{itutx1816,itutx1814,3gppts33501}.
-Applying complete physical isolation to every slice is nevertheless expensive:
-dedicated radio, transport, and compute resources reduce multiplexing gains and
-can lower admission and profit.
+Network slicing permits heterogeneous services to share a common 5G substrate.
+The resulting multiplexing gain improves infrastructure use, but co-residency
+also allows faults and attacks in one slice to affect other tenants. 3GPP's 5G
+security architecture and ITU-T guidance recognize slice-specific security
+capabilities, threats, and isolation requirements
+\cite{3gppts33501,itutx1814,itutx1816}. Uniform physical isolation is an
+expensive response because dedicated radio, transport, and compute resources
+reduce sharing opportunities.
 
-5Guard formalizes isolation-aware end-to-end slicing with three levels---L0,
-L1, and L2---and accounts for resource overhead, migration, priority, and QoS
-violations \cite{bolourian2026fiveguard}. It selects the best solution returned
-by an ensemble of exact and approximate algorithms within the allocation
-deadline. A remaining gap is that the requested isolation level is static. The
-allocator does not consume runtime traffic evidence and cannot decide whether a
-slice should retain, strengthen, or leave the shared substrate after its risk
-changes.
+5Guard addresses this trade-off through isolation-aware end-to-end placement
+\cite{bolourian2026fiveguard}. It represents L0 sharing, L1 logical or
+semi-isolation, and L2 physical isolation, then accounts for deployment,
+overhead, migration, priority, and QoS costs. The isolation level, however, is
+an input to the allocator. Traffic evidence cannot raise it when risk changes,
+and 5Guard does not define a quarantine action.
 
-This paper investigates the following question:
+SecGuard tests whether a lightweight learning layer can close this control-loop
+gap without weakening a customer's service-level agreement (SLA). The study
+asks three questions: (RQ1) can a learned policy recover profit lost by a
+conservative fixed security controller while retaining lower modeled exposure
+than static 5Guard; (RQ2) how close is the selected policy to an exhaustive
+training oracle and an equal-budget random search; and (RQ3) what do operational
+metrics and component ablations reveal about the design's limits?
 
-\begin{quote}
-Can telemetry-derived risk dynamically control 5Guard isolation while recovering
-the profit lost by a conservative security policy?
-\end{quote}
-
-SecGuard adds two learning stages around 5Guard. First, a supervised classifier
-maps 5G packet/GTP features to attack probability and aggregates those
-probabilities into a slice risk. Second, a profit-aware surrogate learns the
-outcomes of 5Guard allocations under candidate L1, L2, and quarantine
-thresholds. The selected thresholds maximize predicted profit subject to a
-minimum exposure-reduction constraint. A safety floor guarantees that SecGuard
-never assigns weaker isolation than the customer's SLA.
-
-The contributions are:
-
+The paper makes four scoped contributions:
 \begin{itemize}
-  \item an end-to-end telemetry--risk--isolation adapter for the original
-  5Guard slice-request class, including explicit quarantine semantics;
-  \item an SLA-safe dynamic isolation policy and a transparent risk-weighted
-  isolation-exposure proxy;
-  \item a constrained ML surrogate that learns profit-aware thresholds from
-  actual Gurobi-backed 5Guard outcomes rather than an analytical cost shortcut;
-  \item a reproducible preliminary evaluation with held-out scenarios, paired
-  confidence intervals, source code, tests, and limitations.
+  \item a telemetry-to-risk-to-isolation path that changes only the original
+  5Guard request's isolation input and never lowers the SLA level;
+  \item explicit L0/L1/L2 upgrade and quarantine semantics plus a transparent,
+  risk-weighted isolation-exposure proxy;
+  \item constrained surrogate selection based on actual Gurobi-backed 5Guard
+  outcomes rather than an analytical profit approximation; and
+  \item a reproducible evaluation that includes an exhaustive oracle, an
+  equal-budget random baseline, paired non-parametric tests, effect sizes,
+  extended allocation metrics, latency, a Pareto frontier, and a quarantine
+  ablation.
 \end{itemize}
+The contribution is the evaluated integration and its safety invariant. The
+results do not support claims of general attack detection, measured
+containment, or superiority of surrogate search over random search.
 
 \section{Background and Related Work}
-\subsection{Isolation-aware slicing}
-5Guard models radio units, network functions, and virtual paths mapped to NR base
-stations, physical servers, and transport paths \cite{bolourian2026fiveguard}.
-L0 permits sharing, L1 adds logical or semi-isolation overhead, and L2 reserves
-physical entities. Its formulation captures deployment cost, overhead,
-migration, and controlled QoS violations. The published system reports profit
-and admission improvements over its individual algorithms, but its conclusion
-identifies translating security requirements into isolation levels as future
-work. SecGuard targets precisely that boundary and reuses the published data
-model and allocator \cite{fiveguardcode}.
+\subsection{Isolation-aware allocation}
+5Guard formulates online 5G isolation-aware network slicing as a mixed-integer
+program and combines exact and approximate allocation algorithms
+\cite{bolourian2026fiveguard}. Its public implementation exposes the isolation
+level as the \texttt{gamma} field of a slice request \cite{fiveguardcode}.
+SecGuard preserves this formulation and adapts that field before allocation;
+it does not modify the resource model or claim a new embedding algorithm.
 
-ITU-T X.1816 classifies differentiated network-slice security capabilities and
-recognizes resource isolation as a selectable capability \cite{itutx1816}.
-ITU-T X.1814 further calls for runtime monitoring and updating of slice isolation
-when needed \cite{itutx1814}. These recommendations motivate a controller that
-can strengthen isolation based on current risk without applying uniform L2.
+ITU-T X.1816 describes differentiated slice-security capabilities and the need
+to select them consistently \cite{itutx1816}. ITU-T X.1814 identifies threats
+and security capabilities for IMT-2020 components, including network slicing
+\cite{itutx1814}. These documents motivate differentiated controls, but they do
+not prescribe the risk estimator or the profit-aware threshold policy used in
+this study.
 
-\subsection{ML security and admission control}
-Prior work uses reinforcement learning to mitigate DDoS effects through slice
-isolation \cite{javadpour2023isolation} and deep reinforcement learning for joint
-admission and embedding \cite{troia2022admission}. Explainability studies show
-that learned admission controllers can become overly conservative, rejecting
-feasible requests based mainly on substrate congestion \cite{asdikian2025verifying}.
-Predictive admission has also been coupled to capacity forecasts under weather
-uncertainty \cite{jacoby2026aware}. These studies demonstrate the value of
-learning but do not provide SecGuard's combination of telemetry-derived security
-risk, three-level end-to-end isolation, SLA flooring, quarantine, and
-profit-constrained threshold selection over the 5Guard model.
+\subsection{Learning for slice security and admission}
+Javadpour \emph{et al.} use actor--critic reinforcement learning to balance
+slice coverage and DDoS damage \cite{javadpour2023isolation}. Troia \emph{et
+al.} combine deep reinforcement-learning admission control with ILP and
+heuristic embedding \cite{troia2022admission}. More recent work studies
+explanations for counter-intuitive learned admission decisions
+\cite{asdikian2025verifying} and predictive admission under weather-dependent
+capacity \cite{jacoby2026aware}. These results show that learning can couple
+network state to admission or isolation, while also warning that a learned
+policy may become opaque or unnecessarily conservative.
 
-\section{System Model and Problem Statement}
-At decision epoch $t$, a slice $i$ has an SLA isolation requirement
+The reviewed work addresses security-driven isolation, isolation-aware
+placement, or learned admission control. SecGuard instead evaluates a narrow
+composition: supervised traffic risk controls 5Guard's existing three-level
+isolation input, and a constrained surrogate chooses the controller thresholds.
+This is a bounded positioning statement over the sources reviewed for this
+study, not a universal priority claim.
+
+\section{System Model and Objective}
+At decision epoch $t$, slice $i$ has an SLA isolation requirement
 $\gamma_i^{\mathrm{SLA}}\in\{0,1,2\}$, service class, resource graph, revenue,
-and allocation deadline. A classifier observes a window of $n_i$ packet records
-and outputs attack probabilities $p_{ij}$. SecGuard defines slice risk as
+and allocation deadline. A classifier observes a window of $n_i$ packets and
+returns attack probabilities $p_{ij}$. SecGuard uses the interpretable mean
 \begin{equation}
- r_i = \frac{1}{n_i}\sum_{j=1}^{n_i}p_{ij}.
+ r_i = \frac{1}{n_i}\sum_{j=1}^{n_i}p_{ij}
  \label{eq:risk}
 \end{equation}
+as slice risk.
 
-Let thresholds $\boldsymbol{\tau}=(\tau_1,\tau_2,\tau_q)$ satisfy
-$0\leq\tau_1<\tau_2<\tau_q\leq1$. The risk floor is
+Let $\boldsymbol{\tau}=(\tau_1,\tau_2,\tau_q)$ satisfy
+$0\leq\tau_1<\tau_2<\tau_q\leq1$. For risks below quarantine, the risk floor is
 \begin{equation}
  \gamma_i^{\mathrm{risk}} =
  \begin{cases}
@@ -145,217 +146,333 @@ $0\leq\tau_1<\tau_2<\tau_q\leq1$. The risk floor is
   2, & \tau_2\leq r_i < \tau_q.
  \end{cases}
 \end{equation}
-For non-quarantined requests, the optimizer receives
+The optimizer receives
 \begin{equation}
- \gamma_i = \max\left(\gamma_i^{\mathrm{SLA}},
-                       \gamma_i^{\mathrm{risk}}\right).
+ \gamma_i = \max(\gamma_i^{\mathrm{SLA}},\gamma_i^{\mathrm{risk}}).
  \label{eq:sla-floor}
 \end{equation}
-If $r_i\geq\tau_q$, the request is withheld from the shared allocator. Equation
-\eqref{eq:sla-floor} is a hard safety invariant: learning cannot weaken the
-contracted isolation.
+If $r_i\geq\tau_q$, SecGuard withholds the request from the shared allocator.
+Equation~\eqref{eq:sla-floor} is a hard invariant: neither classifier error nor
+threshold learning can assign weaker isolation than the SLA.
 
-\subsection{Isolation-exposure proxy}
-The present simulator does not propagate attacks. We therefore define a clearly
-labeled proxy rather than claiming measured containment. Let $w_i$ denote
-service impact and $s(\gamma)$ a sharing factor with $s(0)=1$, $s(1)=0.5$, and
-$s(2)=s(q)=0$. Exposure is
+\subsection{Modeled isolation exposure}
+The 5Guard simulator does not propagate attacks. We therefore report a proxy,
+not observed containment. For service impact $w_i$ and sharing factor
+$s(0)=1$, $s(1)=0.5$, and $s(2)=s(q)=0$, exposure is
 \begin{equation}
- E(\boldsymbol{\tau}) = \sum_i r_i w_i s(\gamma_i).
+ E(\boldsymbol{\tau})=\sum_i r_iw_i s(\gamma_i).
  \label{eq:exposure}
 \end{equation}
-The value 0.5 for L1 is an initial modeling assumption. It must be varied in a
-sensitivity analysis and later replaced by placement-derived or testbed-measured
-sharing.
+The L1 factor is a modeling assumption. More importantly, assigning both L2 and
+quarantine a factor of zero makes the proxy unable to measure any additional
+containment from quarantine. The ablation in Section~\ref{sec:ablation} makes
+this limitation observable.
 
-Let $P(\boldsymbol{\tau})$ be the final raw profit returned by 5Guard. Threshold
-learning seeks
+Let $P(\boldsymbol{\tau})$ be final raw profit returned by 5Guard. The offline
+selection problem is
 \begin{align}
  \max_{\boldsymbol{\tau}}\quad & \widehat{P}(\boldsymbol{\tau}) \\
  \mathrm{s.t.}\quad & \widehat{E}(\boldsymbol{\tau})
  \leq (1-\eta)E_{\mathrm{static}},
  \label{eq:optimization}
 \end{align}
-where $\eta=0.60$ is the required predicted exposure reduction and the hats denote
-learned surrogates.
+where $\eta=0.60$ and the hats denote learned response surfaces.
 
 \section{SecGuard Design}
 \subsection{Telemetry risk model}
-The first stage uses a Random Forest classifier \cite{breiman2001random}. It is
-trained on two dataset-provided files containing 30,288 records and 44 IP, TCP,
-UDP, frame, and GTP features. The official 3,787-record test file is held out.
-Class-balanced bootstrap weights reduce bias toward benign traffic. The model
-has 300 trees, depth 18, minimum leaf size two, and seed 42.
-
-The data originate from an Open5GS/UERANSIM environment and contain normal
-traffic and simulated DDoS, PFCP, and IP-spoofing anomalies
-\cite{sheikhi2023ddos,open5gsdataset}. Packet scores are aggregated using
-\eqref{eq:risk}. Mean aggregation is simple and interpretable, though future
-work should compare maxima, quantiles, and temporal models.
+The risk stage uses a 300-tree Random Forest classifier
+\cite{breiman2001random}. It is trained on 30,288 rows from two
+dataset-provided training files and evaluated on a separate 3,787-row file. The
+44 inputs describe IP, TCP, UDP, frame, and GTP behavior. Class-balanced
+bootstrap weights, maximum depth 18, minimum leaf size two, and seed 42 are
+fixed in the repository. The dataset was generated with Open5GS and UERANSIM
+and includes normal traffic and simulated anomalies \cite{sheikhi2023ddos,
+open5gsdataset}.
 
 \subsection{SLA-safe 5Guard adapter}
-The adapter validates that the decision's original level equals the request's
-\texttt{gamma}, shallow-copies the request, and changes only the copy's
-\texttt{gamma}. Revenue, resource graph, costs, and deadline are preserved.
-Quarantine returns no optimizer request rather than inventing a fourth 5Guard
-level. Tests cover retention, upgrades, quarantine, invalid scores, mismatched
-SLAs, and non-mutation.
+The adapter verifies that a decision's original isolation equals the request's
+\texttt{gamma}, copies the request, and changes only the copy's \texttt{gamma}.
+Revenue, topology, resource demand, costs, and deadline are preserved. A
+quarantined slice produces no optimizer request instead of introducing an
+unsupported fourth 5Guard level. Unit tests cover retention, both upgrades,
+quarantine, invalid risks, SLA mismatch, and input non-mutation.
 
-\subsection{Profit surrogate learning}
-The policy space contains 165 ordered threshold tuples. To make the controller
-explicitly learning-based, SecGuard samples 81 policies with seed 42. Each policy
-is executed through 5Guard IAR and Gurobi \cite{gurobi} on five training
-scenarios. Separate Random Forest regressors learn threshold-to-profit and
-threshold-to-exposure functions. Their out-of-bag $R^2$ values are 0.99999 and
-0.99288, respectively, on this small three-dimensional space. SecGuard then
-evaluates both surrogates over all candidate tuples and selects the predicted
-maximum-profit feasible policy from \eqref{eq:optimization}.
+\subsection{Constrained threshold learning}
+The discrete search contains 165 ordered tuples after enforcing
+$\tau_1<\tau_2<\tau_q$. Candidate values are
+$\tau_1\in\{0.10,0.15,\ldots,0.35\}$,
+$\tau_2\in\{0.30,0.35,\ldots,0.55\}$, and
+$\tau_q\in\{0.70,0.75,\ldots,0.90\}$. SecGuard evaluates 81 tuples,
+including the fixed policy, on five training scenarios through 5Guard's
+isolation-aware ranking (IAR) algorithm and Gurobi \cite{gurobi}. Separate
+Random Forest regressors learn threshold-to-profit and threshold-to-exposure
+maps. Their out-of-bag $R^2$ values are 0.99999 and 0.99288 in this small
+three-dimensional policy space. All 165 tuples are then scored by the
+surrogates, and the predicted highest-profit tuple satisfying
+Eq.~\eqref{eq:optimization} is selected.
 
-The learned tuple is $(0.30,0.35,0.90)$, compared with fixed SecGuard's
-$(0.15,0.40,0.75)$. The learned policy is less eager to impose L1 or quarantine
-but upgrades moderate-risk traffic to L2 earlier.
+The selected tuple is $(0.30,0.35,0.90)$; fixed SecGuard uses
+$(0.15,0.40,0.75)$. The learned controller delays L1 and quarantine but applies
+L2 at a lower risk. Exhaustive evaluation of every tuple is performed only as a
+post-hoc research oracle, never as input to the learned selection.
 
 \section{Experimental Methodology}
-\subsection{Allocator and topology}
+\subsection{Implementation and scenarios}
 Experiments use upstream 5Guard revision
-\texttt{adadaccfcb6febfbf9e73eaf83541a9d20e7c5d0}, the synthetic topology, and
-the isolation-aware ranking algorithm. Gurobi 13.0.2 solves the generated models
-under a restricted non-production licence. Each scenario contains eMBB, mMTC,
-uRLLC, and mission-critical requests.
+\texttt{adadaccfcb6febfbf9e73eaf83541a9d20e7c5d0}, its synthetic topology, IAR,
+and Gurobi 13.0.2 under a restricted non-production license. Each scenario has
+one eMBB, mMTC, uRLLC, and mission-critical request. Training risks are
+bootstrapped only from classifier outputs on the two training files with seeds
+100--104. Evaluation risks use only the held-out file with seeds 1000--1029.
+Each slice aggregates 64 sampled packet scores. The inclusive attack-count
+ranges are 0--6 for eMBB, 6--20 for mMTC, 22--44 for uRLLC, and 48--64 for the
+mission-critical request. The corresponding exposure-impact weights are 1, 1,
+2, and 3. Test allocation outcomes never participate in threshold selection.
 
-\subsection{Scenario separation}
-Training risks are bootstrapped only from classifier outputs on the two training
-files, using allocation seeds 100--104. Final scenarios use only the official
-held-out file and seeds 1000--1029. Each slice contains 64 sampled packet scores;
-service-specific ranges determine how many are drawn from attack and benign
-pools. The allocator outcomes of final scenarios are never used to select
-thresholds.
-
-\subsection{Baselines and metrics}
-We compare:
+\subsection{Policies and ablation}
+Six policies are evaluated on the same 30 paired scenarios:
 \begin{enumerate}
-  \item \emph{Static 5Guard}: SLA levels L0/L0/L1/L2;
-  \item \emph{Fixed SecGuard}: hand-set thresholds $(0.15,0.40,0.75)$;
-  \item \emph{Learned SecGuard}: constrained ML-selected thresholds.
+  \item \emph{Static}: original SLA levels L0/L0/L1/L2;
+  \item \emph{Fixed}: hand-set SecGuard thresholds $(0.15,0.40,0.75)$;
+  \item \emph{Learned}: surrogate-selected $(0.30,0.35,0.90)$;
+  \item \emph{Training oracle}: highest training profit among all policies
+  satisfying the 60\% exposure-reduction constraint;
+  \item \emph{Random-81}: best feasible policy observed in the learner's
+  equal-budget, seed-42 random sample; and
+  \item \emph{No quarantine}: the learned thresholds with quarantine decisions
+  forced to L2.
 \end{enumerate}
-Reported metrics are final raw profit, exposure from \eqref{eq:exposure}, admitted
-slices, and quarantined slices. We report means and normal-approximation 95\%
-confidence intervals over 30 paired scenarios. Paired absolute differences are
-also reported because policy outcomes for the same seed are correlated.
+The oracle and Random-81 both selected $(0.20,0.30,0.90)$. This coincidence is
+reported because it directly limits the ML search claim.
+
+\subsection{Metrics and statistical analysis}
+The primary economic comparison is learned versus fixed profit. The primary
+security comparison is learned versus static exposure. Secondary outcomes are
+admission, quarantine, migration count, violation cost, deployment cost,
+overhead, upstream resource efficiency, and allocation time. Means use
+normal-approximation 95\% confidence intervals for descriptive reporting.
+Paired differences use two-sided Wilcoxon signed-rank tests and paired Cohen's
+$d_z$. Secondary $p$-values are exploratory and unadjusted; conclusions do not
+depend on them.
+
+Local inference benchmarks exclude CSV parsing and model loading. The detector
+is warmed before 20 repeated predictions over 1,024 packets. Threshold-policy
+latency is measured over 100,000 decisions. These timings characterize one
+machine and are not deadline guarantees.
 
 \section{Results}
-\subsection{Detection feasibility}
-On the dataset-provided test file, the classifier obtained accuracy, attack
-precision, recall, F1, ROC-AUC, and PR-AUC of 1.0, with 2,987 true negatives and
-800 true positives. These perfect within-source results indicate strong scenario
-separability; they are not evidence of zero-day or cross-network generalization.
+\subsection{Within-source detection}
+The held-out dataset file produced accuracy, attack precision, recall, F1,
+ROC-AUC, and PR-AUC of 1.0, with 2,987 true negatives and 800 true positives.
+Such perfect separation is a warning as well as a result: it demonstrates that
+the pipeline can consume detector probabilities, but it cannot establish
+generalization to a new network, capture process, or unseen attack family.
 
-\subsection{Allocation trade-off}
-Table~\ref{tab:results} summarizes the held-out allocation evaluation. Learned
-SecGuard increases mean profit from 2,776.79 to 7,356.28 relative to fixed
-SecGuard, a 164.92\% gain. Mean admission increases 27.94\%, from 2.27 to 2.90,
-and quarantine frequency falls 70\%. The paired absolute profit gain is 4,579.49
-with 95\% CI [2,206.50, 6,952.49]. Profit improves in 22 scenarios, ties in four,
-and decreases in four.
+\subsection{Profit, exposure, and admission}
+Table~\ref{tab:policy-results} reports all policies. Learned SecGuard increased
+mean profit from 2,776.79 to 7,356.28 relative to fixed SecGuard, a 164.92\%
+gain. Admission rose from 2.27 to 2.90 slices and mean quarantine fell from 1.00
+to 0.30. The paired profit difference was 4,579.49; 22 scenarios improved, four
+decreased, and four tied. The Wilcoxon result was $p=0.0028$ with a moderate
+paired effect, $d_z=0.69$ (Table~\ref{tab:paired}).
+
+\begin{table*}[t]
+\centering
+\caption{Held-out policy results over 30 paired trace-derived scenarios.}
+\label{tab:policy-results}
+\begin{tabular}{lrrrrr}
+\toprule
+Policy & Mean profit & Exposure & Admitted & Quarantined & Overhead cost \\
+\midrule
+Static 5Guard & 8133.84 & 0.7729 & 3.00 & 0.00 & 890.10 \\
+Fixed SecGuard & 2776.79 & 0.2438 & 2.27 & 1.00 & 317.70 \\
+Learned SecGuard & 7356.28 & 0.2542 & 2.90 & 0.30 & 101.12 \\
+Training oracle & 7538.06 & 0.1901 & 2.57 & 0.30 & 43.00 \\
+Random-81 & 7538.06 & 0.1901 & 2.57 & 0.30 & 43.00 \\
+No quarantine & 8772.36 & 0.2542 & 2.87 & 0.00 & 99.12 \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+Against static 5Guard, learned SecGuard retained 90.44\% of mean raw profit and
+reduced modeled exposure by 67.12\%. Exposure decreased in 29 scenarios and
+tied in one, producing $p=2.56\times10^{-6}$ and $d_z=-3.43$. Learned exposure
+was 4.27\% higher than fixed exposure. The recovered profit therefore does not
+come free; the constraint permits some security-proxy loss relative to the
+conservative controller.
 
 \begin{table}[t]
 \centering
-\caption{Held-out results over 30 trace-derived scenarios.}
-\label{tab:results}
-\begin{tabular}{lrrr}
+\caption{Paired two-sided Wilcoxon tests. Signs are proposed minus reference.}
+\label{tab:paired}
+\begin{tabular}{llrrr}
 \toprule
-Metric & Static & Fixed & Learned \\
+Comparison & Metric & Mean $\Delta$ & $p$ & $d_z$ \\
 \midrule
-Mean profit & 8133.84 & 2776.79 & 7356.28 \\
-95\% CI low & 5808.27 & 2754.59 & 4985.95 \\
-95\% CI high & 10459.42 & 2798.99 & 9726.61 \\
-Mean exposure & 0.7729 & 0.2438 & 0.2542 \\
-Mean admitted & 3.00 & 2.27 & 2.90 \\
-Mean quarantined & 0.00 & 1.00 & 0.30 \\
+Learned--Fixed & Profit & 4579.49 & .0028 & 0.69 \\
+Learned--Static & Exposure & -0.5187 & $2.56\!\times\!10^{-6}$ & -3.43 \\
+Learned--Oracle & Profit & -181.78 & .2843 & -0.25 \\
+Learned--No-Q & Profit & -1416.08 & .1088 & -0.33 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Compared with static 5Guard, learned SecGuard retains 90.44\% of mean raw profit
-while reducing exposure by 67.12\%. Exposure improves in 29 of 30 paired
-scenarios, with one tie. Relative to fixed SecGuard, exposure rises by 4.27\%.
-This small loss buys considerably fewer unnecessary quarantines and higher
-admission, illustrating why a constrained rather than security-only objective is
-valuable.
+\subsection{Oracle and search-efficiency controls}
+The training oracle attained mean profit 10,672.25 and exposure 0.1469 on the
+five training scenarios. Learned thresholds produced the same training profit
+but higher exposure, 0.2094. On held-out scenarios, learned profit was 2.41\%
+below the oracle, and the paired difference was not significant
+($p=0.2843$). The learned pipeline used 81 rather than 165 Gurobi-evaluated
+policies, avoiding 84 policy evaluations or 420 scenario allocations.
+
+That reduction does not prove better sample efficiency than random search.
+Random-81 found the exact training oracle and consequently matched it on every
+held-out aggregate in Table~\ref{tab:policy-results}. Figure~\ref{fig:pareto}
+also shows many threshold tuples with identical profit. The present search
+space is therefore too small and plateaued to demonstrate an ML advantage;
+the surrogate is best interpreted as a working constrained selector.
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.96\textwidth]{learned_policy_comparison.png}
-\caption{Static 5Guard, fixed SecGuard, and learned SecGuard on held-out
-scenarios. Error bars show normal-approximation 95\% confidence intervals.}
-\label{fig:comparison}
+\includegraphics[width=\textwidth]{pareto_frontier.png}
+\caption{Mean profit and modeled isolation exposure for all 165 threshold
+policies over five training scenarios. The red line marks the nondominated
+frontier; marker shape as well as color identifies selected policies. Oracle
+and Random-81 overlap. Learned thresholds attain the same training profit but
+higher modeled exposure.}
+\label{fig:pareto}
 \end{figure*}
 
-\subsection{Interpretation}
-The fixed controller quarantines one request in every scenario and often spends
-scarce resources on conservative upgrades. The learned controller raises the L1
-and quarantine thresholds, allowing more low-risk traffic to remain shareable,
-while lowering the L2 threshold to isolate moderate risks more decisively. Its
-profit remains 9.56\% below static 5Guard, so the current contribution is not a
-claim of free security. Instead, it recovers most economic performance while
-retaining a large modeled security benefit.
+\subsection{Quarantine ablation and operational cost}
+\label{sec:ablation}
+Replacing learned-policy quarantines with L2 increased mean raw profit by
+19.25\%, from 7,356.28 to 8,772.36. Only three scenarios changed, and the paired
+result was not significant ($p=0.1088$). Exposure remained exactly 0.2542
+because Eq.~\eqref{eq:exposure} assigns zero sharing to both outcomes. The
+experiment cannot therefore estimate quarantine's security value. Claiming that
+quarantine improves the security--profit trade-off would require attack
+propagation or containment measurements.
 
-\section{Threats to Validity and Required Extensions}
-The present evidence is sufficient for proof of concept but not a final
-deployment or journal claim.
+Learned SecGuard averaged 1.13 migrations and 101.12 units of 5Guard overhead,
+compared with 0.47 and 890.10 for static 5Guard. These upstream quantities are
+reported descriptively because their scale depends on 5Guard's synthetic model.
+No QoS-violation cost occurred in these scenarios. The 239,568-byte detector
+processed a warm batch at a median 47.66 microseconds per packet (20,981
+packets/s), while the deterministic threshold policy required 1.21 microseconds
+per decision. Disk I/O, model loading, telemetry transport, and reconfiguration
+delay are excluded.
 
-\textbf{Data validity:} both training and test files come from the same dataset.
-Random-Forest performance must be evaluated on another 5G testbed or with
-leave-one-attack-family-out testing.
+\section{Discussion}
+RQ1 is supported within the stated simulator: learned SecGuard recovers much of
+the profit sacrificed by fixed thresholds and retains substantially lower
+modeled exposure than static 5Guard. The mechanism is interpretable. Raising
+$\tau_1$ and $\tau_q$ reduces conservative L1 upgrades and quarantine, while
+lowering $\tau_2$ directs moderate-risk requests toward L2. The result matches
+the broader observation that learned controllers can improve admission but can
+also reject too conservatively when their objective or state representation is
+misaligned \cite{troia2022admission,asdikian2025verifying}.
 
-\textbf{Security construct validity:} Eq.~\eqref{eq:exposure} is a proxy. The
-L1 sharing factor is assumed, and L2 is treated as eliminating cross-slice
-exposure. A publishable extension should compute co-location from 5Guard's actual
-node/link mappings and inject attack-induced resource pressure or QoS degradation.
+RQ2 yields a qualified result. The learned policy has small, statistically
+non-significant profit regret against the training oracle and cuts exact policy
+evaluations by 50.91\%. However, the equal-budget random baseline reaches the
+same oracle. A stronger ML claim requires a larger policy space, repeated random
+subsamples, and learning curves over evaluation budgets. Until then, the
+surrogate is an implementation contribution rather than evidence of search
+superiority.
 
-\textbf{Allocation validity:} scenarios contain four requests and use IAR on the
-synthetic topology. The full 5Guard ensemble, BRAIN topology, multiple loads,
-arrival lengths, and at least 20--30 seeds per configuration are required.
+RQ3 identifies the most important design limitation. Quarantine loses profit,
+but the exposure proxy assigns it no benefit over L2. This is not evidence that
+quarantine is useless; it is evidence that the evaluation construct is
+insufficient. A next version should compute co-location from node and link
+mappings, inject attack-induced load or QoS degradation, and measure spread to
+co-resident slices. Only such an experiment can value removal from the shared
+substrate.
 
-\textbf{Statistical validity:} confidence intervals cover bootstrap scenarios,
-not independent deployments. Multiple-comparison corrections and non-parametric
-paired tests should accompany the final threshold sweep.
+SecGuard differs from end-to-end RL isolation \cite{javadpour2023isolation} by
+keeping the safety rule and action semantics explicit. This makes decisions
+easier to audit, but it also limits adaptation to three thresholds. Future work
+should compare this controller with contextual bandits or constrained RL only
+after the security outcome is measurable; otherwise a more complex learner
+would optimize the same incomplete proxy.
 
-\textbf{Operational validity:} inference latency, monitoring-window size,
-reconfiguration delay, migration downtime, and attacker adaptation are not yet
-modeled. A false escalation can consume physical resources; a false negative can
-leave co-tenants exposed.
+\section{Threats to Validity}
+\textbf{Data validity:} training and test files come from one dataset. The
+perfect within-source detector result may reflect environment-specific
+artifacts. Cross-dataset testing and leave-one-attack-family-out evaluation are
+required.
 
-The next evaluation should therefore add: (i) no-isolation and complete-isolation
-baselines; (ii) logistic-regression, decision-tree, and oracle threshold
-baselines; (iii) a Pareto frontier over profit and placement-derived exposure;
-(iv) BRAIN and synthetic topologies at low, medium, and high load; (v) ablations
-for SLA flooring, quarantine, and surrogate learning; and (vi) cross-dataset or
-unseen-attack validation.
+\textbf{Construct validity:} exposure is a risk/isolation proxy, not measured
+attack spread. Its L1 factor is assumed, and it equates L2 with quarantine. Raw
+profit excludes an explicit cost of successful compromise, so profit rankings
+cannot determine the safest deployable policy.
 
-\section{Reproducibility}
-The repository pins the upstream 5Guard revision and records every milestone,
-artifact, limitation, and commit. Raw datasets and the upstream repository are
-downloaded by scripts and excluded from version control. The experiment emits
-machine-readable JSON, figures, feature importance, and confusion matrices.
-Seventeen unit tests verify risk thresholds, SLA flooring, request non-mutation,
-quarantine, exposure calculations, deterministic scenarios, and candidate
-ordering. Numerical claims in this draft are sourced from
-\texttt{artifacts/learned\_policy.json}.
+\textbf{Internal validity:} scenarios bootstrap classifier outputs and impose
+service-specific attack-count ranges. They do not preserve temporal dependence
+between packets. Results may depend on these ranges, the fixed 64-packet window,
+arrival order, and IAR behavior.
+
+\textbf{Statistical validity:} the 30 seeds produce paired simulator scenarios,
+not independent field deployments. Confidence intervals are descriptive normal
+approximations. The two primary tests were defined by the study questions;
+secondary tests are exploratory and uncorrected. A larger preregistered design
+should include sensitivity analysis and multiplicity control.
+
+\textbf{External and operational validity:} allocation uses four requests,
+5Guard's synthetic topology, and IAR under a restricted Gurobi license. The full
+5Guard ensemble, BRAIN topology, high-load arrival streams, migration downtime,
+detector drift, adversarial adaptation, and end-to-end control latency remain
+untested.
+
+\section{Reproducibility and Availability}
+The repository pins the upstream 5Guard revision and records implementation,
+results, tests, and limitations by milestone. The validation artifact stores all
+165 candidate evaluations, the Pareto set, per-scenario outcomes, summary
+statistics, effect sizes, and latency metadata. Generated figures are derived
+from that JSON. Twenty-one automated tests verify policy ordering, SLA flooring,
+adapter non-mutation, quarantine, exposure calculations, deterministic scenario
+generation, Pareto filtering, paired-test accounting, and exact sampling budget.
+The raw dataset and upstream source are obtained from their official
+repositories \cite{fiveguardcode,open5gsdataset} and are excluded from version
+control; scripts document their retrieval. Numerical claims in this paper are
+traceable to \texttt{artifacts/research\_validation.json}.
 
 \section{Conclusion}
-SecGuard demonstrates that runtime 5G telemetry can be connected safely to
-isolation-aware end-to-end slicing. Its first model estimates attack risk; its
-adapter converts that risk to an SLA-safe 5Guard request; and its second ML stage
-learns profit-aware thresholds under a security constraint. In preliminary
-held-out scenarios, the learned policy substantially outperforms a conservative
-fixed controller and retains most static 5Guard profit while reducing modeled
-exposure. The result is a credible MTP proof of concept and a foundation for a
-paper, but cross-dataset, placement-aware, full-ensemble, and large-topology
-experiments remain necessary for publication-level evidence.
+SecGuard connects traffic-derived attack risk to 5Guard's isolation-aware
+allocator without weakening the requested SLA. In held-out trace-derived
+scenarios, its learned thresholds outperform a conservative fixed controller in
+profit and admission and reduce modeled exposure relative to static 5Guard.
+They also approach a training oracle in held-out profit. The controls prevent a
+stronger conclusion: equal-budget random search finds the same oracle, and the
+current proxy cannot quantify quarantine's added protection. The defensible
+result is thus a reproducible, statistically characterized proof of concept.
+Measured attack propagation, cross-dataset detection, larger topologies, and
+budgeted-search learning curves are the next conditions for a stronger paper.
+
+\section*{Declarations}
+\textbf{Data availability:} Public dataset and upstream-code locations are
+cited above. Derived, machine-readable experimental artifacts and scripts are
+included in the project repository. The repository URL will be added after
+anonymous review requirements are resolved.
+
+\textbf{Ethics:} The study uses public network-traffic data and simulated
+resource-allocation scenarios. It includes no human participants, personal
+intervention, or animal research.
+
+\textbf{Author contributions (CRediT):} Conceptualization, methodology,
+software, validation, visualization, and writing are assigned to the anonymous
+author team for review. Named-author assignments must be confirmed before
+submission.
+
+\textbf{Funding and conflicts of interest:} Funding and conflict declarations
+have not yet been supplied by the author and must be completed before
+submission; no claim about their absence is made here.
+
+\textbf{AI-assisted work:} An AI coding and writing assistant supported code
+development, analysis organization, and language editing. The authors must
+verify all code, numerical results, citations, and prose and remain responsible
+for the submitted work.
 
 \balance
 \bibliographystyle{IEEEtran}
 \bibliography{references}
 \end{document}
-

@@ -1,11 +1,12 @@
-# SecGuard paper draft
+# SecGuard paper package
 
-Working title: **SecGuard: ML-Driven Risk-Adaptive Isolation for Profit-Aware
+Title: **SecGuard: Risk-Adaptive Isolation for Profit-Aware
 End-to-End 5G Network Slicing**.
 
-The paper is intentionally labeled a preliminary evaluation. Current evidence is
-appropriate for an MTP review or professor presentation, but the experiments in
-Section VII of `main.tex` should be completed before journal submission.
+The package is an IEEE-style proof-of-concept manuscript suitable for an MTP
+review and professor presentation. It reports favorable, null, and adverse
+controls explicitly. Cross-dataset validation and a measured attack-propagation
+outcome remain necessary before making broader deployment claims.
 
 ## Build
 
@@ -30,9 +31,12 @@ From the repository root:
 .\.venv\Scripts\python.exe scripts\fetch_5guard.py
 .\.venv\Scripts\python.exe -m secguard.train
 .\.venv\Scripts\python.exe -m secguard.policy_learning
+.\.venv\Scripts\python.exe -m secguard.research_validation
+.\.venv\Scripts\python.exe scripts/check_paper.py
 .\.venv\Scripts\python.exe -m pytest -q
 ```
 
-The source of every numerical claim is `../artifacts/learned_policy.json` or
-`../artifacts/metrics.json`.
-
+The source of the manuscript's primary numerical claims is
+`../artifacts/research_validation.json`. The ARS-Codex research, writing,
+review, citation, visualization, and formatting record is in `ARS_WORKFLOW.md`;
+the English and Traditional Chinese abstracts are in `abstracts.md`.

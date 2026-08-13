@@ -3,7 +3,7 @@
 SecGuard is an MTP research prototype that extends 5Guard with an ML-derived
 attack-risk score and an SLA-safe dynamic isolation policy.
 
-This first milestone answers one focused question:
+The current prototype answers one focused question:
 
 > Can real 5G packet/GTP telemetry be converted into a per-slice security risk
 > and an actionable L0/L1/L2/quarantine decision?
@@ -34,6 +34,7 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m secguard.security_experiment
 .\.venv\Scripts\python.exe -m secguard.policy_learning
 .\.venv\Scripts\python.exe -m secguard.research_validation
+.\.venv\Scripts\python.exe scripts/check_paper.py
 ```
 
 Generated outputs are written to `artifacts/`:
@@ -61,10 +62,16 @@ only marked complete after its tests and reproducibility commands pass.
 
 ## Research scope
 
-This milestone detects anomalous traffic and produces decisions, but it does not
-yet modify 5Guard resource mappings. The next milestone will feed the target
-isolation level to 5Guard and measure security exposure, profit, migration cost,
-and resource efficiency.
+SecGuard now adapts 5Guard isolation requests, runs the original IAR allocator,
+learns profit-aware thresholds, and evaluates 165 threshold policies with paired
+tests, an exhaustive training oracle, equal-budget random search, and a
+quarantine ablation. On 30 held-out trace-derived scenarios it improved mean
+profit by 164.92% over fixed thresholds and reduced a modeled exposure proxy by
+67.12% relative to static 5Guard. These are proof-of-concept simulation results,
+not evidence of real attack containment or cross-dataset generalization.
+
+The paper package is under [`paper/`](paper/), with the complete ARS-Codex
+workflow record in [`paper/ARS_WORKFLOW.md`](paper/ARS_WORKFLOW.md).
 
 ## Dataset and attribution
 
