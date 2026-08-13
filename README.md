@@ -38,6 +38,13 @@ Generated outputs are written to `artifacts/`:
 - `slice_decisions.json`: sample dynamic isolation decisions.
 - `risk_model.joblib`: trained model (ignored by Git).
 
+## Milestone documentation
+
+Progress, measurements, blockers, and next steps are maintained in
+[`docs/MILESTONES.md`](docs/MILESTONES.md). Detailed evidence for each completed
+milestone is stored under [`docs/milestones/`](docs/milestones/). A milestone is
+only marked complete after its tests and reproducibility commands pass.
+
 ## Research scope
 
 This milestone detects anomalous traffic and produces decisions, but it does not
@@ -54,4 +61,3 @@ DDoS, PFCP, and IP-spoofing anomalies. Raw CSV files are downloaded locally and
 excluded from this repository.
 
 Please cite the dataset authors' related publications listed in their repository.
-
