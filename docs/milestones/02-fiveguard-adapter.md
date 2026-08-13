@@ -68,3 +68,6 @@ milestone makes no claim about profit, admission, migration, resource efficiency
 or optimization runtime. Those measurements begin only after Gurobi and a valid
 licence are available.
 
+Resolution: M3A installed Gurobi 13.0.2 and used its restricted non-production
+licence for the small synthetic-topology pilot.
+

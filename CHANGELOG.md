@@ -5,7 +5,14 @@ and limitations are documented separately in `docs/MILESTONES.md`.
 
 ## Unreleased
 
-- Prepare the security-aware allocation experiment.
+- Scale the security-aware experiment beyond the four-request pilot.
+
+## 0.3.0 - 2026-08-14
+
+- Add a static-versus-adaptive allocation experiment using 5Guard IAR.
+- Add an explicit isolation-exposure proxy and unit tests.
+- Add Gurobi, NetworkX, and Tabulate as optional 5Guard dependencies.
+- Add a presentation-ready security/profit trade-off plot.
 
 ## 0.2.0 - 2026-08-14
 

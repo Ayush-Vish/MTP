@@ -11,7 +11,8 @@ result, known limitations, blockers, and the exact next step.
 | M0: Scope selection | Complete | Selected anomaly detection plus dynamic isolation | N/A |
 | M1: Risk model and policy | Complete | Traffic-to-risk-to-isolation pipeline works | `65699ff` |
 | M2: 5Guard input integration | Complete | Decisions become valid 5Guard requests | `fa3b25b` |
-| M3: Security-aware allocation experiment | Blocked | Measure security/resource/profit trade-offs | Pending |
+| M3A: Allocation pilot | Complete | 86.36% lower exposure for 6.01% lower profit | `11241c9` |
+| M3B: Scaled allocation experiment | In progress | Establish statistically supported trade-off | Pending |
 | M4: Generalization and ablation | Planned | Validate on unseen scenarios and remove components | Pending |
 
 ## M0: Scope selection
@@ -106,15 +107,59 @@ All completion criteria passed.
 - Non-security field preservation: 4/4 demonstration requests.
 - Total test suite increased from 5 to 11 passing tests.
 
-### Remaining limitation
+### Blocker recorded at completion
 
 `gurobipy` and `gurobi_cl` are not installed in the current environment. Adapter
 development and unit testing can proceed, but real 5Guard optimization and its
 profit/resource metrics require Gurobi plus a valid licence.
 
-## M3: Security-aware allocation experiment
+This blocker was resolved in M3A by installing Gurobi 13.0.2. A restricted
+non-production licence is available through 2027-11-29 and ran the small IAR
+experiment successfully. Its model-size limit may still block the full BRAIN
+topology.
 
-Status: **Blocked by missing Gurobi installation/licence**.
+## M3A: Security-aware allocation pilot
+
+Status: **Complete** on 2026-08-14.
+
+Detailed report: [`milestones/03-allocation-pilot.md`](milestones/03-allocation-pilot.md)
+
+### Baseline
+
+Original 5Guard uses the SLA-provided static isolation levels and has no attack
+risk input. Before M3A, SecGuard's adapter had not been evaluated by an actual
+5Guard optimization algorithm.
+
+### Work completed
+
+- Installed Gurobi 13.0.2 and verified the available restricted licence.
+- Ran static 5Guard and SecGuard through IAR on the synthetic topology.
+- Used the same four slice requests and risk scores for both policies.
+- Defined a transparent isolation-exposure proxy.
+- Recorded profit, admission, quarantine, migrations, costs, and efficiency.
+- Added three metric tests and a presentation-ready trade-off plot.
+
+### Measured improvement and cost
+
+- Exposure proxy: 0.6875 to 0.0938, an **86.36% reduction**.
+- Raw 5Guard profit: 2915.9950 to 2740.6860, a **6.01% reduction**.
+- Admitted requests: 3 to 2; SecGuard additionally quarantined one request.
+- Total project tests: 11 to 14 passing.
+
+This establishes a security/profit trade-off; it does not establish statistical
+superiority.
+
+## M3B: Scaled security-aware allocation experiment
+
+Status: **In progress**.
+
+### Completion criteria
+
+- Use repeated arrival sequences rather than one four-request sequence.
+- Sweep isolation/quarantine thresholds and produce a Pareto frontier.
+- Report mean and 95% confidence intervals over multiple seeds.
+- Compare static 5Guard, complete isolation, rule-based isolation, and SecGuard.
+- Determine whether the restricted licence supports the desired topology size.
 
 ### Metrics
 
