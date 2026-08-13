@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "secguard"
+version = "0.1.0"
+description = "ML-derived security risk and dynamic isolation policy for 5Guard"
+requires-python = ">=3.10"
+dependencies = [
+  "joblib==1.5.3",
+  "matplotlib==3.11.1",
+  "pandas==3.0.5",
+  "scikit-learn==1.9.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest==9.1.1"]
+
+[project.scripts]
+secguard-train = "secguard.train:main"
+secguard-demo = "secguard.demo:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]

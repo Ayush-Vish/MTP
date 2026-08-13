@@ -1,0 +1,54 @@
+[
+  {
+    "slice_id": "slice-embb-01",
+    "requested_level": 0,
+    "risk_score": 5.495361625014252e-07,
+    "action": "KEEP",
+    "target_level": 0,
+    "reason": "Risk is within the accepted range; preserve the SLA isolation level.",
+    "requested_isolation": "L0",
+    "target_isolation": "L0",
+    "service": "eMBB",
+    "packets": 64,
+    "simulated_attack_fraction": 0.0
+  },
+  {
+    "slice_id": "slice-mmtc-07",
+    "requested_level": 0,
+    "risk_score": 0.18750018317872083,
+    "action": "UPGRADE_L1",
+    "target_level": 1,
+    "reason": "Risk requires at least L1 isolation.",
+    "requested_isolation": "L0",
+    "target_isolation": "L1",
+    "service": "mMTC",
+    "packets": 64,
+    "simulated_attack_fraction": 0.1875
+  },
+  {
+    "slice_id": "slice-urllc-03",
+    "requested_level": 1,
+    "risk_score": 0.5,
+    "action": "UPGRADE_L2",
+    "target_level": 2,
+    "reason": "Risk requires at least L2 isolation.",
+    "requested_isolation": "L1",
+    "target_isolation": "L2",
+    "service": "uRLLC",
+    "packets": 64,
+    "simulated_attack_fraction": 0.5
+  },
+  {
+    "slice_id": "slice-mc-01",
+    "requested_level": 2,
+    "risk_score": 1.0,
+    "action": "QUARANTINE",
+    "target_level": null,
+    "reason": "Critical attack likelihood; remove the slice from shared resources.",
+    "requested_isolation": "L2",
+    "target_isolation": null,
+    "service": "MC",
+    "packets": 64,
+    "simulated_attack_fraction": 1.0
+  }
+]
