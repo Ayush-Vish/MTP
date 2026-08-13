@@ -1,0 +1,50 @@
+[
+  {
+    "slice_id": "slice-embb-01",
+    "action": "KEEP",
+    "original_gamma": 0,
+    "original_isolation": "L0",
+    "target_gamma": 0,
+    "target_isolation": "L0",
+    "sent_to_optimizer": true,
+    "request_type": "sr",
+    "input_unchanged": true,
+    "non_security_fields_preserved": true
+  },
+  {
+    "slice_id": "slice-mmtc-07",
+    "action": "UPGRADE_L1",
+    "original_gamma": 0,
+    "original_isolation": "L0",
+    "target_gamma": 1,
+    "target_isolation": "L1",
+    "sent_to_optimizer": true,
+    "request_type": "sr",
+    "input_unchanged": true,
+    "non_security_fields_preserved": true
+  },
+  {
+    "slice_id": "slice-urllc-03",
+    "action": "UPGRADE_L2",
+    "original_gamma": 1,
+    "original_isolation": "L1",
+    "target_gamma": 2,
+    "target_isolation": "L2",
+    "sent_to_optimizer": true,
+    "request_type": "sr",
+    "input_unchanged": true,
+    "non_security_fields_preserved": true
+  },
+  {
+    "slice_id": "slice-mc-01",
+    "action": "QUARANTINE",
+    "original_gamma": 2,
+    "original_isolation": "L2",
+    "target_gamma": null,
+    "target_isolation": null,
+    "sent_to_optimizer": false,
+    "request_type": null,
+    "input_unchanged": true,
+    "non_security_fields_preserved": true
+  }
+]

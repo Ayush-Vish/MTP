@@ -20,6 +20,7 @@ dev = ["pytest==9.1.1"]
 [project.scripts]
 secguard-train = "secguard.train:main"
 secguard-demo = "secguard.demo:main"
+secguard-fiveguard-demo = "secguard.fiveguard_demo:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -28,6 +28,8 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -e .
 .\.venv\Scripts\python.exe -m secguard.train
 .\.venv\Scripts\python.exe -m secguard.demo
+.\.venv\Scripts\python.exe scripts\fetch_5guard.py
+.\.venv\Scripts\python.exe -m secguard.fiveguard_demo
 ```
 
 Generated outputs are written to `artifacts/`:
@@ -37,6 +39,7 @@ Generated outputs are written to `artifacts/`:
 - `feature_importance.csv`: interpretable feature ranking.
 - `slice_decisions.json`: sample dynamic isolation decisions.
 - `risk_model.joblib`: trained model (ignored by Git).
+- `fiveguard_adapter.json`: SecGuard decisions applied to 5Guard requests.
 
 ## Milestone documentation
 
