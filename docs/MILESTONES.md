@@ -12,7 +12,8 @@ result, known limitations, blockers, and the exact next step.
 | M1: Risk model and policy | Complete | Traffic-to-risk-to-isolation pipeline works | `65699ff` |
 | M2: 5Guard input integration | Complete | Decisions become valid 5Guard requests | `fa3b25b` |
 | M3A: Allocation pilot | Complete | 86.36% lower exposure for 6.01% lower profit | `11241c9` |
-| M3B: Scaled allocation experiment | In progress | Establish statistically supported trade-off | Pending |
+| M3B: Learned profit-aware policy | Complete | +164.92% profit over fixed SecGuard | `dee754d` |
+| M4: Generalization and ablation | In progress | Validate on unseen scenarios and remove components | Pending |
 | M4: Generalization and ablation | Planned | Validate on unseen scenarios and remove components | Pending |
 
 ## M0: Scope selection
@@ -151,7 +152,9 @@ superiority.
 
 ## M3B: Scaled security-aware allocation experiment
 
-Status: **In progress**.
+Status: **Complete** on 2026-08-14.
+
+Detailed report: [`milestones/04-learned-policy.md`](milestones/04-learned-policy.md)
 
 ### Completion criteria
 
@@ -160,6 +163,32 @@ Status: **In progress**.
 - Report mean and 95% confidence intervals over multiple seeds.
 - Compare static 5Guard, complete isolation, rule-based isolation, and SecGuard.
 - Determine whether the restricted licence supports the desired topology size.
+
+The repeated-sequence, threshold-learning, confidence-interval, and
+static/fixed/learned comparisons are complete. Complete-isolation and full BRAIN
+experiments remain for M4 because the current restricted licence may impose a
+model-size limit.
+
+### Learned policy
+
+A Random-Forest regression surrogate learned profit and exposure surfaces from
+81 sampled threshold policies evaluated by Gurobi-backed 5Guard. Subject to at
+least 60% predicted exposure reduction, it selected L1=0.30, L2=0.35, and
+quarantine=0.90.
+
+### Held-out improvements over fixed SecGuard
+
+- Mean profit: 2776.79 to 7356.28, an **increase of 164.92%**.
+- Mean admission: 2.27 to 2.90, an **increase of 27.94%**.
+- Mean quarantines: 1.00 to 0.30, a **reduction of 70.00%**.
+- Mean exposure: 0.2438 to 0.2542, a **4.27% increase** (security cost).
+- Paired absolute profit gain: 4579.49, 95% CI [2206.50, 6952.49].
+
+### Comparison with static 5Guard
+
+- Learned SecGuard retained **90.44%** of static profit.
+- It reduced the exposure proxy by **67.12%** versus static 5Guard.
+- Exposure improved in 29 of 30 paired held-out scenarios, with one tie.
 
 ### Metrics
 
@@ -180,7 +209,7 @@ Status: **In progress**.
 
 ## M4: Generalization and ablation
 
-Status: **Planned**.
+Status: **In progress**.
 
 - Evaluate an unseen attack scenario or a second 5G dataset.
 - Compare Random Forest with a simple logistic baseline.

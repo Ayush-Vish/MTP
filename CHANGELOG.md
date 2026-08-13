@@ -5,7 +5,14 @@ and limitations are documented separately in `docs/MILESTONES.md`.
 
 ## Unreleased
 
-- Scale the security-aware experiment beyond the four-request pilot.
+- Add cross-dataset and full-ensemble validation.
+
+## 0.4.0 - 2026-08-14
+
+- Add Random-Forest surrogate learning for profit-aware isolation thresholds.
+- Separate detector-training probability pools from held-out test pools.
+- Evaluate learned, fixed, and static policies over 30 held-out scenarios.
+- Add paired confidence intervals and a three-metric comparison plot.
 
 ## 0.3.0 - 2026-08-14
 
