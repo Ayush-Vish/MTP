@@ -32,6 +32,7 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m secguard.fiveguard_demo
 .\.venv\Scripts\python.exe -m pip install -e ".[fiveguard]"
 .\.venv\Scripts\python.exe -m secguard.security_experiment
+.\.venv\Scripts\python.exe -m secguard.policy_learning
 ```
 
 Generated outputs are written to `artifacts/`:
@@ -44,6 +45,8 @@ Generated outputs are written to `artifacts/`:
 - `fiveguard_adapter.json`: SecGuard decisions applied to 5Guard requests.
 - `security_experiment.json`: static versus adaptive isolation experiment.
 - `security_tradeoff.png`: presentation-ready pilot trade-off plot.
+- `learned_policy.json`: learned thresholds and held-out policy metrics.
+- `learned_policy_comparison.png`: learned-versus-fixed policy comparison.
 
 ## Milestone documentation
 

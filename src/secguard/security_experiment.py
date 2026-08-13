@@ -95,10 +95,10 @@ def _run_policy(
 
     for time_step, item in enumerate(specifications):
         request = copy.deepcopy(request_types[SERVICE_INDEX[item["service"]]])
-        decision = _decision_from_json(item)
         target_gamma = request.gamma
 
         if adaptive:
+            decision = _decision_from_json(item)
             adapted = adapt_slice_request(request, decision)
             if adapted.quarantined:
                 quarantined += 1
