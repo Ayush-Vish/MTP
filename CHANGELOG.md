@@ -8,6 +8,23 @@ and limitations are documented separately in `docs/MILESTONES.md`.
 - Add cross-dataset and full-ensemble validation before paper submission.
 - Compile and proofread the paper with the final author metadata.
 
+## 0.7.0 - 2026-08-14
+
+- Rewrite the SecGuard manuscript through the ARS-Codex academic-paper workflow.
+- Add paired statistics, oracle/random controls, quarantine ablation, operational
+  metrics, and adverse findings to the IEEE draft.
+- Add verified bibliography metadata, bilingual abstracts, a claim ledger, and
+  a deterministic evidence-drift checker.
+- Upgrade the Pareto plot to a traced, accessible 300-DPI IEEE figure.
+
+## 0.6.0 - 2026-08-14
+
+- Exhaustively evaluate all 165 valid policy thresholds and record the oracle.
+- Compare against an equal-budget random search on 30 paired test scenarios.
+- Add Wilcoxon tests, paired effect sizes, no-quarantine ablation, latency, and
+  extended allocation metrics.
+- Persist all candidate and per-scenario results for independent checking.
+
 ## 0.5.0 - 2026-08-14
 
 - Add an IEEE-style SecGuard paper draft based on the 5Guard extension.

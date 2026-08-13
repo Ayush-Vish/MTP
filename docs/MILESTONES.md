@@ -13,9 +13,10 @@ result, known limitations, blockers, and the exact next step.
 | M2: 5Guard input integration | Complete | Decisions become valid 5Guard requests | `fa3b25b` |
 | M3A: Allocation pilot | Complete | 86.36% lower exposure for 6.01% lower profit | `11241c9` |
 | M3B: Learned profit-aware policy | Complete | +164.92% profit over fixed SecGuard | `dee754d` |
-| M4: Generalization and ablation | In progress | Validate on unseen scenarios and remove components | Pending |
-| P1: Paper draft | Complete | IEEE-style preliminary paper and claim ledger | Pending |
-| M4: Generalization and ablation | Planned | Validate on unseen scenarios and remove components | Pending |
+| M4A: Reviewer-oriented validation | Complete | Oracle/random controls, paired tests, ablation, and latency | `4b2d75d` |
+| P1: Preliminary paper draft | Complete | IEEE-style preliminary paper and claim ledger | `ca5e347` |
+| P2: ARS-reviewed manuscript | Complete | Evidence-synchronized IEEE paper with adverse controls | `2e12dbc` |
+| M4B: External generalization | Planned | Cross-dataset detection and measured attack propagation | Pending |
 
 ## M0: Scope selection
 
@@ -208,14 +209,33 @@ quarantine=0.90.
 - Rule-based dynamic isolation.
 - ML-risk-driven dynamic isolation (SecGuard).
 
-## M4: Generalization and ablation
+## M4A: Reviewer-oriented validation
 
-Status: **In progress**.
+Status: **Complete** on 2026-08-14.
+
+Detailed report: [`milestones/05-research-validation.md`](milestones/05-research-validation.md)
+
+- Exhaustively evaluated all 165 valid threshold policies on training scenarios.
+- Added an exact training oracle and equal-budget Random-81 control.
+- Added 30-scenario paired Wilcoxon tests and paired Cohen's dz effects.
+- Added a no-quarantine ablation, Pareto frontier, extended metric suite, and
+  local detector/policy latency benchmarks.
+- Stored every candidate and per-scenario result in a reproducible JSON artifact.
+
+The main positive result is a 164.92% learned-versus-fixed mean-profit increase
+with p=0.0028 and dz=0.69. The main adverse result is that Random-81 found the
+same training oracle, so the experiment does not establish an ML-search
+advantage.
+
+## M4B: External generalization
+
+Status: **Planned**.
 
 - Evaluate an unseen attack scenario or a second 5G dataset.
 - Compare Random Forest with a simple logistic baseline.
 - Remove SLA flooring, risk aggregation, and quarantine one at a time.
-- Report confidence intervals over repeated slice-arrival simulations.
+- Measure attack propagation or containment so L2 and quarantine differ in the
+  security outcome.
 
 ## P1: Paper draft
 
@@ -230,3 +250,19 @@ Status: **Complete** on 2026-08-14.
   needed before submission.
 - TeX source has balanced braces, but a PDF was not built because no TeX
   distribution is installed in the current environment.
+
+## P2: ARS-reviewed manuscript
+
+Status: **Complete** on 2026-08-14.
+
+Detailed report: [`milestones/06-ars-paper.md`](milestones/06-ars-paper.md)
+
+- Rewrote the manuscript around three explicit research questions and four
+  scoped contributions.
+- Synchronized claims with `research_validation.json` and added a paper checker.
+- Reported Wilcoxon tests, effect sizes, exhaustive/random controls, quarantine
+  ablation, operational costs, and timing.
+- Verified all 13 bibliography keys and upgraded the Pareto figure to an
+  accessible 300-DPI IEEE double-column artifact.
+- Recorded the full ARS intake, literature, argument, writing, review,
+  visualization, citation, and formatting workflow.
