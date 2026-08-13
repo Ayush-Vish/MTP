@@ -14,6 +14,7 @@ result, known limitations, blockers, and the exact next step.
 | M3A: Allocation pilot | Complete | 86.36% lower exposure for 6.01% lower profit | `11241c9` |
 | M3B: Learned profit-aware policy | Complete | +164.92% profit over fixed SecGuard | `dee754d` |
 | M4: Generalization and ablation | In progress | Validate on unseen scenarios and remove components | Pending |
+| P1: Paper draft | Complete | IEEE-style preliminary paper and claim ledger | Pending |
 | M4: Generalization and ablation | Planned | Validate on unseen scenarios and remove components | Pending |
 
 ## M0: Scope selection
@@ -215,3 +216,17 @@ Status: **In progress**.
 - Compare Random Forest with a simple logistic baseline.
 - Remove SLA flooring, risk aggregation, and quarantine one at a time.
 - Report confidence intervals over repeated slice-arrival simulations.
+
+## P1: Paper draft
+
+Status: **Complete** on 2026-08-14.
+
+- Added `paper/main.tex` with abstract, related work, equations, design,
+  evaluation, results, threats to validity, reproducibility, and conclusion.
+- Added `paper/references.bib` with 13 standards, primary papers, software, and
+  dataset references.
+- Added `paper/CLAIMS.md` to prevent overstatement in the paper or presentation.
+- Labeled the current evaluation as preliminary and enumerated the exact work
+  needed before submission.
+- TeX source has balanced braces, but a PDF was not built because no TeX
+  distribution is installed in the current environment.

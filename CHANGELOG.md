@@ -5,7 +5,15 @@ and limitations are documented separately in `docs/MILESTONES.md`.
 
 ## Unreleased
 
-- Add cross-dataset and full-ensemble validation.
+- Add cross-dataset and full-ensemble validation before paper submission.
+- Compile and proofread the paper with the final author metadata.
+
+## 0.5.0 - 2026-08-14
+
+- Add an IEEE-style SecGuard paper draft based on the 5Guard extension.
+- Add a 13-entry bibliography and a reproducibility guide.
+- Add a claim ledger separating supported, qualified, and unsupported claims.
+- Document the experiments required for publication-level evidence.
 
 ## 0.4.0 - 2026-08-14
 
