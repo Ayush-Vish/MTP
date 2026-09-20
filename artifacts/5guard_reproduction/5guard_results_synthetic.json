@@ -1,0 +1,92 @@
+{
+  "topology": "synthetic",
+  "iterations": 2,
+  "simulation_interval": 10,
+  "total_wall_clock_seconds": 18.7,
+  "algorithms": {
+    "opt": {
+      "final_profit_mean": 11043.7569,
+      "final_violation_mean": 0.0,
+      "cumulative_migration_mean": 0.0,
+      "final_overhead_mean": 721.75,
+      "final_deployment_mean": 377.9931,
+      "mean_resource_efficiency": 41.9069,
+      "total_rejections_L0": 0.0,
+      "total_rejections_L1": 0.0,
+      "total_rejections_L2": 0.0,
+      "mean_alloc_time_sec": 0.009899
+    },
+    "iar": {
+      "final_profit_mean": 8066.2078,
+      "final_violation_mean": 0.0,
+      "cumulative_migration_mean": 5.5,
+      "final_overhead_mean": 22.5,
+      "final_deployment_mean": 455.7922,
+      "mean_resource_efficiency": 40.5885,
+      "total_rejections_L0": 0.0,
+      "total_rejections_L1": 1.0,
+      "total_rejections_L2": 0.0,
+      "mean_alloc_time_sec": 0.001372
+    },
+    "dtr": {
+      "final_profit_mean": 11022.9569,
+      "final_violation_mean": -0.0,
+      "cumulative_migration_mean": 0.0,
+      "final_overhead_mean": 721.75,
+      "final_deployment_mean": 372.7931,
+      "mean_resource_efficiency": 41.7064,
+      "total_rejections_L0": 0.5,
+      "total_rejections_L1": 0.0,
+      "total_rejections_L2": 0.0,
+      "mean_alloc_time_sec": 0.005936
+    },
+    "rnr": {
+      "final_profit_mean": 11043.7569,
+      "final_violation_mean": -0.0,
+      "cumulative_migration_mean": 0.0,
+      "final_overhead_mean": 721.75,
+      "final_deployment_mean": 377.9931,
+      "mean_resource_efficiency": 41.9069,
+      "total_rejections_L0": 0.0,
+      "total_rejections_L1": 0.0,
+      "total_rejections_L2": 0.0,
+      "mean_alloc_time_sec": 0.005076
+    },
+    "nis": {
+      "final_profit_mean": 126.2588,
+      "final_violation_mean": 0.0,
+      "cumulative_migration_mean": 0.0,
+      "final_overhead_mean": 15.0,
+      "final_deployment_mean": 33.7412,
+      "mean_resource_efficiency": 72.9861,
+      "total_rejections_L0": 0.0,
+      "total_rejections_L1": 0.0,
+      "total_rejections_L2": 0.0,
+      "mean_alloc_time_sec": 0.008573
+    },
+    "cis": {
+      "final_profit_mean": 32236.7782,
+      "final_violation_mean": 0.0,
+      "cumulative_migration_mean": 0.0,
+      "final_overhead_mean": 0.0,
+      "final_deployment_mean": 1343.2218,
+      "mean_resource_efficiency": 1.7815,
+      "total_rejections_L0": 0.0,
+      "total_rejections_L1": 0.0,
+      "total_rejections_L2": 8.0,
+      "mean_alloc_time_sec": 0.003225
+    },
+    "fgr": {
+      "final_profit_mean": 11043.7569,
+      "final_violation_mean": 0.0,
+      "cumulative_migration_mean": 0.0,
+      "final_overhead_mean": 721.75,
+      "final_deployment_mean": 377.9931,
+      "mean_resource_efficiency": 41.9069,
+      "total_rejections_L0": 0.0,
+      "total_rejections_L1": 0.0,
+      "total_rejections_L2": 0.0,
+      "mean_alloc_time_sec": 0.01804
+    }
+  }
+}

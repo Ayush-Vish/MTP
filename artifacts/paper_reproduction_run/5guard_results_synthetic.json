@@ -1,0 +1,20 @@
+{
+  "topology": "synthetic",
+  "iterations": 2,
+  "simulation_interval": 5,
+  "total_wall_clock_seconds": 1.2,
+  "algorithms": {
+    "iar": {
+      "final_profit_mean": 8003.8279,
+      "final_violation_mean": 0.0,
+      "cumulative_migration_mean": 3.0,
+      "final_overhead_mean": 22.5,
+      "final_deployment_mean": 440.1721,
+      "mean_resource_efficiency": 42.3083,
+      "total_rejections_L0": 0.0,
+      "total_rejections_L1": 0.5,
+      "total_rejections_L2": 0.0,
+      "mean_alloc_time_sec": 0.000773
+    }
+  }
+}

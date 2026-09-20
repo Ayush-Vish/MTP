@@ -1,0 +1,68 @@
+{
+  "topology": "synthetic",
+  "iterations": 10,
+  "simulation_interval": 140,
+  "total_wall_clock_seconds": 1547.9,
+  "algorithms": {
+    "opt": {
+      "final_profit_mean": 49870.426,
+      "final_violation_mean": 3661.8282,
+      "cumulative_migration_mean": 43.7,
+      "final_overhead_mean": 8864.875,
+      "final_deployment_mean": 1140.5708,
+      "mean_resource_efficiency": 23.3692,
+      "total_rejections_L0": 16.6,
+      "total_rejections_L1": 7.3,
+      "total_rejections_L2": 7.1,
+      "mean_alloc_time_sec": 2.348535
+    },
+    "iar": {
+      "final_profit_mean": 31666.1273,
+      "final_violation_mean": 2500.4349,
+      "cumulative_migration_mean": 430.1,
+      "final_overhead_mean": 7368.2,
+      "final_deployment_mean": 529.3378,
+      "mean_resource_efficiency": 31.8698,
+      "total_rejections_L0": 51.6,
+      "total_rejections_L1": 9.4,
+      "total_rejections_L2": 7.9,
+      "mean_alloc_time_sec": 0.010531
+    },
+    "dtr": {
+      "final_profit_mean": 47411.166,
+      "final_violation_mean": -0.0,
+      "cumulative_migration_mean": 7.6,
+      "final_overhead_mean": 7435.875,
+      "final_deployment_mean": 1067.559,
+      "mean_resource_efficiency": 22.8632,
+      "total_rejections_L0": 41.2,
+      "total_rejections_L1": 9.1,
+      "total_rejections_L2": 7.1,
+      "mean_alloc_time_sec": 0.116445
+    },
+    "rnr": {
+      "final_profit_mean": 43135.4951,
+      "final_violation_mean": -0.0,
+      "cumulative_migration_mean": 108.1,
+      "final_overhead_mean": 6811.8,
+      "final_deployment_mean": 974.8049,
+      "mean_resource_efficiency": 20.5989,
+      "total_rejections_L0": 32.7,
+      "total_rejections_L1": 8.1,
+      "total_rejections_L2": 6.4,
+      "mean_alloc_time_sec": 0.111241
+    },
+    "fgr": {
+      "final_profit_mean": 49432.0472,
+      "final_violation_mean": 279.005,
+      "cumulative_migration_mean": 434.375,
+      "final_overhead_mean": 8155.75,
+      "final_deployment_mean": 1014.2458,
+      "mean_resource_efficiency": 22.437,
+      "total_rejections_L0": 7.0,
+      "total_rejections_L1": 1.125,
+      "total_rejections_L2": 4.875,
+      "mean_alloc_time_sec": 0.826099
+    }
+  }
+}
