@@ -1,0 +1,164 @@
+\noindent The method keeps the base paper's GNN as the tree builder and wraps it in an event-driven maintenance loop (Figure~\ref{fig:control_loop}). Each event is handled by keeping the tree, repairing it locally or re-planning it; the installed tree never costs more than $(1+\varepsilon)$ times a capacity-aware layered MPH tree; and changes reach the switches through protected, two-phase updates.
+
+\begin{figure}[!htb]
+\centering
+\begin{tikzpicture}[
+    font=\small,
+    box/.style={draw, rounded corners=3pt, align=center, minimum height=1.45cm, text width=4.0cm, fill=white},
+    opt/.style={draw, rounded corners=3pt, align=center, minimum height=0.6cm, text width=4.0cm, fill=white},
+    acc/.style={box, draw=blue!70!black, fill=blue!7, thick},
+    arr/.style={-{Stealth[length=2.2mm]}, thick, gray!70!black},
+    lab/.style={font=\scriptsize, text=gray!40!black}]
+  \node[box] (ev) {\textbf{Event arrives}\\[1pt]{\footnotesize Join, leave, quality change, link failure}};
+  \node[box, right=0.6cm of ev] (pol) {\textbf{Masked GNN policy}\\[1pt]{\footnotesize Base-paper encoder + keep / repair / re-plan head}};
+  \node[opt, right=0.6cm of pol, yshift=0.85cm] (keep) {Keep tree};
+  \node[opt, right=0.6cm of pol] (rep) {Local repair operator};
+  \node[opt, right=0.6cm of pol, yshift=-0.85cm] (re) {Full re-plan with GPN};
+  \node[acc, below=1.5cm of re] (mph) {\textbf{MPH safety net}\\[1pt]{\footnotesize Use MPH tree if the candidate overloads or costs $>(1+\varepsilon)\cdot$MPH}};
+  \node[box] (upd) at (pol |- mph) {\textbf{Two-phase update}\\[1pt]{\footnotesize Versioned rules, flip ingress, remove old rules}};
+  \node[box] (ovs) at (ev |- mph) {\textbf{OVS switches}\\[1pt]{\footnotesize Fast-failover backups recover without controller}};
+  \draw[arr] (ev) -- (pol);
+  \draw[arr] (pol.east) -- (keep.west);
+  \draw[arr] (pol.east) -- (rep.west);
+  \draw[arr] (pol.east) -- (re.west);
+  \draw[arr] (re) -- node[right, lab] {candidate tree} (mph);
+  \draw[arr] (mph) -- (upd);
+  \draw[arr] (upd) -- (ovs);
+  \draw[arr, dashed] (ovs) -- node[right, lab] {next event} (ev);
+\end{tikzpicture}
+\caption[Event-driven tree maintenance loop]{Event-driven tree maintenance loop: the learned policy chooses how much to change, the MPH check bounds the cost, and switches handle failures locally until the controller's repair arrives.}
+\label{fig:control_loop}
+\end{figure}
+
+\section{Problem Formulation}\label{sec:m_formulation}
+\noindent The network is a graph $G=(V,E)$ with unit cost $e_{ij}$ and capacity $c_{ij}$ per link. A session has a source $s$ and receivers $k$ with cumulative quality demand $x_k \in \{0.25, 0.5, 1.0\}$, as in~\cite{wang2026gnn}. By Lemma~1 of~\cite{wang2026gnn}, a tree link carries the highest demand below it, so the cost of a tree $T$ is
+\begin{equation}
+C(T) = \sum_{(i,j) \in T} e_{ij}\, f_{ij}, \qquad f_{ij} = \max_{k \in \mathcal{D}_T(j)} x_k, \qquad f_{ij} \le c_{ij},
+\label{eq:tree_cost}
+\end{equation}
+where $\mathcal{D}_T(j)$ is the set of receivers downstream of $j$. After each event $t$ the controller chooses a new tree $T_t$ that minimises tree cost plus a penalty on rule changes:
+\begin{equation}
+\min_{T_t}\; C(T_t) + \mu \,\bigl| R(T_t) \,\triangle\, R(T_{t-1}) \bigr| ,
+\label{eq:objective}
+\end{equation}
+where $R(T)$ is the set of OpenFlow rules that realise $T$ and $\mu$ prices one rule change; sweeping $\mu$ traces the cost-versus-churn curve used to compare local repair with full re-planning. The base paper's reward charges only new links. When a receiver with demand $x_k$ grafts onto the tree at node $a$, the true marginal cost also includes raising every upstream link on the path $P(s,a)$:
+\begin{equation}
+\Delta C = \sum_{(i,j) \in \text{new}} e_{ij}\, x_k \;+\; \sum_{(i,j) \in P(s,a)} e_{ij}\,\bigl(\max(f_{ij}, x_k) - f_{ij}\bigr).
+\label{eq:delta_cost}
+\end{equation}
+A leave or downgrade runs the same rule in reverse: $f$ is recomputed upward from the leaf, and links with no receivers below are pruned.
+
+\section{Repair Operators}\label{sec:m_operators}
+\noindent Table~\ref{tab:operators} lists the operators, which run inside a Ryu controller module that tracks the current tree, link loads and installed rules.
+
+\begin{table}[!htb]
+\caption{Repair operators}
+\label{tab:operators}
+\begin{center}
+\footnotesize
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{|L{2.4cm}|L{2.4cm}|L{6.2cm}|L{3.2cm}|}
+\hline
+\textbf{Operator} & \textbf{Triggered by} & \textbf{Action} & \textbf{Rules touched} \\
+\hline\hline
+Graft & Join & Attach the receiver at the tree node with least marginal cost $\Delta C$ (Eq.~\ref{eq:delta_cost}) & New branch + upstream upgrades \\ \hline
+Prune-up & Leave & Remove the leaf branch up to the first node that still serves a receiver & Removed branch only \\ \hline
+Layer upgrade / downgrade & Quality change & Re-propagate $f$ along the path to the source & Group memberships on that path \\ \hline
+Re-attach & Link or switch failure & Reconnect each orphaned subtree by its cheapest path & Orphaned subtrees' new paths \\ \hline
+Full re-plan & Policy choice or cost drift & Rebuild with GPN, then apply the MPH check & All changed rules \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\section{Learned Decision Policy and MPH Safety Net}\label{sec:m_policy}
+\noindent The base GPN encoder (Figure~\ref{fig:gpn_arch}) is reused with extra node features (in-tree flag, current $f$ on the parent link, residual capacity, event type), and a small masked head chooses keep, local repair or full re-plan; for example, keep is masked after a failure that disconnects a receiver. The head is trained by policy gradient on simulated event traces with reward equal to the negative of Eq.~\eqref{eq:objective}. Baselines for the learned policy are fixed-threshold rules (always repair; re-plan when cost drifts more than $\tau\%$ above MPH; re-plan every $N$ events), all re-planning with MPH, and the main baseline for the repair operators is a full MPH re-plan per event. Whatever the policy chooses, the resulting tree passes the MPH check of Algorithm~\ref{alg:mph} before it is installed.
+
+\begin{algorithm}[!htb]
+\caption{Capacity-aware layered MPH and install rule (one session)}
+\label{alg:mph}
+\begin{algorithmic}[1]
+\For{layer $x \in \{1.0,\ 0.5,\ 0.25\}$} \Comment{highest rate first}
+  \State $G_x \gets$ links with residual $+$ own\_load $\ge x$ \Comment{own\_load: this session's current use}
+  \While{some layer-$x$ receiver $r$ is unconnected}
+    \State attach the $r$ whose cheapest path to the current tree in $G_x$ is cheapest
+    \State \hspace{1em}(tree links cost 0, new links cost $e_{ij}$)
+  \EndWhile
+  \If{$r$ cannot reach the tree in $G_x$}
+    \State retry $r$ at the next lower layer; drop it only if none works
+  \EndIf
+\EndFor
+\If{candidate does not fit the residual capacities}
+  \State install the MPH tree
+\ElsIf{$C(\text{candidate}) > (1+\varepsilon)\, C(\text{MPH tree})$}
+  \State install the MPH tree
+\Else
+  \State install the candidate
+\EndIf
+\end{algorithmic}
+\end{algorithm}
+
+\noindent Adding layers from the highest rate down means a later, lower layer never raises the load on a link already in the tree, so the per-layer pruning is exact: for one session, MPH finds a tree that fits whenever one exists, and a receiver it must downgrade cannot be served at its rate by any tree. The tolerance $\varepsilon$ stops every MPH win from becoming a full re-plan, the churn that $\mu$ penalises. With no binding capacity, the installed tree costs at most $(1+\varepsilon)$ times the layered MPH tree, which is within $\frac{\ell+1}{2}\rho$ of optimal~\cite{ahmed2019mlst}, about $4\times$ for three layers. That proof prices a link by the number of layers crossing it, so the bound must be re-derived for the unevenly spaced rates 0.25/0.5/1.0, or layered MPH replaced by the $e\cdot\rho$ algorithm of~\cite{charikar2004qos}. Whether the bound holds when capacity binds is not yet proven, and several sessions sharing links are not covered. The net's value lies in capping the drift of repeated local repairs, which as greedy online updates can drift to $O(\log n)$ times optimal~\cite{imase1991dynamic}.
+
+\section{Proactive Protection and Safe Updates}\label{sec:m_protection}
+\noindent For each tree link, a backup path to the downstream subtree is installed as an OpenFlow~1.3 fast-failover group~\cite{oostenbrink2017failover}, so the switch fails over without the controller; backups share tree links where possible to limit extra state. New rules are installed under a new version tag, the ingress is flipped to that tag, and old rules are removed after a timeout~\cite{reitblatt2012update}, so each receiver sees either the old or the new tree. Recovery time, packets lost during failover and extra flow and group entries per switch are measured.
+
+\section{Three-Tier Evaluation}\label{sec:m_evaluation}
+\noindent The method is evaluated in three tiers (Table~\ref{tab:tiers}). Because the lab's Release 15/16 system has no 5G MBS~\cite{3gpp23247}, the tree ends at the MEC replicator and the last hop is one unicast PDU session per UE (Figure~\ref{fig:testbed}); extra edge sites are emulated with Open5GS and UERANSIM, and the lab's core and RAN settings are never changed.
+
+\begin{table}[!htb]
+\caption{Three-tier evaluation plan}
+\label{tab:tiers}
+\begin{center}
+\footnotesize
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{|L{1.9cm}|L{6.0cm}|L{2.5cm}|L{3.8cm}|}
+\hline
+\textbf{Tier} & \textbf{Setup} & \textbf{Scale} & \textbf{Measures} \\
+\hline\hline
+1 Simulation & Event-driven Python/NetworkX simulator; Topology Zoo, Rocketfuel and the base paper's random graphs & 50--500 nodes, thousands of events & Cost vs.\ churn, policy training, scalability \\ \hline
+2 Emulation & Mininet + Open vSwitch + the Ryu module; UDP flows at layer rates & Tens of switches & Rule churn, recovery time, switch state \\ \hline
+3 5G lab & Emulated transport attached through the lab switch (dedicated VLAN) to the 5G SA core; MEC hosts the edge replicator & Lab CPEs and XR headsets & Stalls, startup delay, frame loss at real UEs \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{figure}[!htb]
+\centering
+\begin{tikzpicture}[
+    font=\small,
+    box/.style={draw, rounded corners=3pt, align=center, fill=white},
+    acc/.style={box, draw=blue!70!black, fill=blue!7, thick},
+    chain/.style={box, minimum width=6.4cm, minimum height=0.72cm},
+    arr/.style={-{Stealth[length=2.2mm]}, thick, gray!70!black},
+    lab/.style={font=\scriptsize, text=gray!40!black}]
+  % Tier 2
+  \node[acc, minimum width=5.6cm, minimum height=1.3cm] (ryu) at (0,0) {\textbf{Ryu controller + thesis module}\\{\footnotesize Repair operators, GNN policy,}\\{\footnotesize MPH net, fast-failover, two-phase}};
+  \node[box, minimum width=5.6cm, minimum height=1.3cm, below=0.9cm of ryu] (ovs) {\textbf{Mininet + Open vSwitch}\\{\footnotesize Emulated transport: tens of}\\{\footnotesize switches carrying the tree}};
+  \node[box, minimum width=2.6cm, minimum height=1.0cm, below left=0.8cm and -2.6cm of ovs] (src) {\textbf{Video source}\\{\footnotesize FFmpeg layers}};
+  \node[box, minimum width=2.6cm, minimum height=1.0cm, below right=0.8cm and -2.6cm of ovs] (edgeb) {\textbf{Edge site B}\\{\footnotesize Open5GS + UERANSIM}};
+  \draw[arr] (ryu) -- node[right, lab] {OpenFlow 1.3} (ovs);
+  \draw[arr] (src) -- (src |- ovs.south);
+  \draw[arr] (edgeb |- ovs.south) -- (edgeb);
+  \begin{scope}[on background layer]
+    \node[draw=gray!60, fill=gray!8, rounded corners=4pt, inner sep=8pt, fit=(ryu)(ovs)(src)(edgeb), label={[font=\small\bfseries, anchor=south west]north west:Tier 2: lab PC (emulation)}] (t2) {};
+  \end{scope}
+  % Tier 3
+  \node[chain, right=1.5cm of ryu.north east, anchor=north west] (c1) {Lab switch: dedicated VLAN, port mirror};
+  \node[chain, below=0.42cm of c1] (c2) {Firewall-router: joins RAN, core, MEC};
+  \node[chain, below=0.42cm of c2, font=\small\bfseries] (c3) {MEC server: edge replicator (tree ends)};
+  \node[chain, below=0.42cm of c3] (c4) {5G SA core (UPF): one PDU session per UE};
+  \node[chain, below=0.42cm of c4] (c5) {WiSig gNB: band n78 TDD};
+  \node[chain, below=0.42cm of c5] (c6) {CPEs and XR headsets: receivers};
+  \foreach \a/\b in {c1/c2,c2/c3,c3/c4,c4/c5,c5/c6} \draw[arr] (\a) -- (\b);
+  \begin{scope}[on background layer]
+    \node[draw=gray!60, fill=gray!8, rounded corners=4pt, inner sep=8pt, fit=(c1)(c6), label={[font=\small\bfseries, anchor=south west]north west:Tier 3: DoT 5G Use Case Lab}] (t3) {};
+  \end{scope}
+  \draw[arr] (ovs.east) -- ++(0.75,0) |- (c1.west);
+\end{tikzpicture}
+\caption[Tier 2--3 testbed architecture]{Tier 2--3 testbed: the multicast tree runs in Open vSwitch up to the MEC replicator; the 5G system carries only the unicast last hop. The thesis builds only the highlighted module.}
+\label{fig:testbed}
+\end{figure}
+
+\noindent Workloads use Poisson viewer arrivals, exponential viewing times and Zipf audience sizes, with demand split one-third high, medium and low as in~\cite{wang2026gnn}, plus random and correlated link and switch failures. Metrics are tree cost (and gap to an exact ILP up to about 50 nodes), rule changes per event, decision time, recovery time, extra switch entries and, at Tier~3, stall count, stall duration and startup delay. All tools are open source: PyTorch Geometric with the base paper's code, OR-Tools/SCIP, Ryu, Mininet, Open vSwitch, Open5GS, UERANSIM and FFmpeg.

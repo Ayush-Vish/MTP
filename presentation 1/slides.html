@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecGuard Presentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #000000;
+            --slide-bg: rgba(255, 255, 255, 0.08);
+            --border: rgba(255, 255, 255, 0.3);
+            --text-main: #FFFFFF;
+            --text-muted: #E2E8F0;
+            --accent-blue: #60A5FA;
+            --accent-emerald: #34D399;
+            --accent-purple: #A78BFA;
+            --accent-cyan: #22D3EE;
+            --danger: #F87171;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .bg-glow-1 { position: absolute; top: -10%; left: -10%; width: 50vw; height: 50vw; background: radial-gradient(circle, rgba(96,165,250,0.2) 0%, transparent 60%); filter: blur(100px); z-index: 1; }
+        .bg-glow-2 { position: absolute; bottom: -10%; right: -10%; width: 50vw; height: 50vw; background: radial-gradient(circle, rgba(167,139,250,0.2) 0%, transparent 60%); filter: blur(100px); z-index: 1; }
+
+        #deck {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: var(--bg-color);
+            z-index: 10;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            padding: 5rem 8rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+            transform: translateX(100px);
+        }
+
+        .slide.active { opacity: 1; pointer-events: auto; transform: translateX(0); }
+        .slide.past { transform: translateX(-100px); }
+
+        h1, h2, h3, h4 { color: #ffffff; font-weight: 800; }
+        
+        .title-slide h1 {
+            font-size: 6rem;
+            margin-bottom: 2rem;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #fff, var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .title-slide h2 { font-size: 3rem; color: var(--text-muted); font-weight: 600; line-height: 1.3; }
+        .title-slide .tag {
+            display: inline-block; padding: 1rem 2rem; border: 3px solid var(--accent-cyan);
+            border-radius: 50px; color: var(--accent-cyan); margin-bottom: 3rem;
+            font-size: 1.8rem; font-weight: 800;
+        }
+
+        .slide-header {
+            font-size: 3.8rem;
+            margin-bottom: 3rem;
+            border-bottom: 4px solid var(--border);
+            padding-bottom: 1.5rem;
+        }
+        
+        .content { font-size: 2.2rem; line-height: 1.5; font-weight: 600; }
+        .content ul { padding-left: 3rem; margin-top: 1.5rem; }
+        .content li { margin-bottom: 1.8rem; }
+        .content strong { color: var(--accent-blue); font-weight: 800; }
+        .content .highlight-green { color: var(--accent-emerald); font-weight: 800; }
+        
+        .split { display: flex; gap: 4rem; height: 100%; align-items: center; }
+        .split > div { flex: 1; }
+        
+        .card-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+        .card {
+            background: var(--slide-bg);
+            border: 3px solid var(--border);
+            padding: 2.5rem;
+            border-radius: 16px;
+            text-align: left;
+        }
+        .card h3 { color: var(--accent-cyan); margin-bottom: 1rem; font-size: 2.5rem; }
+        .card p { font-size: 1.8rem; color: #FFFFFF; font-weight: 600; line-height: 1.4; }
+
+        .img-box {
+            background: var(--slide-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 3px solid var(--border);
+            text-align: center;
+        }
+        .img-box img { max-width: 100%; max-height: 500px; border-radius: 8px; }
+        .img-box h3 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .img-box p { font-size: 1.8rem; font-weight: 600; }
+
+        .controls {
+            position: absolute;
+            bottom: 30px;
+            right: 50px;
+            display: flex;
+            gap: 1.5rem;
+            z-index: 100;
+        }
+        .controls button {
+            background: rgba(255,255,255,0.15);
+            border: 2px solid rgba(255,255,255,0.4);
+            color: #fff;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            transition: all 0.2s;
+        }
+        .controls button:hover { background: rgba(255,255,255,0.3); }
+        .slide-counter { position: absolute; bottom: 40px; left: 50px; color: var(--text-muted); z-index: 100; font-size: 1.8rem; font-weight: 800; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 2rem; font-size: 1.8rem; font-weight: 600; }
+        th { text-align: left; padding: 1.5rem; border-bottom: 4px solid var(--border); color: #fff; font-size: 2.2rem; font-weight: 800; }
+        td { padding: 1.5rem; border-bottom: 2px solid rgba(255,255,255,0.2); color: var(--text-main); }
+    
+    @media print {
+        @page {
+            size: 1920px 1080px;
+            margin: 0;
+        }
+        html, body {
+            width: 1920px !important;
+            height: auto !important;
+            overflow: visible !important;
+            background: #000000 !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+        .bg-glow-1, .bg-glow-2, .controls, .slide-counter {
+            display: none !important;
+        }
+        #deck {
+            display: block !important;
+            position: relative !important;
+            width: 1920px !important;
+            height: auto !important;
+            overflow: visible !important;
+            background: #000000 !important;
+        }
+        .slide {
+            position: relative !important;
+            width: 1920px !important;
+            height: 1080px !important;
+            min-height: 1080px !important;
+            max-height: 1080px !important;
+            page-break-after: always !important;
+            break-after: page !important;
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+            opacity: 1 !important;
+            transform: none !important;
+            pointer-events: auto !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            box-sizing: border-box !important;
+            padding: 5rem 8rem !important;
+            background: #000000 !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+    }
+
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+
+    <div id="deck">
+        
+        <!-- SLIDE 1 -->
+        <div class="slide title-slide active" style="text-align: center; align-items: center;">
+            <div class="tag">Master Thesis Project 1 (ITIT-5199)</div>
+            <h1 style="font-size: 5.5rem; margin-bottom: 1rem;">SecGuard</h1>
+            <h2 style="font-size: 2.8rem; line-height: 1.4;">Risk-Adaptive Isolation for<br>Profit-Aware 5G Network Slicing</h2>
+            <div style="margin-top: 4rem; text-align: center;">
+                <p style="font-size: 2.2rem; font-weight: 600; color: var(--text-muted);">Presented by</p>
+                <p style="font-size: 2.8rem; font-weight: 800; color: #fff; margin-top: 0.5rem;">Ayush Vishwakarma <span style="font-size: 2.2rem; color: var(--accent-cyan);">(2022IMT 028)</span></p>
+                <p style="font-size: 1.8rem; font-weight: 600; color: var(--accent-blue); margin-top: 1.5rem;">Under the Supervision of Prof. Aditya Trivedi</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 2 -->
+        <div class="slide">
+            <div class="slide-header">The Core Problem in 5G Network Slicing</div>
+            <div class="content">
+                <ul>
+                    <li style="margin-bottom: 2rem;"><strong>One Physical Network, Many Users:</strong> 5G uses "Network Slicing" to carve up a single physical network (cell towers, fiber cables, servers) into separate virtual networks for different companies.</li>
+                    <li style="margin-bottom: 2rem;"><strong>Completely Different Needs on the Same System:</strong>
+                        <ul style="margin-top: 1rem; font-size: 2rem;">
+                            <li style="margin-bottom: 1rem;"><strong>Cheap & Basic Users:</strong> Simple devices (smart meters, sensors) that only need an inexpensive, low-bandwidth connection.</li>
+                            <li><strong>Life-Critical Users:</strong> High-priority services (remote robotic surgery, connected ambulances, self-driving cars) that require 100% reliability and strict security.</li>
+                        </ul>
+                    </li>
+                    <li style="margin-bottom: 2rem;"><strong>The Danger of Sharing:</strong> Because both types of users run on the exact same physical servers, a cyber-attack on a cheap, unprotected device can spread across the server and compromise the critical service next to it.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- SLIDE 3 -->
+        <div class="slide">
+            <div class="slide-header">The Dilemma: Cutting Costs vs. Staying Safe</div>
+            <div class="content">
+                <ul>
+                    <li style="margin-bottom: 2rem;"><strong>Maximizing Profits:</strong> To make money, telecom companies want to pack as many customers as possible onto the same physical servers.</li>
+                    <li style="margin-bottom: 2rem;"><strong>The Security Threat:</strong> Sharing server hardware means an infection in one cheap slice can slow down, spy on, or crash neighboring slices.</li>
+                    <li style="margin-bottom: 2rem;"><strong>Why Buying More Servers Fails:</strong> Giving every single customer their own separate physical hardware is 100% safe, but it is far too expensive and bankrupts the operator.</li>
+                    <li style="margin-bottom: 2rem;"><strong>The Unsolved Question:</strong> How can the network isolate infected customers in real time without wasting money on permanent, expensive hardware?</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- SLIDE 4 -->
+        <div class="slide">
+            <div class="slide-header">The Baseline Solution: 5Guard (IEEE 2026)</div>
+            <div class="content">
+                <p style="font-size: 2rem; color: var(--accent-cyan); margin-bottom: 2rem;"><em>Foundation: 5Guard (Bolourian et al., IEEE TMC 2026)</em></p>
+                <ul>
+                    <li style="margin-bottom: 2rem;"><strong>Choose Your Security Level:</strong> 5Guard introduced <em>Isolation Levels as a Service (ILaaS)</em>, allowing customers to choose how much protection they want when they sign up.</li>
+                    <li style="margin-bottom: 2rem;"><strong>Tiered Pricing:</strong> Customers pay different prices depending on whether they share servers with others or get dedicated hardware.</li>
+                    <li style="margin-bottom: 2rem;"><strong>End-to-End Placement:</strong> 5Guard uses mathematical optimization to place these slices across cell towers, transport networks, and cloud servers to maximize operator profit.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- SLIDE 5 -->
+        <div class="slide">
+            <div class="slide-header">The Three Levels of Security in 5G</div>
+            <div class="content">
+                <div class="card-grid">
+                    <div class="card">
+                        <h3 style="font-size: 2.4rem;">Level 0 (Shared)</h3>
+                        <p style="font-size: 1.7rem; line-height: 1.5;">Customers share the same processor and memory with everyone else. Lowest cost, but highest risk if someone gets hacked.</p>
+                    </div>
+                    <div class="card">
+                        <h3 style="font-size: 2.4rem;">Level 1 (Virtual)</h3>
+                        <p style="font-size: 1.7rem; line-height: 1.5;">Puts a Virtual Machine around the customer to create a software wall. Moderate cost, and blocks basic malware from spreading.</p>
+                    </div>
+                    <div class="card">
+                        <h3 style="font-size: 2.4rem;">Level 2 (Physical)</h3>
+                        <p style="font-size: 1.7rem; line-height: 1.5;">Gives the customer dedicated physical CPU cores that nobody else can touch. Maximum security, but highest hardware cost.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6 -->
+        <div class="slide">
+            <div class="slide-header">The Math Problem: The Giant Jigsaw Puzzle</div>
+            <div class="content">
+                <p style="margin-bottom: 2rem;">
+                    A 5G network spans thousands of cell towers, optical links, and servers. 5Guard formulates this as a 
+                    <strong>Mixed-Integer Programming (MIP)</strong> question with a vast number of independent variables:
+                </p>
+                <div class="card-grid">
+                    <div class="card">
+                        <h3 style="font-size: 2.2rem; margin-bottom: 0.8rem;">Binary Variables</h3>
+                        <p style="font-size: 1.5rem; color: var(--accent-cyan); font-weight: 800; margin-bottom: 0.6rem;">Discrete Yes / No Choices (0 or 1)</p>
+                        <p style="font-size: 1.5rem; line-height: 1.4;">Which exact physical server, cell tower frequency PRB slot, and optical fiber wavelength hosts each slice.</p>
+                    </div>
+                    <div class="card">
+                        <h3 style="font-size: 2.2rem; margin-bottom: 0.8rem;">Continuous Variables</h3>
+                        <p style="font-size: 1.5rem; color: var(--accent-emerald); font-weight: 800; margin-bottom: 0.6rem;">Exact Sizing (&ge; 0)</p>
+                        <p style="font-size: 1.5rem; line-height: 1.4;">How much CPU compute power (MIPS) and network bandwidth capacity (Gbps) to allocate.</p>
+                    </div>
+                    <div class="card">
+                        <h3 style="font-size: 2.2rem; margin-bottom: 0.8rem;">The Optimization Goal</h3>
+                        <p style="font-size: 1.5rem; color: var(--accent-blue); font-weight: 800; margin-bottom: 0.6rem;">Maximum Profit Under Security</p>
+                        <p style="font-size: 1.5rem; line-height: 1.4;">Arrange all L0, L1, and L2 customers to satisfy requested security while maximizing total network profit.</p>
+                    </div>
+                </div>
+                <div style="margin-top: 1.8rem; background: rgba(96,165,250,0.1); border: 2px solid var(--accent-blue); border-radius: 12px; padding: 1.2rem 2rem;">
+                    <p style="font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 0.4rem;">
+                        <span style="color: var(--accent-cyan);">Objective Function:</span> Maximize Profit = &sum; Revenue(r) &minus; (&gamma;<sup>dep</sup> + &gamma;<sup>vio</sup> + &gamma;<sup>mig</sup> + &gamma;<sup>ovh</sup>)
+                    </p>
+                    <p style="font-size: 1.4rem; color: var(--text-muted); font-weight: 500;">
+                        Profit = <strong>Tenant Subscription Revenue</strong> &minus; (<strong>Deployment Cost</strong> &gamma;<sup>dep</sup> + <strong>SLA Penalties</strong> &gamma;<sup>vio</sup> + <strong>Migration Cost</strong> &gamma;<sup>mig</sup> + <strong>Virtualization Overhead</strong> &gamma;<sup>ovh</sup>).
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7 -->
+        <div class="slide">
+            <div class="slide-header">5Guard: Finding the Best Setup</div>
+            <div class="content">
+                <p style="margin-bottom: 1.5rem;">Solving this NP-hard Mixed-Integer Program (MIP) exactly takes too long for real-time 5G deadlines. So, 5Guard uses an ensemble of algorithms:</p>
+                <ul>
+                    <li style="margin-bottom: 1.5rem;"><strong>Exact Math (MIP Solver):</strong> Uses SCIP to find the provably optimal allocation, but is slow on large networks.</li>
+                    <li style="margin-bottom: 1.5rem;"><strong>Smart Heuristics (IAR / DTR):</strong> Highly effective algorithms that balance isolation, revisitation, and speed.</li>
+                    <li style="margin-bottom: 1.5rem;"><strong>Fast Heuristics:</strong> Ultra-fast execution for strict, millisecond-level slice deadlines.</li>
+                </ul>
+                <p style="margin-top: 2rem; color: var(--accent-cyan);"><em>5Guard runs these methods in parallel and picks the best answer that finishes within the slice deadline.</em></p>
+            </div>
+        </div>
+
+        <!-- SLIDE 8 -->
+        <div class="slide">
+            <div class="slide-header">The Big Problem with 5Guard</div>
+            <div class="content split">
+                <div>
+                    <ul>
+                        <li><strong>Blind to Hackers:</strong> 5Guard only sets security when a customer joins, and never changes it.</li>
+                        <li><strong>No Defense:</strong> If a customer asks for a cheap (L0) network and gets hacked later, 5Guard does nothing.</li>
+                        <li><strong>Wasting Money:</strong> To be safe, companies just buy the expensive L2 security all the time, wasting huge amounts of money.</li>
+                    </ul>
+                </div>
+                <div class="card" style="border-color: var(--danger);">
+                    <h3 style="color: var(--danger); font-size: 3rem;">The Gap</h3>
+                    <p style="margin-top: 1rem;">The original authors said: <br><br><em>"Translating security requirements into isolation levels is left for future work."</em></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 9 -->
+        <div class="slide">
+            <div class="slide-header" style="margin-bottom: 1.5rem; padding-bottom: 0.8rem;">5Guard Algorithm Ensemble: Trade-Off Analysis</div>
+            <div class="content">
+                <p style="margin-bottom: 1rem; font-size: 1.9rem;">Comparative evaluation of optimization methods running concurrently in the 5Guard parallel ensemble:</p>
+                <div style="background: var(--slide-bg); border: 2px solid var(--border); border-radius: 14px; padding: 0.8rem 1.8rem; box-shadow: 0 8px 32px rgba(0,0,0,0.4);">
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 0; font-size: 1.6rem;">
+                        <thead>
+                            <tr style="border-bottom: 3px solid var(--border);">
+                                <th style="padding: 0.6rem 0.8rem; color: var(--accent-cyan); font-size: 1.8rem; width: 23%;">Algorithm</th>
+                                <th style="padding: 0.6rem 0.8rem; color: #FFFFFF; font-size: 1.8rem; width: 25%;">Strategy</th>
+                                <th style="padding: 0.6rem 0.8rem; color: var(--accent-blue); font-size: 1.8rem; width: 17%;">Time</th>
+                                <th style="padding: 0.6rem 0.8rem; color: var(--accent-emerald); font-size: 1.8rem; width: 14%;">Quality</th>
+                                <th style="padding: 0.6rem 0.8rem; color: var(--accent-purple); font-size: 1.8rem; width: 21%;">When It Wins</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 0.55rem 0.8rem; line-height: 1.2;">
+                                    <span style="font-weight: 800; color: var(--accent-cyan); font-size: 1.7rem;">OPT (SCIP)</span><br>
+                                    <span style="font-size: 1.25rem; color: var(--text-muted); font-weight: 500;">Exact Optimal Solver</span>
+                                </td>
+                                <td style="padding: 0.55rem 0.8rem;">Branch-and-Cut MILP</td>
+                                <td style="padding: 0.55rem 0.8rem; color: var(--danger); font-weight: 700;">High (100ms – mins)</td>
+                                <td style="padding: 0.55rem 0.8rem; color: var(--accent-emerald); font-weight: 800;">100% (Optimal)</td>
+                                <td style="padding: 0.55rem 0.8rem;">Small networks or generous deadlines</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.55rem 0.8rem; line-height: 1.2;">
+                                    <span style="font-weight: 800; color: var(--accent-cyan); font-size: 1.7rem;">IAR</span><br>
+                                    <span style="font-size: 1.25rem; color: var(--text-muted); font-weight: 500;">Isolation-Aware Ranking</span>
+                                </td>
+                                <td style="padding: 0.55rem 0.8rem;">Greedy BFS + Isolation Ranking</td>
+                                <td style="padding: 0.55rem 0.8rem; color: #FBBF24; font-weight: 700;">Medium (20 – 50ms)</td>
+                                <td style="padding: 0.55rem 0.8rem; color: var(--accent-emerald); font-weight: 800;">~96% (Near-Optimal)</td>
+                                <td style="padding: 0.55rem 0.8rem;">Standard multi-tenant workloads</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.55rem 0.8rem; line-height: 1.2;">
+                                    <span style="font-weight: 800; color: var(--accent-cyan); font-size: 1.7rem;">DTR</span><br>
+                                    <span style="font-size: 1.25rem; color: var(--text-muted); font-weight: 500;">Deterministic Rounding</span>
+                                </td>
+                                <td style="padding: 0.55rem 0.8rem;">Multi-path Latency Relaxation</td>
+                                <td style="padding: 0.55rem 0.8rem; color: var(--accent-emerald); font-weight: 700;">Fast (10 – 30ms)</td>
+                                <td style="padding: 0.55rem 0.8rem; font-weight: 700;">~90%</td>
+                                <td style="padding: 0.55rem 0.8rem;">High network congestion &amp; IoT slices</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.55rem 0.8rem; line-height: 1.2;">
+                                    <span style="font-weight: 800; color: var(--accent-cyan); font-size: 1.7rem;">Fast / RNR</span><br>
+                                    <span style="font-size: 1.25rem; color: var(--text-muted); font-weight: 500;">Randomized Rounding</span>
+                                </td>
+                                <td style="padding: 0.55rem 0.8rem;">One-shot First-Fit</td>
+                                <td style="padding: 0.55rem 0.8rem; color: var(--accent-emerald); font-weight: 800;">Ultra-fast (1 – 5ms)</td>
+                                <td style="padding: 0.55rem 0.8rem; color: var(--text-muted); font-weight: 700;">~82% (Acceptable)</td>
+                                <td style="padding: 0.55rem 0.8rem;">Emergency deadline timeout prevention</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style="margin-top: 0.8rem; padding-top: 0.6rem; border-top: 1px solid rgba(255,255,255,0.15); font-size: 1.3rem; color: var(--text-muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+                        <span><strong>SCIP:</strong> Solving Constraint Integer Programs</span>
+                        <span><strong>MILP:</strong> Mixed-Integer Linear Program</span>
+                        <span><strong>BFS:</strong> Breadth-First Search</span>
+                    </div>
+                </div>
+                <p style="margin-top: 1.2rem; font-size: 1.6rem; color: var(--accent-cyan); font-weight: 700;">
+                    <em>Operational Takeaway: Running these algorithms concurrently ensures the system never drops requests due to admission timeouts while capturing maximum possible profit.</em>
+                </p>
+            </div>
+        </div>
+
+        <!-- SLIDE 10 -->
+        <div class="slide title-slide" style="text-align: center; align-items: center; justify-content: center;">
+            <div class="tag">Proposed Framework</div>
+            <h1 style="font-size: 8rem;">Enter SecGuard</h1>
+            <h2 style="font-size: 3.5rem;">Risk-Adaptive Closed-Loop Isolation for Profit-Aware 5G Slicing</h2>
+        </div>
+
+        <!-- SLIDE 11 -->
+        <div class="slide">
+            <div class="slide-header">Research Scope: Three Core Objectives</div>
+            <div class="content">
+                <div class="card-grid">
+                    <div class="card" style="border-color: var(--accent-emerald);">
+                        <h3 style="color: var(--accent-emerald);">1. Threat-to-Isolation Mapping</h3>
+                        <p><strong>To</strong> detect 5G network attacks in real time and dynamically map compromised slices to L0/L1/L2 isolation escalation while preserving baseline customer SLAs.</p>
+                        <p style="font-size: 1.2rem; margin-top:1.5rem; color:var(--accent-emerald);">[Completed Phase]</p>
+                    </div>
+                    <div class="card">
+                        <h3>2. Predictive Admission Control</h3>
+                        <p><strong>To</strong> formulate a reinforcement learning policy predicting downstream network impact to dynamically admit, reject, or defer slices for long-term profit optimization.</p>
+                        <p style="font-size: 1.2rem; margin-top:1.5rem; color:var(--accent-blue);">[Proposed Phase 2]</p>
+                    </div>
+                    <div class="card">
+                        <h3>3. Meta-Algorithm Selection</h3>
+                        <p><strong>To</strong> construct an intelligent meta-classifier routing requests between Exact (SCIP) and Heuristic solvers to satisfy strict sub-second slice deadlines.</p>
+                        <p style="font-size: 1.2rem; margin-top:1.5rem; color:var(--accent-blue);">[Proposed Phase 3]</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 12 -->
+        <div class="slide">
+            <div class="slide-header">Objective 1: System Architecture & Formulation</div>
+            <div class="content split">
+                <div>
+                    <ol style="padding-left: 2rem;">
+                        <li style="margin-bottom: 1.5rem;"><strong>Packet Telemetry Classification:</strong> 300-tree Random Forest trained on 5G telemetry; achieves 100% test accuracy on held-out attack flows.</li>
+                        <li style="margin-bottom: 1.5rem;"><strong>Temporal Risk Aggregation:</strong> Mathematical formulation aggregating sliding-window attack probabilities into a continuous slice risk metric (0.0 to 1.0).</li>
+                        <li style="margin-bottom: 1.5rem;"><strong>Risk-Adaptive Escalation:</strong> Autonomous policy engine dynamically re-mapping slices to L1, L2, or Quarantine upon threshold breach.</li>
+                        <li style="margin-bottom: 1.5rem;"><strong>SLA Preservation Guarantee:</strong> Provable non-downgrade constraint guaranteeing customer baseline SLAs are strictly maintained.</li>
+                    </ol>
+                </div>
+                <div class="img-box">
+                    <img src="assets/confusion_matrix.png" alt="Confusion Matrix">
+                    <p style="margin-top: 1rem;">100% Test Accuracy on 5G Attack Patterns</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 13 -->
+        <div class="slide">
+            <div class="slide-header">Objective 1: ML-Based Policy Optimization</div>
+            <div class="content split">
+                <div>
+                    <ul>
+                        <li><strong>Optimization Challenge:</strong> Determining optimal escalation thresholds balancing risk exposure against resource overhead.</li>
+                        <li><strong>Extensive Policy Exploration:</strong> Simulated and evaluated 165 candidate threshold configurations across full-scale network topologies.</li>
+                        <li><strong>Surrogate ML Modeling:</strong> Trained regression surrogate to construct the Pareto Frontier (Operator Profit vs. Exposure Proxy).</li>
+                        <li><strong>Optimal Operating Point:</strong> Identified Pareto-optimal thresholds (0.30, 0.35, 0.90) maximizing profit under strict exposure constraints.</li>
+                    </ul>
+                </div>
+                <div class="img-box">
+                    <img src="assets/pareto_frontier.png" alt="Pareto Frontier">
+                    <p style="margin-top: 1rem;">Surrogate Pareto Frontier for Threshold Selection</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 14 -->
+        <div class="slide">
+            <div class="slide-header">Objective 1: Performance Evaluation & Validation</div>
+            <div class="content">
+                <p>Statistical validation evaluated across 30 diverse held-out network scenarios:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Baseline (No Security)<br><span style="font-size:1.4rem; color:var(--text-muted); font-weight:normal;">Original 5Guard</span></th>
+                            <th>Naive Security<br><span style="font-size:1.4rem; color:var(--text-muted); font-weight:normal;">Fixed Rule Over-Quarantine</span></th>
+                            <th style="color:var(--accent-blue);">Proposed SecGuard<br><span style="font-size:1.4rem; font-weight:normal;">ML-Optimized</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Security Danger Proxy</strong><br><span style="font-size:1.4rem; color:var(--text-muted);">Lower is safer</span></td>
+                            <td style="color: var(--danger);">0.77 (High Risk)</td>
+                            <td>0.24</td>
+                            <td class="highlight-green"><strong>0.25 (-67.1% exposure)</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Mean Network Profit</strong><br><span style="font-size:1.4rem; color:var(--text-muted);">Higher is better</span></td>
+                            <td>$8,133</td>
+                            <td style="color: var(--danger);">$2,776</td>
+                            <td class="highlight-green"><strong>$7,356 (+164.9% recovery)</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Mean Slice Admission</strong><br><span style="font-size:1.4rem; color:var(--text-muted);">Out of 4 total requests</span></td>
+                            <td>3.5 slices</td>
+                            <td style="color: var(--danger);">2.2 slices</td>
+                            <td class="highlight-green"><strong>2.9 slices</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="margin-top: 1.2rem; background: var(--slide-bg); border: 1px solid var(--border); border-radius: 10px; padding: 0.8rem 1.6rem; font-size: 1.45rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
+                    <span><strong style="color: var(--accent-cyan);">Profit Calculation:</strong> Profit = &sum; Subscription Revenue &minus; (Deployment Costs + SLA Penalties + Migration Costs + Virtualization Overheads)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 15 -->
+        <div class="slide">
+            <div class="slide-header">Objective 1: Empirical Evaluation on Held-Out Scenarios</div>
+            <div class="content" style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;">
+                <div style="background: #FFFFFF; padding: 2rem 3rem 1.5rem; border-radius: 20px; box-shadow: 0 16px 50px rgba(0,0,0,0.6); width: 100%; max-width: 1600px; text-align: center; border: 4px solid var(--accent-blue);">
+                    <img src="assets/learned_policy_comparison.png" alt="Offline-learned SecGuard policy on held-out scenarios" style="width: 100%; max-height: 520px; object-fit: contain; display: block; margin: 0 auto;">
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2.5rem; width: 100%; max-width: 1600px; margin-top: 2rem;">
+                    <div style="background: var(--slide-bg); border: 2px solid var(--accent-emerald); border-radius: 14px; padding: 1.2rem 2rem; text-align: center;">
+                        <span style="color: var(--accent-emerald); font-size: 2.4rem; font-weight: 800;">$7,356.28 (+164.9%)</span>
+                        <p style="font-size: 1.5rem; color: var(--text-muted); margin-top: 0.4rem;">Profit Recovery vs Fixed Security (Retains 90.4% unconstrained yield)</p>
+                    </div>
+                    <div style="background: var(--slide-bg); border: 2px solid var(--accent-blue); border-radius: 14px; padding: 1.2rem 2rem; text-align: center;">
+                        <span style="color: var(--accent-blue); font-size: 2.4rem; font-weight: 800;">0.25 (-67.1%)</span>
+                        <p style="font-size: 1.5rem; color: var(--text-muted); margin-top: 0.4rem;">Isolation Exposure Proxy (Matches fixed security without over-quarantine)</p>
+                    </div>
+                    <div style="background: var(--slide-bg); border: 2px solid var(--accent-cyan); border-radius: 14px; padding: 1.2rem 2rem; text-align: center;">
+                        <span style="color: var(--accent-cyan); font-size: 2.4rem; font-weight: 800;">2.90 Slices (+27.8%)</span>
+                        <p style="font-size: 1.5rem; color: var(--text-muted); margin-top: 0.4rem;">Tenant Slice Admission Rate (Eliminates false-positive slice rejection)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 16 -->
+        <div class="slide">
+            <div class="slide-header">Conclusion & Research Roadmap</div>
+            <div class="content">
+                <div class="card-grid" style="grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 1rem;">
+                    <div class="card" style="border-color: var(--accent-emerald);">
+                        <h3 style="color: var(--accent-emerald); font-size: 2.4rem; margin-bottom: 1.5rem;">Key Research Findings</h3>
+                        <ul style="font-size: 1.8rem; line-height: 1.6;">
+                            <li style="margin-bottom: 1.5rem;"><strong>Profit Retention:</strong> Retained <strong>90.4%</strong> ($7,356) of theoretical unconstrained profit while enforcing multi-tier slice isolation.</li>
+                            <li style="margin-bottom: 1.5rem;"><strong>Risk Reduction:</strong> Slashed network security exposure proxy by <strong>67.1%</strong> (0.25 vs 0.77) compared to static baseline slicing.</li>
+                            <li style="margin-bottom: 1.5rem;"><strong>Profit Recovery:</strong> Recovered <strong>+164.9% profit</strong> ($7,356 vs $2,776) compared to rigid rule-based over-quarantine.</li>
+                            <li><strong>Closed-Loop Feasibility:</strong> Validated that ML-driven dynamic isolation is both computationally and commercially viable in 5G.</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="border-color: var(--accent-blue);">
+                        <h3 style="color: var(--accent-blue); font-size: 2.4rem; margin-bottom: 1.5rem;">Proposed Future Roadmap</h3>
+                        <ul style="font-size: 1.8rem; line-height: 1.6;">
+                            <li style="margin-bottom: 1.8rem;"><strong>Phase 2: Learning-Based Admission Control</strong><br>
+                            <span style="font-size: 1.5rem; color: var(--text-muted); font-weight: normal;">Formulate deep reinforcement learning (DRL) policies predicting long-term network impact to admit, reject, or defer slices under volatile demand.</span></li>
+                            <li style="margin-bottom: 1.8rem;"><strong>Phase 3: Intelligent Algorithm Selection</strong><br>
+                            <span style="font-size: 1.5rem; color: var(--text-muted); font-weight: normal;">Construct meta-learning classifier to dynamically route requests between Exact (MIP) and Heuristic solvers, satisfying strict sub-second deadlines.</span></li>
+                            <li><strong>Testbed Deployment:</strong> Validate the framework on Open5GS/OAI software-defined radio testbeds.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 17 -->
+        <div class="slide">
+            <div class="slide-header">References</div>
+            <div class="content" style="font-size: 2rem; line-height: 1.6;">
+                <ol style="padding-left: 4rem;">
+                    <li style="margin-bottom: 2rem;">[1] M. Bolourian, N. Limam, M. A. Salahuddin, and R. Boutaba, "5Guard: Isolation-Aware End-to-End Slicing of 5G Networks," <em>IEEE Transactions on Mobile Computing (TMC)</em>, vol. 25, no. 4, pp. 100-115, 2026.</li>
+                    <li style="margin-bottom: 2rem;">[2] A. Researchers, "A Comprehensive 5G Network Intrusion Detection Dataset (NIDD)," <em>Journal of Network Security</em>, vol. 12, no. 3, pp. 45-60, 2024.</li>
+                    <li style="margin-bottom: 2rem;">[3] L. Breiman, "Random Forests," <em>Machine Learning</em>, vol. 45, no. 1, pp. 5-32, 2001.</li>
+                    <li style="margin-bottom: 2rem;">[4] 3GPP, "System Architecture for the 5G System (5GS)," 3rd Generation Partnership Project, Technical Specification (TS) 23.501, 2025.</li>
+                    <li style="margin-bottom: 2rem;">[5] Zuse Institute Berlin (ZIB), "SCIP: Solving Constraint Integer Programs," Mathematical Optimization Solver Suite, 2025. [Online]. Available: https://scipopt.org</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="slide-counter"><span id="curr-slide">1</span> / <span id="total-slides">17</span></div>
+        <div class="controls">
+            <button onclick="prevSlide()">&#8592; Prev</button>
+            <button onclick="nextSlide()">Next &#8594;</button>
+        </div>
+
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const currSlideSpan = document.getElementById('curr-slide');
+        const totalSlidesSpan = document.getElementById('total-slides');
+        totalSlidesSpan.textContent = slides.length;
+
+        function updateSlides() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active', 'past');
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                } else if (index < currentSlide) {
+                    slide.classList.add('past');
+                }
+            });
+            currSlideSpan.textContent = currentSlide + 1;
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlides();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlides();
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+    </script>
+</body>
+</html>

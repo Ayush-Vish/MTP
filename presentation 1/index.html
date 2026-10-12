@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecGuard: M.Tech Presentation Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Background visual effects -->
+    <div class="bg-glow bg-glow-left"></div>
+    <div class="bg-glow bg-glow-right"></div>
+
+    <!-- Hero Section -->
+    <header class="hero fade-in">
+        <div class="hero-content">
+            <div class="tag">M.Tech Thesis Project Update</div>
+            <h1 class="glow-text">SecGuard</h1>
+            <h2>Risk-Adaptive Isolation for Profit-Aware 5G Network Slicing</h2>
+            <p>Bridging the gap between active threat detection and End-to-End slice resource allocation.</p>
+            <p style="margin-top: 1rem; color: var(--accent-cyan); font-weight: 600; font-size: 1.05rem;">
+                Presented by <strong>Ayush Vishwakarma</strong> (2022IMT 028) &bull; Supervised by <strong>Prof. Aditya Trivedi</strong>
+            </p>
+            <div style="margin-top: 2rem;">
+                <a href="slides.html" class="tag" style="font-size: 1.05rem; padding: 0.8rem 2.2rem; text-decoration: none; background: rgba(59, 130, 246, 0.2); border: 1px solid var(--accent-blue); color: #fff; display: inline-flex; align-items: center; gap: 0.6rem; cursor: pointer;">
+                    🖥️ Open Slide Deck (17 Slides) &rarr;
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- The 3 Objectives Section -->
+        <section id="objectives" class="section slide-up">
+            <div class="section-header">
+                <h2 class="section-title">The Three Research Objectives</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="grid-3">
+                <div class="card objective-card completed">
+                    <div class="badge success">Phase 1: Completed</div>
+                    <div class="card-icon">🛡️</div>
+                    <h3>1. Intelligent Security-to-Isolation Mapping</h3>
+                    <p><strong>To</strong> detect 5G network threats in real time and dynamically map compromised slices to L0/L1/L2 isolation escalation without SLA downgrades.</p>
+                </div>
+                <div class="card objective-card pending">
+                    <div class="badge warning">Phase 2: Proposed</div>
+                    <div class="card-icon">🧠</div>
+                    <h3>2. Learning-Based Admission Control</h3>
+                    <p><strong>To</strong> formulate a reinforcement learning policy predicting downstream network impact to dynamically admit, reject, or defer slices for profit optimization.</p>
+                </div>
+                <div class="card objective-card pending">
+                    <div class="badge warning">Phase 3: Proposed</div>
+                    <div class="card-icon">⚡</div>
+                    <h3>3. Intelligent Algorithm Selection</h3>
+                    <p><strong>To</strong> construct an intelligent meta-classifier selecting between Exact (SCIP) and Heuristic solvers to satisfy sub-second slice deadlines.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Objective 1: Formulation & Architecture -->
+        <section id="objective-1-architecture" class="section slide-up">
+            <div class="section-header">
+                <h2 class="section-title">Objective 1: System Formulation & Architecture</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="flex-container">
+                <div class="text-content glass-panel">
+                    <ul class="feature-list">
+                        <li>
+                            <div class="bullet"></div>
+                            <div>
+                                <strong>Telemetry & Threat Detection</strong>
+                                <span>Trained a 300-tree Random Forest classifier on 5G packet telemetry, achieving 100% test accuracy on held-out attack patterns.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="bullet"></div>
+                            <div>
+                                <strong>Risk Aggregation</strong>
+                                <span>Formulated a robust slice-level risk score that continuously aggregates packet-level attack probabilities over time.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="bullet"></div>
+                            <div>
+                                <strong>Dynamic Isolation Engine</strong>
+                                <span>Engineered an SLA-safe decision engine that escalates risky slices to <strong>L1, L2, or Quarantine</strong> while mathematically guaranteeing the customer's base SLA is never downgraded.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="bullet"></div>
+                            <div>
+                                <strong>Surrogate ML Optimization</strong>
+                                <span>Evaluated 165 candidate threshold policies and trained an ML regression surrogate to discover the exact Pareto-optimal thresholds (0.30, 0.35, 0.90) that maximize profit while maintaining strict exposure limits.</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="image-content">
+                    <div class="img-wrapper glass-panel">
+                        <img src="assets/confusion_matrix.png" alt="Confusion Matrix">
+                        <p class="caption">Fig 1: 100% Packet Classification Accuracy</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Objective 1: Improvements -->
+        <section id="improvements" class="section slide-up">
+            <div class="section-header">
+                <h2 class="section-title">Objective 1: Performance Improvement & Results</h2>
+                <div class="section-line"></div>
+            </div>
+            <p class="subtitle">By intelligently balancing risk and resources, SecGuard successfully outperforms both the baseline (which ignored security) and naive rules (which over-quarantined).</p>
+            
+            <div class="stats-grid">
+                <div class="stat-card glass-panel highlight-green">
+                    <div class="stat-number">-67.1%</div>
+                    <div class="stat-label">Security Exposure Reduction</div>
+                    <p class="stat-desc">Compared to Baseline 5Guard</p>
+                </div>
+                <div class="stat-card glass-panel highlight-blue">
+                    <div class="stat-number">+164.9%</div>
+                    <div class="stat-label">Profit Recovery</div>
+                    <p class="stat-desc">Compared to Fixed Naive Security</p>
+                </div>
+                <div class="stat-card glass-panel highlight-purple">
+                    <div class="stat-number">90.4%</div>
+                    <div class="stat-label">Profit Retention</div>
+                    <p class="stat-desc">Retained 90.4% of original static profit while securing the network</p>
+                </div>
+            </div>
+
+            <div class="flex-container mt-4">
+                <div class="image-content">
+                    <div class="img-wrapper glass-panel hover-zoom">
+                        <img src="assets/learned_policy_comparison.png" alt="Policy Comparison">
+                        <p class="caption">Fig 2: Profit vs Security Exposure Trade-off</p>
+                    </div>
+                </div>
+                <div class="image-content">
+                    <div class="img-wrapper glass-panel hover-zoom">
+                        <img src="assets/pareto_frontier.png" alt="Pareto Frontier">
+                        <p class="caption">Fig 3: Surrogate Pareto Frontier for Threshold Selection</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-container mt-4 glass-panel">
+                <h3>Statistical Results (Validated on 30 held-out scenarios)</h3>
+                <div class="table-responsive">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Before (Baseline 5Guard)<br><span class="sub">No Security</span></th>
+                                <th>Before (Naive Security)<br><span class="sub">Fixed Rules</span></th>
+                                <th class="highlight-col">After (Learned SecGuard)<br><span class="sub">ML Optimized</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Security Exposure Proxy<br><span class="sub-row">Lower is safer</span></td>
+                                <td class="danger-text">0.77 (High Risk)</td>
+                                <td>0.24</td>
+                                <td class="success-text highlight-col"><strong>0.25 (-67.12%)</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Mean Profit<br><span class="sub-row">Higher is better</span></td>
+                                <td>8133.8</td>
+                                <td class="danger-text">2776.7</td>
+                                <td class="success-text highlight-col"><strong>7356.2 (+164.9%)</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Mean Admission<br><span class="sub-row">Out of 4 slices</span></td>
+                                <td>3.5 slices</td>
+                                <td class="danger-text">2.2 slices</td>
+                                <td class="success-text highlight-col"><strong>2.9 slices</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Real-World Impact Section -->
+        <section id="real-world-impact" class="section slide-up">
+            <div class="section-header">
+                <h2 class="section-title">Real-World Impact: How This Research Changes the Field & the World</h2>
+                <div class="section-line"></div>
+            </div>
+            <p class="subtitle">SecGuard bridges the decades-old divide between deep cyber-threat telemetry and carrier-grade optimization, unlocking unprecedented safety and profitability for the global 5G/6G ecosystem.</p>
+
+            <h3 style="color: var(--accent-cyan); margin-bottom: 1.5rem; font-size: 1.5rem;">1. Transforming the Telecommunications & Networking Field</h3>
+            <div class="grid-3" style="margin-bottom: 3.5rem;">
+                <div class="card glass-panel" style="border-color: rgba(96, 165, 250, 0.3);">
+                    <div class="card-icon">🛡️</div>
+                    <h3>Autonomous Self-Defending Slicing</h3>
+                    <p>Overturns the conventional static paradigm where isolation is frozen at slice creation. SecGuard introduces a living, closed-loop immune system that continuously inspects packet flows and dynamically isolates active threats in milliseconds.</p>
+                </div>
+                <div class="card glass-panel" style="border-color: rgba(16, 185, 129, 0.3);">
+                    <div class="card-icon">📈</div>
+                    <h3>Breaking the Profit vs. Risk Deadlock</h3>
+                    <p>Telecom operators historically refused strict isolation because over-provisioning dedicated hardware destroyed profit margins by over 65%. Statistical validation demonstrates that ML threshold optimization recovers <strong>+164.9% profit</strong>, proving carrier-grade security is economically lucrative.</p>
+                </div>
+                <div class="card glass-panel" style="border-color: rgba(167, 139, 250, 0.3);">
+                    <div class="card-icon">🔬</div>
+                    <h3>Fulfilling the Open IEEE Research Challenge</h3>
+                    <p>Directly solves the critical challenge left open in <em>IEEE Transactions on Mobile Computing (Bolourian et al., 2026)</em>: establishing the first mathematically sound bridge between machine learning intrusion detection and mixed-integer slice optimization.</p>
+                </div>
+            </div>
+
+            <h3 style="color: var(--accent-emerald); margin-bottom: 1.5rem; font-size: 1.5rem;">2. Changing the World: Protecting Mission-Critical Digital Society</h3>
+            <div class="grid-3">
+                <div class="card glass-panel" style="border-color: rgba(239, 68, 68, 0.3);">
+                    <div class="card-icon">🏥</div>
+                    <h3>Protecting Human Lives in Critical Services</h3>
+                    <p>In 5G/6G, a botnet attacking a smart-fridge or traffic sensor could crash a shared server hosting <strong>remote robotic surgeries, connected ambulances, or autonomous vehicle (V2X) corridors</strong>. SecGuard autonomously isolates infected nodes without taking life-critical services offline.</p>
+                </div>
+                <div class="card glass-panel" style="border-color: rgba(6, 182, 212, 0.3);">
+                    <div class="card-icon">🌐</div>
+                    <h3>Unlocking Global Enterprise 5G/6G Adoption</h3>
+                    <p>Removes the #1 fear preventing defense sectors, smart factories, smart grids, and healthcare providers from adopting public multi-tenant 5G—delivering provable zero-trust isolation and SLA guarantees without prohibitive dedicated infrastructure costs.</p>
+                </div>
+                <div class="card glass-panel" style="border-color: rgba(52, 211, 153, 0.3);">
+                    <div class="card-icon">🌱</div>
+                    <h3>Green, Sustainable Cloud-RAN Computing</h3>
+                    <p>Replaces the wasteful industry habit of permanently running high-power dedicated physical servers (L2) with intelligent, risk-proportional scaling. This slashes idle server power draw and reduces the carbon footprint of telecom edge clouds worldwide.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>SecGuard &copy; 2026 | Master's Thesis Presentation Dashboard | Ayush Vishwakarma (2022IMT 028)</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

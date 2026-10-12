@@ -1,0 +1,124 @@
+\documentclass[12pt,phd,times]{pkmthesis}
+\usepackage{amsmath,epsfig,graphicx,setspace,url,float}
+\usepackage{pstricks,colortab,pifont}
+\usepackage{lscape,multicol,multirow,longtable,subfigure}
+\usepackage{cite,bm}
+\usepackage[english]{babel}
+\usepackage[small,bf]{caption}
+\captionsetup[table]{position=top}
+\setlength{\textfloatsep}{1cm}
+\setlength{\abovecaptionskip}{8pt}
+\setlength{\belowcaptionskip}{8pt}
+\usepackage{array,tabularx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\tikzset{every picture/.append style={execute at begin picture={\linespread{1}\selectfont}}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\usepackage{hyperref}
+\usepackage{extra_functions}
+\normalem
+\input{pagesetup_pkm_middleside.tex}
+\graphicspath{{images/}}
+\hypersetup{pdftitle={SecGuard: Risk-Adaptive Isolation for Profit-Aware 5G Network Slicing},pdfauthor={Ayush Vishwakarma},pdfsubject={Master's Thesis Project Report}}
+\raggedbottom
+
+\begin{document}
+\setcounter{page}{1}\pagenumbering{roman}
+\doublespacing
+
+\thispagestyle{empty}
+\pdfbookmark{Title}{Title}
+\include{FrontPages/title_page}
+\clearpage
+\thispagestyle{empty}
+\pdfbookmark{Declaration}{Declaration}
+\include{FrontPages/Certificate}
+\thispagestyle{empty}
+\pdfbookmark{Acknowledgements}{Acknowledgements}
+\include{FrontPages/Acknowledgement}
+\clearpage
+
+\thispagestyle{empty}
+\pdfbookmark{Abstract}{Abstract}
+\begingroup
+\onehalfspacing
+\begin{center}\textbf{Abstract}\end{center}
+\itshape
+\noindent
+Network slicing shares radio, transport, and computing resources among services with different performance and isolation needs. The 5Guard allocator models three isolation levels but treats the requested level as fixed. This report presents SecGuard, a risk-adaptive extension that uses traffic-derived threat scores to raise isolation without lowering the tenant's requested service level. A random-forest detector and a threshold policy feed an adapter to the allocation workflow. Admission control and algorithm selection are proposed as later objectives.
+
+In the preliminary synthetic evaluation described in the source report, 30 held-out, trace-derived scenarios were used to compare static 5Guard, fixed SecGuard thresholds, and selected SecGuard thresholds. The selected policy reduced a modeled isolation-exposure proxy by 67.12\% relative to static 5Guard, raised mean profit by 164.9\% relative to fixed thresholds, and retained 90.4\% of static 5Guard mean profit. These results motivate further evaluation; they do not measure attack containment in an operational network.
+
+\medskip\noindent\textbf{Keywords:} 5G network slicing, isolation, threat detection, resource allocation, random forest, security exposure.
+\clearpage
+\endgroup
+\dominitoc\dominilof\dominilot
+\fancyhf{}
+\fancyhead[LE]{\bfseries\small{\leftmark}}
+\fancyhead[RO]{\bfseries\small{\rightmark}}
+\fancyfoot[CE,CO]{\bfseries\thepage}
+\renewcommand{\baselinestretch}{1}
+
+\pdfbookmark[0]{Contents}{toc}
+\fancyhead[LE]{\bfseries\small{Contents}}
+\fancyhead[RO]{\bfseries\small{Contents}}
+\tableofcontents
+\clearpage
+
+\pdfbookmark[1]{List of Figures}{lof}
+\addstarredchapter{List of Figures}
+\fancyhead[LE]{\bfseries\small{List of Figures}}
+\fancyhead[RO]{\bfseries\small{List of Figures}}
+\listoffigures
+\clearpage
+
+\pdfbookmark[1]{List of Tables}{lot}
+\addstarredchapter{List of Tables}
+\fancyhead[LE]{\bfseries\small{List of Tables}}
+\fancyhead[RO]{\bfseries\small{List of Tables}}
+\listoftables
+\clearpage
+
+\pdfbookmark[1]{List of Acronyms}{loa}
+\addstarredchapter{List of Acronyms}
+\fancyhead[LE]{\bfseries\small{List of Acronyms}}
+\fancyhead[RO]{\bfseries\small{List of Acronyms}}
+\include{FrontPages/Acronyms}
+\clearpage
+
+\fancyhf{}
+\fancyhead[LE]{\bfseries\small{\leftmark}}
+\fancyhead[RO]{\bfseries\small{\rightmark}}
+\fancyfoot[CE,CO]{\bfseries\thepage}
+\setcounter{page}{1}\pagenumbering{arabic}
+\renewcommand{\labelenumi}{(\roman{enumi})}
+
+\chapter{Introduction}\label{chap:intro}
+\vspace{-1cm}
+\emph{This chapter introduces the motivation and scope of SecGuard. Section~\ref{sec:intro-background} explains 5G network slicing, and Section~\ref{sec:intro-conflict} describes the conflict between resource sharing and security. Section~\ref{sec:intro-problem} states the problem addressed by this work, Section~\ref{sec:intro-objectives} presents the research objectives, and Section~\ref{sec:intro-organization} outlines the rest of the report.}
+\include{chapters/1/introduction}
+
+\chapter{Literature Review}\label{chap:literature}
+\vspace{-1cm}
+\emph{This chapter reviews the foundation of the proposed work. Section~\ref{sec:fiveguard} describes the 5Guard baseline and its isolation-aware allocation model. Section~\ref{sec:gap} discusses the related methods and identifies the gap addressed by SecGuard, while Section~\ref{sec:research-questions} states the research questions considered in this report.}
+\include{chapters/2/literature_review}
+
+\chapter{Proposed Methodology}\label{chap:methodology}
+\vspace{-1cm}
+\emph{This chapter presents the design and implementation of SecGuard. Section~\ref{sec:system-design} describes the 5Guard architecture, the threat-scoring policy, and the three research objectives. Section~\ref{sec:implementation} explains the dataset, machine-learning pipeline, baseline implementation, adapter integration, and threshold-policy selection process.}
+\include{chapters/3/methodology}
+
+\chapter{Results and Discussion}\label{chap:results}
+\vspace{-1cm}
+\emph{This chapter reports and interprets the preliminary evaluation. Section~\ref{sec:evaluation-results} presents the classifier results, policy trade-off, and end-to-end comparison. Section~\ref{sec:limitations} discusses the limitations and planned extensions, and Section~\ref{sec:conclusions} summarizes the findings and the scope of the remaining work.}
+\include{chapters/4/experiments_results}
+
+\fancyhead[LE]{\bfseries\small{Bibliography}}
+\fancyhead[RO]{\bfseries\small{Bibliography}}
+\pdfbookmark[1]{Bibliography}{bibliography}
+\addstarredchapter{Bibliography}
+\baselineskip 14pt
+\small
+\bibliographystyle{unsrt}
+\bibliography{chapters/references/references}
+\end{document}

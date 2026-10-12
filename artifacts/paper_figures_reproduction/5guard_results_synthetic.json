@@ -1,0 +1,32 @@
+{
+  "topology": "synthetic",
+  "iterations": 10,
+  "simulation_interval": 140,
+  "total_wall_clock_seconds": 219.2,
+  "algorithms": {
+    "nis": {
+      "final_profit_mean": 1955.765,
+      "final_violation_mean": 0.0,
+      "cumulative_migration_mean": -0.0,
+      "final_overhead_mean": 15.0,
+      "final_deployment_mean": 467.235,
+      "mean_resource_efficiency": 89.3684,
+      "total_rejections_L0": 0.0,
+      "total_rejections_L1": 0.0,
+      "total_rejections_L2": 0.0,
+      "mean_alloc_time_sec": 0.334805
+    },
+    "cis": {
+      "final_profit_mean": 32236.7782,
+      "final_violation_mean": 0.0,
+      "cumulative_migration_mean": 0.0,
+      "final_overhead_mean": 0.0,
+      "final_deployment_mean": 1343.2218,
+      "mean_resource_efficiency": 1.6143,
+      "total_rejections_L0": 0.0,
+      "total_rejections_L1": 0.0,
+      "total_rejections_L2": 138.0,
+      "mean_alloc_time_sec": 0.003807
+    }
+  }
+}

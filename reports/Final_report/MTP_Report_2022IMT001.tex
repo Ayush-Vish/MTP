@@ -1,0 +1,169 @@
+\documentclass[12pt,phd,times]{pkmthesis}
+\usepackage{amsmath,epsfig,graphicx,setspace,url,float}
+\usepackage{pstricks,colortab,pifont}
+\usepackage{lscape,multicol,multirow,longtable,subfigure}
+\usepackage{cite, bm}                           % Due to this hyberref will not work for references (PKM on 07/07/08)
+\usepackage[english]{babel}
+\usepackage[small,bf]{caption}              % Added on 26/08/08
+\captionsetup[table]{position=top}          % table captions sit above the table
+%\usepackage{slashbox}
+\usepackage{csquotes}
+\usepackage{threeparttable}
+%\usepackage{adjustbox}                    % Added on 24/10/08 (Senthil)
+\setlength{\textfloatsep}{1cm}              % Spacing b/w  float and text (PKM 01/11/08)
+%..........................................................................................................................................
+\normalem                                   % Added on 01/07/08 to avoid underline in the references
+\setlength{\abovecaptionskip}{8pt}          % Added on 08/07/08
+\setlength{\belowcaptionskip}{8pt}          % Added on 08/07/08
+%..........................................................................................................................................
+% ---- Packages added for this report (diagrams, tables, algorithm box) ----
+\usepackage[table]{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,calc,shapes.geometric,backgrounds}
+\tikzset{every picture/.append style={execute at begin picture={\linespread{1}\selectfont}}} % single-spaced text inside diagrams
+\usepackage{array,tabularx,makecell}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\graphicspath{{figures/basepaper/}{figures/replication/}}
+% ---- Custom macros used in the text ----
+\newcommand{\GPN}{\textsc{GPN}}
+\newcommand{\eps}{\varepsilon}
+%..........................................................................................................................................
+\usepackage{hyperref}
+\usepackage{extra_functions}
+%\input{pagesetup_pkm_twoside.tex}           % Modified on 06/07/08, 10/07/08, 15/07/08
+%\input{pagesetup_pkm_singleside.tex}       % For Single Sided Document
+\input{pagesetup_pkm_middleside.tex}       % Middle alignment
+\hypersetup{pdftitle={Towards Resilient Immersive Media Delivery in 6G},
+            pdfauthor={Aaditya Karki},
+            pdfsubject={MTP Report}}
+\raggedbottom                               % o6/08/08  (Remove Unnecessary space b/w paragraphs)
+%******************************************************************************************************************************************
+
+\begin {document}
+\setcounter{page}{1} \pagenumbering{roman}  % 03/07/08
+\doublespacing                              % or use \baselineskip 12pt (12, 18 and 24)
+%*************************************************** FRONT PAGES**********************************************
+\thispagestyle{empty}
+\pdfbookmark{Title}{Title}
+\include{FrontPages/title_page}
+\thispagestyle{empty}
+
+\clearpage
+\thispagestyle{empty}
+\pdfbookmark{Certificate}{Certificate}
+\include{FrontPages/Certificate}
+
+\thispagestyle{empty}
+\pdfbookmark{Acknowledgement}{Acknowledgement}
+\include{FrontPages/Acknowledgement}
+\thispagestyle{empty}
+\clearpage
+
+\thispagestyle{empty}
+\pdfbookmark{Abstract}{Abstract}
+{\renewcommand{\baselinestretch}{1.5}
+{%\small\normalsize
+\begin{center}
+	{\bf{Abstract}}
+\end{center}
+{\em{\noindent Multi-quality live video for sixth-generation (6G) immersive services needs multicast trees that stay cheap and stable while viewers join, leave and change quality, and while links fail. The base paper (Wang \emph{et al.}, IEEE Transactions on Mobile Computing, 2026) builds near-optimal multi-rate multicast trees with a graph-attention policy network (GPN), but only once, for a fixed audience, and only in simulation. This thesis adds event-driven tree maintenance on top of it: repair operators with correct upgrade and downgrade cost accounting; a learned keep/repair/re-plan policy whose installed tree stays within $(1+\varepsilon)$ of a capacity-aware layered MPH (minimum-cost path heuristic) tree; and OpenFlow fast-failover backup branches applied through two-phase rule updates. Evaluation runs in three tiers: simulation on 50--500-node topologies, Mininet/Ryu emulation, and the DoT 5G Use Case Lab at ABV-IIITM Gwalior with real CPEs and XR headsets.
+
+This mid-term report covers the objectives, the literature and research gap, the methodology and the replication of the base paper. The replication reproduces the paper's GPN at 1.061$\times$ optimal on 30-node graphs (paper: 1.062) and 1.074$\times$ on 50-node graphs (paper: 1.070). It also shows that a layered MPH heuristic, absent from the paper's comparison, is at least as cheap as GPN on 77--85\% of instances and about 45--70$\times$ faster. The GNN's role in this thesis is therefore the keep/repair/re-plan decision under churn, not one-shot tree construction.
+\\
+
+\textbf{Keywords:} 6G, Multicast Routing, Graph Neural Networks, Software-Defined Networking, Steiner Tree, Multi-Rate Video, Network Resilience, Fast Failover, 5G Testbed}}}
+\thispagestyle{empty}
+\clearpage
+%..........................................................................................................................................
+% For the fancy chapters (Don't remove these lines- 03/07/08)
+\clearpage
+\thispagestyle{empty}
+\dominitoc
+\dominilof
+\dominilot
+\fancyhf{} \fancyhead[LE]{\bfseries\small{\leftmark}}
+\fancyhead[RO]{\bfseries\small{\rightmark}}
+\fancyfoot[CE,CO]{\bfseries\thepage}
+%..........................................................................................................................................
+%TABLE OF CONTENTS
+\renewcommand{\baselinestretch}{1}
+\pdfbookmark[0]{Index}{index}
+\pdfbookmark[1]{Contents}{toc}
+\fancyhead[LE]{\bfseries\small{Contents}}
+\fancyhead[RO]{\bfseries\small{Contents}}
+\tableofcontents
+\clearpage
+%.........................................................................................................................................
+ %LIST OF FIGURES
+\pdfbookmark[1]{List of Figures}{lof}
+\addstarredchapter{List of Figures}       % PKM 05/07/08 (For more options  refer minitoc.pdf on page 36)
+\fancyhead[LE]{\bfseries\small{List of Figures}}
+\fancyhead[RO]{\bfseries\small{List of Figures}}
+\listoffigures
+\clearpage
+%..........................................................................................................................................
+% LIST OF TABLES
+\pdfbookmark[1]{List of Tables}{lot}
+\addstarredchapter{List of Tables}         % or use \mtcaddchapter[List of Tables] [Please Refer minitoc.pdf]
+\fancyhead[LE]{\bfseries\small{List of Tables}}
+\fancyhead[RO]{\bfseries\small{List of Tables}}
+\listoftables
+\clearpage
+%..........................................................................................................................................
+% LIST OF ACRONYMS
+\fancyhead[LE]{\bfseries\small{List of Acronyms}}
+\fancyhead[RO]{\bfseries\small{List of Acronyms}}
+\pdfbookmark[1]{List of Acronyms}{loa}
+\addstarredchapter{List of Acronyms}
+\include{FrontPages/Acronyms}
+\clearpage
+%..........................................................................................................................................
+\fancyhf{}
+\fancyhead[LE]{\bfseries\small{\leftmark}}
+\fancyhead[RO]{\bfseries\small{\rightmark}}
+\fancyfoot[CE,CO]{\bfseries\thepage}
+\setcounter{page}{1} \pagenumbering{arabic}
+\renewcommand{\labelenumi}{(\roman{enumi})}   % Added on 09/08/2008
+%*******************************************************************************************************************************************************************************************
+
+
+%************************************************ BEGIN CHAPTERS **********************************************
+\chapter{Introduction}\label{chap:intro}
+\vspace{-1cm}
+
+\noindent \rule{6.6in}{0.01in}
+\emph{This chapter introduces the thesis. Section~\ref{sec:intro_background} describes live immersive video delivery in 6G networks and the four observations that motivate maintaining multicast trees rather than building them once. Section~\ref{sec:intro_objectives} sets out the five objectives of the thesis and the deliverable each one produces. Section~\ref{sec:intro_org} outlines the remaining chapters of the report.}
+\include{chapters/1/introduction}
+
+\chapter{Literature Review}\label{chap:L_survey}
+\vspace{-1cm}
+\noindent \rule{6.6in}{0.01in}
+\emph{This chapter reviews the literature on which the thesis builds. Section~\ref{sec:lr_background} covers the background: multicast Steiner trees, the MPH and KMB heuristics and their bounds, multi-rate (layered) delivery and software-defined networking. Section~\ref{sec:lr_related} discusses the key related works, namely the base paper, learned SDN multicast routers, dynamic Steiner trees and SDN resilience and update mechanisms, each with its limitation, and ends with a comparison table. Section~\ref{sec:lr_gap} lists the research gaps these works leave open, and Section~\ref{sec:lr_rq} states the problem addressed by the thesis and the three research questions.}
+\include{chapters/2/literature_review}
+
+\chapter{Proposed Methodology}\label{chap:methodology}
+\vspace{-1cm}
+\noindent \rule{6.6in}{0.01in}
+\emph{This chapter describes the proposed event-driven tree-maintenance method and its control loop. Section~\ref{sec:m_formulation} formulates the problem, with the tree cost model, the rule-change penalty and correct upgrade cost accounting. Section~\ref{sec:m_operators} defines the local repair operators. Section~\ref{sec:m_policy} presents the learned keep/repair/re-plan policy and the capacity-aware layered MPH safety net that bounds its cost. Section~\ref{sec:m_protection} covers fast-failover backup branches and two-phase rule updates, and Section~\ref{sec:m_evaluation} describes the three-tier evaluation in simulation, emulation and the 5G lab.}
+\include{chapters/3/methodology}
+
+\chapter{Results and Discussion}\label{chap:results}
+\vspace{-1cm}
+\noindent \rule{6.6in}{0.01in}
+\emph{This chapter reports the experiments carried out so far. Section~\ref{sec:r_setup} describes the replication setup: the public code, the fixes applied, the datasets and the hardware. Section~\ref{sec:r_reproduction} presents the training curves and the reproduced cost ratios against the paper's figures. Section~\ref{sec:r_baselines} compares GPN with classical Steiner heuristics in cost and run time. Section~\ref{sec:r_discussion} discusses what these findings mean for the thesis, Section~\ref{sec:c_conclusions} draws the conclusions of the mid-term work, and Section~\ref{sec:c_future} sets out the future scope.}
+\include{chapters/4/experiments_results}
+
+%**************************************************BIBLIOGRAPHY********************************************************
+\fancyhead[LE]{\bfseries\small{Bibliography}}
+\fancyhead[RO]{\bfseries\small{Bibliography}}
+\pdfbookmark[1]{Bibliography}{los}
+\addstarredchapter{Bibliography}   % PKM 05/07/08 (For more options refer minitoc.pdf on page 36)
+\baselineskip 14pt   %12, 18 and 24
+\small
+\bibliographystyle{unsrt}
+\bibliography{chapters/references/references}
+
+\end{document}

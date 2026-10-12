@@ -1,0 +1,47 @@
+\section{Background: 5G Network Slicing}\label{sec:intro-background}
+The fifth generation (5G) of mobile networks represents a shift from traditional telecom architecture toward programmable networks that support heterogeneous services~\cite{foukas2017slicing,rost2017scalability,kaloxylos2018survey,zhang2017mobility}. These services include enhanced Mobile Broadband (eMBB) for high data rates, ultra-Reliable Low-Latency Communications (uRLLC) for mission-critical applications, and massive Machine Type Communications (mMTC) for large IoT deployments~\cite{ferrus2018ran,nguyen2020iot}.
+
+To support these different requirements on the same physical infrastructure, 5G relies on Network Function Virtualization (NFV) and Software-Defined Networking (SDN)~\cite{ordonez2017sdnnfv,afolabi2018softwarization,barakabitze2020taxonomy,nguyen2017packetcore}. These technologies enable \textbf{network slicing}. A network slice is a logically isolated end-to-end virtual network tailored to provide specific capabilities. By multiplexing slices onto shared radio, transport, and computing resources, Infrastructure Providers (InPs) can improve resource utilization and reduce deployment costs.
+
+\section{The Multiplexing vs. Security Conflict}\label{sec:intro-conflict}
+While multiplexing gain is the economic engine of 5G slicing, it introduces a fundamental conflict with security. Co-residency, where Virtual Network Functions (VNFs) from different tenants execute on the same physical server or share physical radio resources, creates cross-slice risks~\cite{kotulski2017isolation,lal2017nfvsecurity,wang2022security,ferrag2018cellular}.
+\begin{itemize}
+    \item \textbf{Side-Channel Attacks:} Attackers can steal cryptographic keys from co-resident VNFs by monitoring shared CPU caches.
+    \item \textbf{Resource Exhaustion / DDoS:} A compromised IoT slice (mMTC) can be utilized to flood the shared hypervisor or network link, causing latency spikes that violate the Service Level Agreements (SLAs) of a co-resident uRLLC slice.
+\end{itemize}
+Providing dedicated physical hardware to every slice can reduce some shared-resource risks, but it also reduces multiplexing gain. Thus, the InP must balance isolation and sharing.
+
+
+\section{Problem Statement and Motivation}\label{sec:intro-problem}
+Despite its architectural brilliance, 5Guard possesses a critical vulnerability: \textbf{It lacks live threat awareness.} In 5Guard, the isolation level (L0/L1/L2) is a static parameter requested by the tenant at admission. If an L0 slice is subsequently compromised by malware, 5Guard continues to host it on shared resources, allowing the infection to compromise the entire physical host. Conversely, to protect themselves, tenants may blindly request L2 isolation for all workloads, forcing the InP to waste expensive physical resources and decimating network profit.
+
+\section{Research Objectives}\label{sec:intro-objectives}
+To bridge the gap between active threat detection and isolation-aware resource allocation, we propose \textbf{SecGuard}. This thesis aims to achieve the following three distinct research objectives:
+
+\begin{enumerate}
+    \item \textbf{Objective 1: Intelligent Security-to-Isolation Mapping.} To develop a machine-learning-driven engine that analyzes live packet telemetry to quantify slice threat levels, and dynamically escalates isolation levels (L1/L2/Quarantine) to minimize security exposure without violating base SLAs or over-provisioning resources.
+    \item \textbf{Objective 2: Learning-Based Admission Control.} To formulate a Reinforcement Learning (RL) agent capable of predicting the long-term network impact of admitting a slice, intelligently rejecting or deferring risky slices to maximize long-term InP profit.
+    \item \textbf{Objective 3: Intelligent Algorithm Selection.} To design a meta-learning classifier that analyzes the current network load and slice graph complexity to predict which 5Guard optimization algorithm (Exact vs. Heuristic) will yield the best result before the slice timeout deadline, with the goal of reducing allocation latency.
+\end{enumerate}
+
+\begin{table}[htbp]
+\centering
+\caption{Research objectives and planned deliverables}
+\label{tab:objectives-deliverables}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{|p{0.46\textwidth}|p{0.42\textwidth}|}
+\hline
+\textbf{Objective} & \textbf{Deliverable} \\
+\hline
+Develop intelligent security-to-isolation mapping from traffic telemetry while preserving the tenant's requested SLA floor. & Threat detector, Slice Threat Score, SLA-safe adapter, selected threshold policy, and preliminary profit--exposure evaluation. \\
+\hline
+Develop learning-based admission control that accounts for the long-term effect of accepting, rejecting, or deferring a slice. & Trained admission policy and a held-out comparison with the baseline admission mechanism. \\
+\hline
+Develop intelligent algorithm selection from request complexity and network-load features. & Algorithm-selection model and an evaluation of allocation time and solution quality against the 5Guard ensemble. \\
+\hline
+\end{tabular}
+\end{table}
+
+This report presents the design and preliminary evaluation of Objective 1. Objectives 2 and 3 remain proposed work.
+\section{Organization of the Report}\label{sec:intro-organization}
+\hyperref[chap:literature]{Chapter~\ref*{chap:literature}} reviews the 5Guard baseline and the gap addressed by SecGuard. \hyperref[chap:methodology]{Chapter~\ref*{chap:methodology}} describes the proposed design and implementation. \hyperref[chap:results]{Chapter~\ref*{chap:results}} reports the preliminary results, limitations, conclusions, and future work.

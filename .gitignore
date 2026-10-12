@@ -7,3 +7,4 @@ data/raw/*.csv
 artifacts/*.joblib
 external/
 .venv_linux/
+tmp/

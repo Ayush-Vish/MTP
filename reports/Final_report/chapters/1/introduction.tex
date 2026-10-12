@@ -1,0 +1,34 @@
+\section{Background and Motivation}\label{sec:intro_background}
+\noindent Live immersive video needs multicast trees that stay correct, cheap and stable while viewers join, leave and change quality, and while links fail. When receivers ask for different qualities, as an XR headset and a phone in the same session do, each tree link must carry the highest quality needed below it, so building and maintaining such a multi-rate tree at minimum cost is a dynamic Steiner tree problem. The base paper of this thesis, Wang \emph{et al.}~\cite{wang2026gnn}, builds multi-rate multicast trees close to optimal cost with a graph-attention policy network (GPN), but only once, for a fixed audience, and only in simulation. Four observations motivate turning it into a resilient tree-maintenance system:
+\begin{enumerate}
+    \item \textbf{6G usage scenarios.} ITU-R IMT-2030~\cite{itu2023m2160} names Immersive Communication as a usage scenario and resilience as a cross-cutting design principle.
+    \item \textbf{Duplicate unicast today.} 3GPP Release 15/16 systems have no built-in multicast; 5G Multicast--Broadcast Services arrived only in Release 17~\cite{3gpp23247}. Group video therefore leaves the core as one unicast stream per viewer.
+    \item \textbf{Learned routing is static.} The GPN offers no repair short of a full re-plan, although live sessions change constantly.
+    \item \textbf{Testbed opportunity.} The DoT 5G Use Case Lab at ABV-IIITM Gwalior~\cite{dot2026labs} offers a 5G SA core, a gNB, a MEC server, CPEs and XR headsets, so routing decisions can be measured at real user devices.
+\end{enumerate}
+
+\section{Objectives}\label{sec:intro_objectives}
+\noindent The thesis keeps the base paper's GNN as the tree builder and wraps it in an event-driven maintenance loop with a classical cost guarantee and fast failure recovery. Its five objectives are listed in Table~\ref{tab:objectives} together with the deliverable each one produces.
+
+\begin{table}[!htb]
+\caption{Objectives and deliverables}
+\label{tab:objectives}
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{|L{9.0cm}|L{5.0cm}|}
+\hline
+\textbf{Objective} & \textbf{Deliverable} \\
+\hline\hline
+Formulate event-driven multi-rate tree maintenance: tree cost $+\ \mu\times$ rule changes, under link capacity, with correct upgrade/downgrade accounting & Formal problem and cost model \\ \hline
+Implement repair operators (graft, prune-up, layer upgrade/downgrade, re-attach) with an MPH fallback in a Ryu controller module & Simulator, operator library, cost-vs-churn results \\ \hline
+Extend the base paper's encoder into a masked keep/repair/re-plan policy & Trained policy, ablation vs.\ threshold rules \\ \hline
+Pre-install backup branches as OpenFlow fast-failover groups; apply changes through two-phase updates & Recovery-time and switch-state measurements \\ \hline
+Evaluate in three tiers: simulation, Mininet emulation, 5G lab & Results, live demo, paper draft \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\section{Organisation of the Report}\label{sec:intro_org}
+\noindent Chapter~\ref{chap:L_survey} reviews the literature and states the research gap, problem and research questions. Chapter~\ref{chap:methodology} describes the proposed methodology. Chapter~\ref{chap:results} reports the replication of the base paper, discusses its consequences and concludes with the plan for the remaining work.

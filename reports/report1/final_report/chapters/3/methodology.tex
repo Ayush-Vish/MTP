@@ -1,0 +1,142 @@
+\section{System Design and Architecture}\label{sec:system-design}
+\subsection{Base Architecture: The 5Guard Framework}
+The foundational architecture models a 5G network across three distinct domains: Radio Access Network (RAN), Transport Network, and Edge/Core Cloud. 
+
+\subsubsection{Isolation Levels (L0, L1, L2)}
+The concept of isolation is mathematically quantified through resource overhead penalties:
+\begin{itemize}
+    \item \textbf{Level 0 (L0):} Shared infrastructure with containerized functions and multiplexed radio and transport resources. Computing and orchestration overhead can still be present.
+    \item \textbf{Level 1 (L1):} Semi-isolation through virtual machines and reserved radio and transport portions, with hypervisor, operating-system, and guard-band overhead.
+    \item \textbf{Level 2 (L2):} Complete isolation using dedicated base stations, fiber resources, and physical servers, reducing opportunities for multiplexing.
+\end{itemize}
+
+\subsubsection{MILP Optimization Objective}
+The 5Guard solver seeks to maximize long-term profit $\mathcal{P}$, defined as:
+\begin{equation}
+    \max \mathcal{P} = \sum (\text{Revenue} - C_{dep} - C_{iso} - C_{mig} - C_{vio})
+\end{equation}
+Where $C_{dep}$ is deployment cost, $C_{iso}$ is the isolation overhead penalty, $C_{mig}$ is the live-migration cost of moving VNFs to satisfy constraints, and $C_{vio}$ is the SLA violation penalty if latency constraints are breached.
+
+\subsection{Objective 1: Intelligent Security-to-Isolation Mapping}
+To evolve 5Guard into SecGuard, we design a transparent security abstraction layer that intercepts slice telemetry before it reaches the 5Guard MILP solver.
+
+\subsubsection{Threat Detection via Telemetry}
+We architect an Intrusion Detection System (IDS) at the UPF (User Plane Function) that collects packet-level telemetry (e.g., flow duration, inter-arrival time, byte counts). A Machine Learning classifier (Random Forest) evaluates these flows to detect anomalous patterns indicative of DDoS, brute force, or botnet activity.
+
+\subsubsection{Risk Aggregation and Scoring}
+Packet-level predictions are mathematically aggregated into a rolling \textbf{Slice Threat Score (STS)}, normalized between $0$ and $1$. 
+\begin{equation}
+    STS_i = \alpha \cdot STS_{i}^{prev} + (1 - \alpha) \cdot \frac{N_{malicious}}{N_{total}}
+\end{equation}
+Where $\alpha$ is a temporal decay factor, smoothing the risk score over time to prevent erratic isolation oscillation.
+
+\subsubsection{SLA-Safe Dynamic Policy Engine}
+Based on the $STS_i$, the Policy Engine decides the new isolation level. A critical design constraint of SecGuard is \textbf{SLA Floor Safety}: The system may \textit{upgrade} a slice's isolation to protect the network, but it may \textit{never downgrade} it below the tenant's paid SLA. 
+\begin{itemize}
+    \item If $STS_i > \tau_{quarantine}$, the slice is marked for a quarantine action in the simulation.
+    \item If $STS_i > \tau_{L2}$, the slice is upgraded to L2 (Physical Isolation).
+    \item If $STS_i > \tau_{L1}$, the slice is upgraded to L1 (Virtual Isolation).
+\end{itemize}
+Choosing the exact thresholds ($\tau_{L1}, \tau_{L2}, \tau_{quarantine}$) is extremely difficult, as naive thresholds destroy profit. We address this via Surrogate ML Optimization in the implementation phase.
+
+\subsection{Objective 2: Learning-Based Admission Control (Proposed)}
+The base 5Guard uses greedy admission control; it admits any slice if current resources allow. However, admitting a large, highly isolated L2 slice now might block five highly profitable L0 slices tomorrow. We propose a Deep Q-Network (DQN) RL agent. The state space encompasses the real-time resource utilization matrices of the RAN, Transport, and Core. The action space is discrete: \{Admit, Reject, Defer\}. The reward signal is the discounted future profit derived from the 5Guard MILP.
+
+\subsection{Objective 3: Intelligent Algorithm Selection (Proposed)}
+5Guard runs ensemble members concurrently and selects the most profitable feasible solution available within the allocation deadline. We propose a lightweight Random Forest meta-classifier to select candidate algorithms using request features and network load. Its effect on execution time and solution quality remains to be evaluated.
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[node distance=7mm,box/.style={draw,rounded corners,align=center,text width=10cm,minimum height=9mm,font=\small},flow/.style={-{Latex},thick}]
+\node[box] (telemetry) {Traffic telemetry};
+\node[box,below=of telemetry] (risk) {Random Forest detector and Slice Threat Score};
+\node[box,below=of risk] (policy) {Threshold policy with the tenant's requested isolation floor};
+\node[box,below=of policy] (adapter) {SecGuard adapter: isolation upgrade or quarantine action};
+\node[box,below=of adapter] (allocation) {5Guard allocation across radio, transport, and computing resources};
+\draw[flow] (telemetry)--(risk);
+\draw[flow] (risk)--(policy);
+\draw[flow] (policy)--(adapter);
+\draw[flow] (adapter)--(allocation);
+\end{tikzpicture}
+\caption{Conceptual SecGuard workflow for Objective 1}
+\label{fig:arch}
+\end{figure}
+
+\clearpage
+
+\section{Implementation}\label{sec:implementation}
+\subsection{Dataset and Threat Detection}
+To implement Objective 1, we utilized an established 5G NIDD (Network Intrusion Detection Dataset) containing simulated 5G control plane and user plane attacks. 
+The dataset consists of millions of network flows characterized by 44 statistical features.
+
+\subsubsection{Machine Learning Pipeline}
+We implemented a Random Forest Classifier using Python's \texttt{scikit-learn} library. The model was configured with 300 decision trees (\texttt{n\_estimators=300}) and a maximum depth of 20 to prevent overfitting. 
+Feature engineering included normalizing continuous variables (e.g., bytes per second) and encoding categorical flags. The dataset was split 70/30 for training and testing.
+
+\subsection{The 5Guard Baseline Implementation}
+Implementing the base 5Guard paper was a significant engineering undertaking requiring the translation of theoretical mathematical models into a functional simulator. The core network environment was developed in Python, utilizing the \texttt{NetworkX} library to model the physical network substrate as a complex Multi-Graph representing interconnected RAN, Edge, and Core data centers. 
+
+While the original paper utilized the commercial Gurobi Optimizer for its exact MILP solver (\texttt{OPT}), we were unable to secure commercial Gurobi licenses for this project. To overcome this limitation, we migrated the mathematical formulation to the open-source \textbf{SCIP} (Solving Constraint Integer Programs) optimization suite through its Python interface~\cite{gamrath2022scip}.
+
+We defined over 50 complex linear constraints within the SCIP environment. These equations rigorously mapped VNF CPU and memory demands to physical nodes, strictly enforced link bandwidth capacities, and mathematically guaranteed isolation properties (e.g., ensuring that two VNFs belonging to different L2 slices are mutually excluded from ever sharing the same physical server). The SCIP solver proved highly capable of finding exact optimal placements, though its exponential time complexity motivated our implementation of the heuristic fallbacks. The heuristic algorithms (\texttt{IAR} and \texttt{DTR}) were implemented as custom Python classes that execute greedy, breadth-first graph-traversal algorithms to find sub-optimal but extremely fast embeddings when SCIP timed out.
+
+\subsection{SecGuard Adapter Integration}
+To seamlessly integrate Objective 1 without rewriting the entire 5Guard MILP, we implemented the \texttt{Adapter Pattern}. The \texttt{SecGuardAdapter} sits between the incoming slice requests and the 5Guard algorithms. 
+For every simulation timestep, the adapter:
+\begin{enumerate}
+    \item Reads the current Slice Threat Score (STS) generated by the Random Forest classifier.
+    \item Evaluates the policy thresholds.
+    \item Constructs an adapted request with an isolation input at least as high as the tenant's requested level.
+    \item Forwards the adapted request to the 5Guard allocation routine.
+\end{enumerate}
+
+Table~\ref{tab:policy-actions} summarizes the policy described in this report. The conditions are evaluated from the highest threshold downward; a quarantine action is handled separately from the three isolation levels.
+\begin{table}[htbp]
+\centering\small
+\caption{Threat-score conditions and isolation actions}
+\label{tab:policy-actions}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{|Y|Y|}
+\hline
+\textbf{Condition} & \textbf{Action} \\
+\hline
+$STS_i>\tau_{quar}$ & Request quarantine in the simulation. \\
+\hline
+$\tau_{L2}<STS_i\leq\tau_{quar}$ & Set isolation to L2, preserving the requested floor. \\
+\hline
+$\tau_{L1}<STS_i\leq\tau_{L2}$ & Set isolation to at least L1 and retain L2 if requested. \\
+\hline
+$STS_i\leq\tau_{L1}$ & Retain the tenant's requested isolation level. \\
+\hline
+\end{tabularx}
+\end{table}
+
+\subsection{Surrogate Policy Learning for Threshold Optimization}
+A critical challenge in Objective 1 was defining the threshold values ($\tau_{L1}, \tau_{L2}, \tau_{quar}$) that dictate when a slice's isolation is upgraded. Hand-tuning these thresholds is impossible because the relationship between security thresholds and 5Guard's final profit is highly non-linear due to the MILP constraints.
+
+To solve this, we used a \textbf{Surrogate ML Optimization Pipeline}:
+\begin{itemize}
+    \item We enumerated 165 threshold combinations in the policy search space.
+    \item We evaluated candidate policies in the synthetic allocator simulation, recording profit and the modeled isolation-exposure proxy.
+    \item We trained a \textit{Random Forest Regressor} surrogate model to learn the mapping from Thresholds $\rightarrow$ (Profit, Exposure).
+    \item We queried the surrogate model to plot a Pareto Frontier, allowing us to select candidate thresholds that maximize profit while keeping exposure below acceptable limits.
+\end{itemize}
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[node distance=7mm,box/.style={draw,rounded corners,align=center,text width=10cm,minimum height=9mm,font=\small},flow/.style={-{Latex},thick}]
+\node[box] (request) {Read the request, isolation floor, and threat score};
+\node[box,below=of request] (action) {Evaluate thresholds and select the policy action};
+\node[box,below=of action] (apply) {Create an adapted request or handle quarantine};
+\node[box,below=of apply] (allocate) {Allocate eligible requests with 5Guard};
+\node[box,below=of allocate] (record) {Record admission, profit, and modeled exposure};
+\draw[flow] (request)--(action);
+\draw[flow] (action)--(apply);
+\draw[flow] (apply)--(allocate);
+\draw[flow] (allocate)--(record);
+\end{tikzpicture}
+\caption{Conceptual adapter processing sequence}
+\label{fig:code_impl}
+\end{figure}
+
+\clearpage
