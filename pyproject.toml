@@ -31,9 +31,11 @@ secguard-fiveguard-demo = "secguard.fiveguard_demo:main"
 secguard-security-experiment = "secguard.security_experiment:main"
 secguard-learn-policy = "secguard.policy_learning:main"
 secguard-validate-research = "secguard.research_validation:main"
+secguard-admission-control = "secguard.admission_control:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
+testpaths = ["tests"]

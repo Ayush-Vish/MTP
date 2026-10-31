@@ -7,6 +7,9 @@ and limitations are documented separately in `docs/MILESTONES.md`.
 
 - Add cross-dataset and full-ensemble validation before paper submission.
 - Compile and proofread the paper with the final author metadata.
+- Implement Objective 2 as a reproducible DQN admission controller with replay
+  memory, a target network, admit/reject/defer actions, held-out baselines, and
+  security-aware resource state.
 
 ## 0.7.0 - 2026-08-14
 

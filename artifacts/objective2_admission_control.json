@@ -1,0 +1,2785 @@
+{
+  "objective": "Objective 2: Learning-Based Admission Control",
+  "method": "NumPy DQN with replay memory and target network",
+  "actions": [
+    "admit",
+    "reject",
+    "defer"
+  ],
+  "state_features": [
+    "cpu_load",
+    "radio_load",
+    "bandwidth_load",
+    "active_fraction",
+    "mean_remaining_lifetime",
+    "request_cpu",
+    "request_radio",
+    "request_bandwidth",
+    "revenue",
+    "duration",
+    "isolation_level",
+    "risk_score",
+    "defer_fraction",
+    "horizon_fraction"
+  ],
+  "training": {
+    "episodes": 2000,
+    "requests_per_episode": 24,
+    "seed": 42,
+    "final_epsilon": 0.05,
+    "last_25_mean_reward": 967.7060934663417
+  },
+  "evaluation": {
+    "summaries": {
+      "dqn": {
+        "episodes": 50,
+        "reward": {
+          "mean": 987.4744823693817,
+          "ci95_low": 951.7597812451686,
+          "ci95_high": 1023.1891834935948
+        },
+        "raw_profit": {
+          "mean": 1057.8109387914471,
+          "ci95_low": 1022.1739651465666,
+          "ci95_high": 1093.4479124363277
+        },
+        "security_cost": {
+          "mean": 37.186906404125956,
+          "ci95_low": 35.40426090349416,
+          "ci95_high": 38.96955190475775
+        },
+        "security_adjusted_profit": {
+          "mean": 1020.6240323873212,
+          "ci95_low": 985.1403963958503,
+          "ci95_high": 1056.1076683787921
+        },
+        "admitted": {
+          "mean": 18.92,
+          "ci95_low": 18.54085063629224,
+          "ci95_high": 19.299149363707762
+        },
+        "rejected": {
+          "mean": 5.08,
+          "ci95_low": 4.700850636292239,
+          "ci95_high": 5.459149363707761
+        },
+        "deferred": {
+          "mean": 24.76,
+          "ci95_low": 23.820334016791076,
+          "ci95_high": 25.699665983208927
+        },
+        "infeasible": {
+          "mean": 0.0,
+          "ci95_low": 0.0,
+          "ci95_high": 0.0
+        }
+      },
+      "greedy": {
+        "episodes": 50,
+        "reward": {
+          "mean": 598.710534460346,
+          "ci95_low": 573.8605114319945,
+          "ci95_high": 623.5605574886976
+        },
+        "raw_profit": {
+          "mean": 653.5857068005602,
+          "ci95_low": 628.8300186230655,
+          "ci95_high": 678.3413949780548
+        },
+        "security_cost": {
+          "mean": 27.130513242495987,
+          "ci95_low": 25.463703572918035,
+          "ci95_high": 28.797322912073938
+        },
+        "security_adjusted_profit": {
+          "mean": 626.4551935580643,
+          "ci95_low": 601.9292958282489,
+          "ci95_high": 650.9810912878796
+        },
+        "admitted": {
+          "mean": 12.92,
+          "ci95_low": 12.594235913581622,
+          "ci95_high": 13.245764086418378
+        },
+        "rejected": {
+          "mean": 11.08,
+          "ci95_low": 10.754235913581622,
+          "ci95_high": 11.405764086418378
+        },
+        "deferred": {
+          "mean": 0.0,
+          "ci95_low": 0.0,
+          "ci95_high": 0.0
+        },
+        "infeasible": {
+          "mean": 0.0,
+          "ci95_low": 0.0,
+          "ci95_high": 0.0
+        }
+      },
+      "value_density": {
+        "episodes": 50,
+        "reward": {
+          "mean": 986.7491951216927,
+          "ci95_low": 957.8937330237418,
+          "ci95_high": 1015.6046572196435
+        },
+        "raw_profit": {
+          "mean": 1058.255168565102,
+          "ci95_low": 1029.3139502350084,
+          "ci95_high": 1087.1963868951955
+        },
+        "security_cost": {
+          "mean": 40.2034383685415,
+          "ci95_low": 38.181410687771326,
+          "ci95_high": 42.22546604931167
+        },
+        "security_adjusted_profit": {
+          "mean": 1018.0517301965607,
+          "ci95_low": 988.8161295116828,
+          "ci95_high": 1047.2873308814385
+        },
+        "admitted": {
+          "mean": 20.26,
+          "ci95_low": 19.97004110636161,
+          "ci95_high": 20.549958893638394
+        },
+        "rejected": {
+          "mean": 3.74,
+          "ci95_low": 3.450041106361609,
+          "ci95_high": 4.029958893638391
+        },
+        "deferred": {
+          "mean": 16.56,
+          "ci95_low": 16.049324212440023,
+          "ci95_high": 17.070675787559974
+        },
+        "infeasible": {
+          "mean": 0.0,
+          "ci95_low": 0.0,
+          "ci95_high": 0.0
+        }
+      }
+    },
+    "paired_comparisons": {
+      "dqn_vs_greedy": {
+        "metric": "total_reward",
+        "mean_delta": 388.7639479090356,
+        "ci95_low": 356.6392049520009,
+        "ci95_high": 420.8886908660703,
+        "wins": 50,
+        "ties": 0,
+        "losses": 0,
+        "episodes": 50
+      },
+      "dqn_vs_value_density": {
+        "metric": "total_reward",
+        "mean_delta": 0.7252872476890729,
+        "ci95_low": -22.274853948997034,
+        "ci95_high": 23.725428444375183,
+        "wins": 26,
+        "ties": 0,
+        "losses": 24,
+        "episodes": 50
+      }
+    },
+    "per_episode": {
+      "dqn": [
+        {
+          "reward": 935.2683544037272,
+          "raw_profit": 1006.6664006071662,
+          "security_cost": 40.164601424736865,
+          "security_adjusted_profit": 966.5017991824294,
+          "admitted": 19,
+          "rejected": 5,
+          "deferred": 23,
+          "infeasible": 0,
+          "actions": {
+            "admit": 19,
+            "reject": 5,
+            "defer": 23
+          },
+          "steps": 47,
+          "seed": 10042
+        },
+        {
+          "reward": 697.2184666388963,
+          "raw_profit": 774.7696017512415,
+          "security_cost": 42.55979393659581,
+          "security_adjusted_profit": 732.2098078146456,
+          "admitted": 16,
+          "rejected": 8,
+          "deferred": 31,
+          "infeasible": 0,
+          "actions": {
+            "admit": 16,
+            "reject": 8,
+            "defer": 31
+          },
+          "steps": 55,
+          "seed": 10043
+        },
+        {
+          "reward": 907.8228791239584,
+          "raw_profit": 966.8235091705872,
+          "security_cost": 31.835596403733305,
+          "security_adjusted_profit": 934.9879127668538,
+          "admitted": 18,
+          "rejected": 6,
+          "deferred": 25,
+          "infeasible": 0,
+          "actions": {
+            "admit": 18,
+            "reject": 6,
+            "defer": 25
+          },
+          "steps": 49,
+          "seed": 10044
+        },
+        {
+          "reward": 930.8570380965008,
+          "raw_profit": 1008.8729862722821,
+          "security_cost": 45.53587290703557,
+          "security_adjusted_profit": 963.3371133652465,
+          "admitted": 18,
+          "rejected": 6,
+          "deferred": 28,
+          "infeasible": 0,
+          "actions": {
+            "admit": 18,
+            "reject": 6,
+            "defer": 28
+          },
+          "steps": 52,
+          "seed": 10045
+        },
+        {
+          "reward": 1123.524006089239,
+          "raw_profit": 1195.715384229568,
+          "security_cost": 42.69154886502217,
+          "security_adjusted_profit": 1153.0238353645457,
+          "admitted": 20,
+          "rejected": 4,
+          "deferred": 17,
+          "infeasible": 0,
+          "actions": {
+            "admit": 20,
+            "reject": 4,
+            "defer": 17
+          },
+          "steps": 41,
+          "seed": 10046
+        },
+        {
+          "reward": 917.4291443061879,
+          "raw_profit": 981.473956284025,
+          "security_cost": 30.4592694541157,
+          "security_adjusted_profit": 951.0146868299094,
+          "admitted": 18,
+          "rejected": 6,
+          "deferred": 26,
+          "infeasible": 0,
+          "actions": {
+            "admit": 18,
+            "reject": 6,
+            "defer": 26
+          },
+          "steps": 50,
+          "seed": 10047
+        },
+        {
+          "reward": 869.5996698509649,
+          "raw_profit": 937.7396049671696,
+          "security_cost": 28.34022232199574,
+          "security_adjusted_profit": 909.3993826451739,
+          "admitted": 18,
+          "rejected": 6,
+          "deferred": 26,
+          "infeasible": 0,
+          "actions": {
+            "admit": 18,
+            "reject": 6,
+            "defer": 26
+          },
+          "steps": 50,
+          "seed": 10048
+        },
+        {
+          "reward": 1204.5780138173636,
+          "raw_profit": 1270.0943857593816,
+          "security_cost": 41.143174726545716,
+          "security_adjusted_profit": 1228.9512110328358,
+          "admitted": 21,
+          "rejected": 3,
+          "deferred": 22,
+          "infeasible": 0,
+          "actions": {
+            "admit": 21,
+            "reject": 3,
+            "defer": 22
+          },
+          "steps": 46,
+          "seed": 10049
+        },
+        {
+          "reward": 1139.4427620570982,
+          "raw_profit": 1217.5742915233882,
+          "security_cost": 52.21641627954856,
+          "security_adjusted_profit": 1165.3578752438395,
+          "admitted": 21,
+          "rejected": 3,
+          "deferred": 20,
+          "infeasible": 0,
+          "actions": {
+            "admit": 21,
+            "reject": 3,
+            "defer": 20
+          },
+          "steps": 44,
+          "seed": 10050
+        },
+        {
+          "reward": 1022.9861638589741,
+          "raw_profit": 1096.9447245751571,
+          "security_cost": 43.000541209765736,
+          "security_adjusted_profit": 1053.9441833653914,
+          "admitted": 20,
+          "rejected": 4,
+          "deferred": 21,
+          "infeasible": 0,
+          "actions": {
+            "admit": 20,
+            "reject": 4,
+            "defer": 21
+          },
+          "steps": 45,
+          "seed": 10051
+        },
+        {
+          "reward": 1083.233454501087,
+          "raw_profit": 1154.0710039886103,
+          "security_cost": 43.93633549451031,
+          "security_adjusted_profit": 1110.1346684941,
+          "admitted": 21,
+          "rejected": 3,
+          "deferred": 22,
+          "infeasible": 0,
+          "actions": {
+            "admit": 21,
+            "reject": 3,
+            "defer": 22
+          },
+          "steps": 46,
+          "seed": 10052
+        },
+        {
+          "reward": 1149.93170119842,
+          "raw_profit": 1213.0927111409674,
+          "security_cost": 40.69201789124268,
+          "security_adjusted_profit": 1172.4006932497248,
+          "admitted": 22,
+          "rejected": 2,
+          "deferred": 20,
+          "infeasible": 0,
+          "actions": {
+            "admit": 22,
+            "reject": 2,
+            "defer": 20
+          },
+          "steps": 44,
+          "seed": 10053
+        },
+        {
+          "reward": 834.3927290654227,
+          "raw_profit": 902.6962938126546,
+          "security_cost": 39.58860197585519,
+          "security_adjusted_profit": 863.1076918367994,
+          "admitted": 18,
+          "rejected": 6,
+          "deferred": 27,
+          "infeasible": 0,
+          "actions": {
+            "admit": 18,
+            "reject": 6,
+            "defer": 27
+          },
+          "steps": 51,
+          "seed": 10054
+        },
+        {
+          "reward": 1024.5381421017014,
+          "raw_profit": 1082.3108030452315,
+          "security_cost": 23.126616629411835,
+          "security_adjusted_profit": 1059.1841864158198,
+          "admitted": 17,
+          "rejected": 7,
+          "deferred": 28,
+          "infeasible": 0,
+          "actions": {
+            "admit": 17,
+            "reject": 7,
+            "defer": 28
+          },
+          "steps": 52,
+          "seed": 10055
+        },
+        {
+          "reward": 1091.6528198133499,
+          "raw_profit": 1161.7411432722618,
+          "security_cost": 31.879536221548136,
+          "security_adjusted_profit": 1129.8616070507137,
+          "admitted": 20,
+          "rejected": 4,
+          "deferred": 19,
+          "infeasible": 0,
+          "actions": {
+            "admit": 20,
+            "reject": 4,
+            "defer": 19
+          },
+          "steps": 43,
+          "seed": 10056
+        },
+        {
+          "reward": 906.1279326136962,
+          "raw_profit": 973.8636990815958,
+          "security_cost": 34.84785256464835,
+          "security_adjusted_profit": 939.0158465169475,
+          "admitted": 18,
+          "rejected": 6,
+          "deferred": 28,
+          "infeasible": 0,
+          "actions": {
+            "admit": 18,
+            "reject": 6,
+            "defer": 28
+          },
+          "steps": 52,
+          "seed": 10057
+        },
+        {
+          "reward": 906.3634159089834,
+          "raw_profit": 972.7020427130819,
+          "security_cost": 41.405096463291294,
+          "security_adjusted_profit": 931.2969462497906,
+          "admitted": 19,
+          "rejected": 5,
+          "deferred": 24,
+          "infeasible": 0,
+          "actions": {
+            "admit": 19,
+            "reject": 5,
+            "defer": 24
+          },
+          "steps": 48,
+          "seed": 10058
+        },
+        {
+          "reward": 619.8637685728929,
+          "raw_profit": 693.3376137189035,
+          "security_cost": 37.764717737136905,
+          "security_adjusted_profit": 655.5728959817666,
+          "admitted": 16,
+          "rejected": 8,
+          "deferred": 34,
+          "infeasible": 0,
+          "actions": {
+            "admit": 16,
+            "reject": 8,
+            "defer": 34
+          },
+          "steps": 58,
+          "seed": 10059
+        },
+        {
+          "reward": 1064.6065199180443,
+          "raw_profit": 1131.3453646459866,
+          "security_cost": 33.427850286898334,
+          "security_adjusted_profit": 1097.9175143590883,
+          "admitted": 19,
+          "rejected": 5,
+          "deferred": 21,
+          "infeasible": 0,
+          "actions": {
+            "admit": 19,
+            "reject": 5,
+            "defer": 21
+          },
+          "steps": 45,
+          "seed": 10060
+        },
+        {
+          "reward": 879.5574735420854,
+          "raw_profit": 934.2428828019433,
+          "security_cost": 27.15408447704777,
+          "security_adjusted_profit": 907.0887983248956,
+          "admitted": 18,
+          "rejected": 6,
+          "deferred": 26,
+          "infeasible": 0,
+          "actions": {
+            "admit": 18,
+            "reject": 6,
+            "defer": 26
+          },
+          "steps": 50,
+          "seed": 10061
+        },
+        {
+          "reward": 965.4941349488857,
+          "raw_profit": 1043.4074090148172,
+          "security_cost": 35.75915764668835,
+          "security_adjusted_profit": 1007.6482513681289,
+          "admitted": 18,
+          "rejected": 6,
+          "deferred": 22,
+          "infeasible": 0,
+          "actions": {
+            "admit": 18,
+            "reject": 6,
+            "defer": 22
+          },
+          "steps": 46,
+          "seed": 10062
+        },
+        {
+          "reward": 955.8232610683158,
+          "raw_profit": 1026.5928270789027,
+          "security_cost": 37.20116051294864,
+          "security_adjusted_profit": 989.3916665659541,
+          "admitted": 19,
+          "rejected": 5,
+          "deferred": 24,
+          "infeasible": 0,
+          "actions": {
+            "admit": 19,
+            "reject": 5,
+            "defer": 24
+          },
+          "steps": 48,
+          "seed": 10063
+        },
+        {
+          "reward": 951.4307228897616,
+          "raw_profit": 1020.7779946924743,
+          "security_cost": 31.201875069295482,
+          "security_adjusted_profit": 989.5761196231788,
+          "admitted": 19,
+          "rejected": 5,
+          "deferred": 25,
+          "infeasible": 0,
+          "actions": {
+            "admit": 19,
+            "reject": 5,
+            "defer": 25
+          },
+          "steps": 49,
+          "seed": 10064
+        },
+        {
+          "reward": 1061.4472006170965,
+          "raw_profit": 1130.1067993633455,
+          "security_cost": 34.37874697828643,
+          "security_adjusted_profit": 1095.728052385059,
+          "admitted": 19,
+          "rejected": 5,
+          "deferred": 25,
+          "infeasible": 0,
+          "actions": {
+            "admit": 19,
+            "reject": 5,
+            "defer": 25
+          },
+          "steps": 49,
+          "seed": 10065
+        },
+        {
+          "reward": 948.5623578673171,
+          "raw_profit": 1028.1004855180759,
+          "security_cost": 32.3214027782015,
+          "security_adjusted_profit": 995.7790827398744,
+          "admitted": 18,
+          "rejected": 6,
+          "deferred": 29,
+          "infeasible": 0,
+          "actions": {
+            "admit": 18,
+            "reject": 6,
+            "defer": 29
+          },
+          "steps": 53,
+          "seed": 10066
+        },
+        {
+          "reward": 794.651256413718,
+          "raw_profit": 863.3147970892711,
+          "security_cost": 33.956995497961934,
+          "security_adjusted_profit": 829.3578015913092,
+          "admitted": 18,
+          "rejected": 6,
+          "deferred": 30,
+          "infeasible": 0,
+          "actions": {
+            "admit": 18,
+            "reject": 6,
+            "defer": 30
+          },
+          "steps": 54,
+          "seed": 10067
+        },
+        {
+          "reward": 1053.2100103252376,
+          "raw_profit": 1120.7180993078957,
+          "security_cost": 38.75996116245444,
+          "security_adjusted_profit": 1081.9581381454414,
+          "admitted": 20,
+          "rejected": 4,
+          "deferred": 25,
+          "infeasible": 0,
+          "actions": {
+            "admit": 20,
+            "reject": 4,
+            "defer": 25
+          },
+          "steps": 49,
+          "seed": 10068
+        },
+        {
+          "reward": 1082.900210374814,
+          "raw_profit": 1151.6078111133677,
+          "security_cost": 22.646015815458828,
+          "security_adjusted_profit": 1128.9617952979088,
+          "admitted": 18,
+          "rejected": 6,
+          "deferred": 24,
+          "infeasible": 0,
+          "actions": {
+            "admit": 18,
+            "reject": 6,
+            "defer": 24
+          },
+          "steps": 48,
+          "seed": 10069
+        },
+        {
+          "reward": 1016.8756689579099,
+          "raw_profit": 1089.7688644352052,
+          "security_cost": 46.30587387026307,
+          "security_adjusted_profit": 1043.4629905649422,
+          "admitted": 21,
+          "rejected": 3,
+          "deferred": 25,
+          "infeasible": 0,
+          "actions": {
+            "admit": 21,
+            "reject": 3,
+            "defer": 25
+          },
+          "steps": 49,
+          "seed": 10070
+        },
+        {
+          "reward": 944.9137210271,
+          "raw_profit": 1019.6268576096434,
+          "security_cost": 47.098232100614474,
+          "security_adjusted_profit": 972.5286255090289,
+          "admitted": 19,
+          "rejected": 5,
+          "deferred": 25,
+          "infeasible": 0,
+          "actions": {
+            "admit": 19,
+            "reject": 5,
+            "defer": 25
+          },
+          "steps": 49,
+          "seed": 10071
+        },
+        {
+          "reward": 949.6225734047036,
+          "raw_profit": 1020.1591459065439,
+          "security_cost": 41.361726723697366,
+          "security_adjusted_profit": 978.7974191828465,
+          "admitted": 20,
+          "rejected": 4,
+          "deferred": 23,
+          "infeasible": 0,
+          "actions": {
+            "admit": 20,
+            "reject": 4,
+            "defer": 23
+          },
+          "steps": 47,
+          "seed": 10072
+        },
+        {
+          "reward": 1013.096804044841,
+          "raw_profit": 1077.6871755765528,
+          "security_cost": 29.325099702732402,
+          "security_adjusted_profit": 1048.3620758738205,
+          "admitted": 18,
+          "rejected": 6,
+          "deferred": 27,
+          "infeasible": 0,
+          "actions": {
+            "admit": 18,
+            "reject": 6,
+            "defer": 27
+          },
+          "steps": 51,
+          "seed": 10073
+        },
+        {
+          "reward": 1160.170931780438,
+          "raw_profit": 1237.185706462323,
+          "security_cost": 44.62333375372164,
+          "security_adjusted_profit": 1192.5623727086013,
+          "admitted": 21,
+          "rejected": 3,
+          "deferred": 26,
+          "infeasible": 0,
+          "actions": {
+            "admit": 21,
+            "reject": 3,
+            "defer": 26
+          },
+          "steps": 50,
+          "seed": 10074
+        },
+        {
+          "reward": 1268.8549571348804,
+          "raw_profit": 1345.1746872608542,
+          "security_cost": 48.6770149746002,
+          "security_adjusted_profit": 1296.4976722862539,
+          "admitted": 20,
+          "rejected": 4,
+          "deferred": 21,
+          "infeasible": 0,
+          "actions": {
+            "admit": 20,
+            "reject": 4,
+            "defer": 21
+          },
+          "steps": 45,
+          "seed": 10075
+        },
+        {
+          "reward": 871.989924552828,
+          "raw_profit": 945.4323793918204,
+          "security_cost": 45.63118687106231,
+          "security_adjusted_profit": 899.8011925207581,
+          "admitted": 18,
+          "rejected": 6,
+          "deferred": 27,
+          "infeasible": 0,
+          "actions": {
+            "admit": 18,
+            "reject": 6,
+            "defer": 27
+          },
+          "steps": 51,
+          "seed": 10076
+        },
+        {
+          "reward": 1086.441006669023,
+          "raw_profit": 1155.9012613197551,
+          "security_cost": 31.958639481986054,
+          "security_adjusted_profit": 1123.9426218377691,
+          "admitted": 20,
+          "rejected": 4,
+          "deferred": 21,
+          "infeasible": 0,
+          "actions": {
+            "admit": 20,
+            "reject": 4,
+            "defer": 21
+          },
+          "steps": 45,
+          "seed": 10077
+        },
+        {
+          "reward": 1026.6009133497298,
+          "raw_profit": 1088.8529122857815,
+          "security_cost": 39.92087157917068,
+          "security_adjusted_profit": 1048.932040706611,
+          "admitted": 20,
+          "rejected": 4,
+          "deferred": 22,
+          "infeasible": 0,
+          "actions": {
+            "admit": 20,
+            "reject": 4,
+            "defer": 22
+          },
+          "steps": 46,
+          "seed": 10078
+        },
+        {
+          "reward": 925.182626038957,
+          "raw_profit": 998.6309416170795,
+          "security_cost": 40.275809966566136,
+          "security_adjusted_profit": 958.3551316505134,
+          "admitted": 19,
+          "rejected": 5,
+          "deferred": 27,
+          "infeasible": 0,
+          "actions": {
+            "admit": 19,
+            "reject": 5,
+            "defer": 27
+          },
+          "steps": 51,
+          "seed": 10079
+        },
+        {
+          "reward": 934.9230740900404,
+          "raw_profit": 1009.8879869229112,
+          "security_cost": 38.30257096190076,
+          "security_adjusted_profit": 971.5854159610104,
+          "admitted": 18,
+          "rejected": 6,
+          "deferred": 28,
+          "infeasible": 0,
+          "actions": {
+            "admit": 18,
+            "reject": 6,
+            "defer": 28
+          },
+          "steps": 52,
+          "seed": 10080
+        },
+        {
+          "reward": 1127.211139141144,
+          "raw_profit": 1196.0140106049032,
+          "security_cost": 34.13737066281311,
+          "security_adjusted_profit": 1161.8766399420902,
+          "admitted": 19,
+          "rejected": 5,
+          "deferred": 25,
+          "infeasible": 0,
+          "actions": {
+            "admit": 19,
+            "reject": 5,
+            "defer": 25
+          },
+          "steps": 49,
+          "seed": 10081
+        },
+        {
+          "reward": 882.3801382653385,
+          "raw_profit": 954.8464487876895,
+          "security_cost": 40.52311498095931,
+          "security_adjusted_profit": 914.3233338067301,
+          "admitted": 19,
+          "rejected": 5,
+          "deferred": 23,
+          "infeasible": 0,
+          "actions": {
+            "admit": 19,
+            "reject": 5,
+            "defer": 23
+          },
+          "steps": 47,
+          "seed": 10082
+        },
+        {
+          "reward": 1097.9546734836504,
+          "raw_profit": 1163.0203055125967,
+          "security_cost": 35.13530562878178,
+          "security_adjusted_profit": 1127.884999883815,
+          "admitted": 20,
+          "rejected": 4,
+          "deferred": 21,
+          "infeasible": 0,
+          "actions": {
+            "admit": 20,
+            "reject": 4,
+            "defer": 21
+          },
+          "steps": 45,
+          "seed": 10083
+        },
+        {
+          "reward": 867.8659834741676,
+          "raw_profit": 940.1208809522104,
+          "security_cost": 35.19633001776956,
+          "security_adjusted_profit": 904.9245509344408,
+          "admitted": 17,
+          "rejected": 7,
+          "deferred": 27,
+          "infeasible": 0,
+          "actions": {
+            "admit": 17,
+            "reject": 7,
+            "defer": 27
+          },
+          "steps": 51,
+          "seed": 10084
+        },
+        {
+          "reward": 1123.3692272515113,
+          "raw_profit": 1190.7306987015513,
+          "security_cost": 35.59311585967129,
+          "security_adjusted_profit": 1155.13758284188,
+          "admitted": 20,
+          "rejected": 4,
+          "deferred": 22,
+          "infeasible": 0,
+          "actions": {
+            "admit": 20,
+            "reject": 4,
+            "defer": 22
+          },
+          "steps": 46,
+          "seed": 10085
+        },
+        {
+          "reward": 1131.70737321924,
+          "raw_profit": 1201.4802177497809,
+          "security_cost": 31.447397068241695,
+          "security_adjusted_profit": 1170.032820681539,
+          "admitted": 19,
+          "rejected": 5,
+          "deferred": 21,
+          "infeasible": 0,
+          "actions": {
+            "admit": 19,
+            "reject": 5,
+            "defer": 21
+          },
+          "steps": 45,
+          "seed": 10086
+        },
+        {
+          "reward": 850.4756516468013,
+          "raw_profit": 924.2952917833916,
+          "security_cost": 32.28760549552715,
+          "security_adjusted_profit": 892.0076862878644,
+          "admitted": 17,
+          "rejected": 7,
+          "deferred": 29,
+          "infeasible": 0,
+          "actions": {
+            "admit": 17,
+            "reject": 7,
+            "defer": 29
+          },
+          "steps": 53,
+          "seed": 10087
+        },
+        {
+          "reward": 944.4954327022576,
+          "raw_profit": 1031.0140663347006,
+          "security_cost": 35.514829344454064,
+          "security_adjusted_profit": 995.4992369902466,
+          "admitted": 17,
+          "rejected": 7,
+          "deferred": 28,
+          "infeasible": 0,
+          "actions": {
+            "admit": 17,
+            "reject": 7,
+            "defer": 28
+          },
+          "steps": 52,
+          "seed": 10088
+        },
+        {
+          "reward": 1185.027458309592,
+          "raw_profit": 1257.2392099624324,
+          "security_cost": 30.58945355965976,
+          "security_adjusted_profit": 1226.6497564027727,
+          "admitted": 21,
+          "rejected": 3,
+          "deferred": 23,
+          "infeasible": 0,
+          "actions": {
+            "admit": 21,
+            "reject": 3,
+            "defer": 23
+          },
+          "steps": 47,
+          "seed": 10089
+        },
+        {
+          "reward": 940.1591127479262,
+          "raw_profit": 1015.2257232808869,
+          "security_cost": 42.95590674249611,
+          "security_adjusted_profit": 972.2698165383907,
+          "admitted": 19,
+          "rejected": 5,
+          "deferred": 27,
+          "infeasible": 0,
+          "actions": {
+            "admit": 19,
+            "reject": 5,
+            "defer": 27
+          },
+          "steps": 51,
+          "seed": 10090
+        },
+        {
+          "reward": 901.8921171932666,
+          "raw_profit": 967.547540574394,
+          "security_cost": 34.4894681276273,
+          "security_adjusted_profit": 933.0580724467667,
+          "admitted": 18,
+          "rejected": 6,
+          "deferred": 28,
+          "infeasible": 0,
+          "actions": {
+            "admit": 18,
+            "reject": 6,
+            "defer": 28
+          },
+          "steps": 52,
+          "seed": 10091
+        }
+      ],
+      "greedy": [
+        {
+          "reward": 761.9015994579461,
+          "raw_profit": 815.5469406240114,
+          "security_cost": 35.031882800722975,
+          "security_adjusted_profit": 780.5150578232884,
+          "admitted": 16,
+          "rejected": 8,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 16,
+            "reject": 8,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10042
+        },
+        {
+          "reward": 547.1437113781678,
+          "raw_profit": 600.1440339175482,
+          "security_cost": 33.252908561969335,
+          "security_adjusted_profit": 566.8911253555789,
+          "admitted": 14,
+          "rejected": 10,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 14,
+            "reject": 10,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10043
+        },
+        {
+          "reward": 596.4112550206817,
+          "raw_profit": 647.2064623938157,
+          "security_cost": 27.973517581071345,
+          "security_adjusted_profit": 619.2329448127444,
+          "admitted": 14,
+          "rejected": 10,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 14,
+            "reject": 10,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10044
+        },
+        {
+          "reward": 542.9825303900604,
+          "raw_profit": 605.2753110979493,
+          "security_cost": 34.93984916647685,
+          "security_adjusted_profit": 570.3354619314724,
+          "admitted": 13,
+          "rejected": 11,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 13,
+            "reject": 11,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10045
+        },
+        {
+          "reward": 769.6636442235648,
+          "raw_profit": 829.446164221591,
+          "security_cost": 33.841518133456454,
+          "security_adjusted_profit": 795.6046460881345,
+          "admitted": 15,
+          "rejected": 9,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 15,
+            "reject": 9,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10046
+        },
+        {
+          "reward": 467.48582440541145,
+          "raw_profit": 516.284210386263,
+          "security_cost": 18.09090978123971,
+          "security_adjusted_profit": 498.1933006050233,
+          "admitted": 11,
+          "rejected": 13,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 11,
+            "reject": 13,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10047
+        },
+        {
+          "reward": 637.4926018904587,
+          "raw_profit": 685.9355022687838,
+          "security_cost": 23.48605867997982,
+          "security_adjusted_profit": 662.449443588804,
+          "admitted": 13,
+          "rejected": 11,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 13,
+            "reject": 11,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10048
+        },
+        {
+          "reward": 521.6282420275518,
+          "raw_profit": 588.1183585221954,
+          "security_cost": 31.80843340863117,
+          "security_adjusted_profit": 556.3099251135643,
+          "admitted": 13,
+          "rejected": 11,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 13,
+            "reject": 11,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10049
+        },
+        {
+          "reward": 605.943823916226,
+          "raw_profit": 666.7291509622441,
+          "security_cost": 30.76700496842012,
+          "security_adjusted_profit": 635.962145993824,
+          "admitted": 12,
+          "rejected": 12,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 12,
+            "reject": 12,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10050
+        },
+        {
+          "reward": 700.186875602674,
+          "raw_profit": 750.78206599742,
+          "security_cost": 26.34781336345944,
+          "security_adjusted_profit": 724.4342526339606,
+          "admitted": 13,
+          "rejected": 11,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 13,
+            "reject": 11,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10051
+        },
+        {
+          "reward": 559.134646005577,
+          "raw_profit": 611.6778890299366,
+          "security_cost": 22.79593997257193,
+          "security_adjusted_profit": 588.8819490573647,
+          "admitted": 12,
+          "rejected": 12,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 12,
+            "reject": 12,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10052
+        },
+        {
+          "reward": 737.8456756818507,
+          "raw_profit": 785.842685186875,
+          "security_cost": 25.543306080618013,
+          "security_adjusted_profit": 760.299379106257,
+          "admitted": 13,
+          "rejected": 11,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 13,
+            "reject": 11,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10053
+        },
+        {
+          "reward": 374.2123509636402,
+          "raw_profit": 423.5484860866091,
+          "security_cost": 20.09471412232198,
+          "security_adjusted_profit": 403.4537719642871,
+          "admitted": 12,
+          "rejected": 12,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 12,
+            "reject": 12,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10054
+        },
+        {
+          "reward": 463.4783832082026,
+          "raw_profit": 518.5705500011777,
+          "security_cost": 19.879030026609527,
+          "security_adjusted_profit": 498.69151997456817,
+          "admitted": 10,
+          "rejected": 14,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 10,
+            "reject": 14,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10055
+        },
+        {
+          "reward": 773.3619976974987,
+          "raw_profit": 822.4861128271907,
+          "security_cost": 20.49856633195245,
+          "security_adjusted_profit": 801.9875464952382,
+          "admitted": 14,
+          "rejected": 10,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 14,
+            "reject": 10,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10056
+        },
+        {
+          "reward": 559.6404655892402,
+          "raw_profit": 612.2665543797358,
+          "security_cost": 27.550932091779323,
+          "security_adjusted_profit": 584.7156222879564,
+          "admitted": 13,
+          "rejected": 11,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 13,
+            "reject": 11,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10057
+        },
+        {
+          "reward": 573.6842177715235,
+          "raw_profit": 618.1896801794602,
+          "security_cost": 22.228492120156485,
+          "security_adjusted_profit": 595.9611880593037,
+          "admitted": 12,
+          "rejected": 12,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 12,
+            "reject": 12,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10058
+        },
+        {
+          "reward": 546.8467832803879,
+          "raw_profit": 596.6751477401336,
+          "security_cost": 34.522748756145965,
+          "security_adjusted_profit": 562.1523989839877,
+          "admitted": 15,
+          "rejected": 9,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 15,
+            "reject": 9,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10059
+        },
+        {
+          "reward": 644.5846412193504,
+          "raw_profit": 693.181412592045,
+          "security_cost": 17.238695808339976,
+          "security_adjusted_profit": 675.942716783705,
+          "admitted": 12,
+          "rejected": 12,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 12,
+            "reject": 12,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10060
+        },
+        {
+          "reward": 509.4057127897561,
+          "raw_profit": 559.1568457197438,
+          "security_cost": 24.70679758084726,
+          "security_adjusted_profit": 534.4500481388966,
+          "admitted": 13,
+          "rejected": 11,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 13,
+            "reject": 11,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10061
+        },
+        {
+          "reward": 585.7329108118399,
+          "raw_profit": 636.4226208815317,
+          "security_cost": 17.220728684082655,
+          "security_adjusted_profit": 619.201892197449,
+          "admitted": 13,
+          "rejected": 11,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 13,
+            "reject": 11,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10062
+        },
+        {
+          "reward": 651.969011715092,
+          "raw_profit": 702.8084868988543,
+          "security_cost": 26.141771111042928,
+          "security_adjusted_profit": 676.6667157878114,
+          "admitted": 13,
+          "rejected": 11,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 13,
+            "reject": 11,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10063
+        },
+        {
+          "reward": 546.5732690325539,
+          "raw_profit": 600.6699561589625,
+          "security_cost": 21.867714000477545,
+          "security_adjusted_profit": 578.8022421584849,
+          "admitted": 12,
+          "rejected": 12,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 12,
+            "reject": 12,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10064
+        },
+        {
+          "reward": 695.3056101557083,
+          "raw_profit": 742.0729101157774,
+          "security_cost": 20.797562138670393,
+          "security_adjusted_profit": 721.275347977107,
+          "admitted": 12,
+          "rejected": 12,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 12,
+            "reject": 12,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10065
+        },
+        {
+          "reward": 619.88500191082,
+          "raw_profit": 675.2767398137833,
+          "security_cost": 24.809049394910907,
+          "security_adjusted_profit": 650.4676904188724,
+          "admitted": 12,
+          "rejected": 12,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 12,
+            "reject": 12,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10066
+        },
+        {
+          "reward": 557.1550856625527,
+          "raw_profit": 604.7396415549264,
+          "security_cost": 26.17145466667599,
+          "security_adjusted_profit": 578.5681868882504,
+          "admitted": 13,
+          "rejected": 11,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 13,
+            "reject": 11,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10067
+        },
+        {
+          "reward": 596.2008271137096,
+          "raw_profit": 651.0863100984387,
+          "security_cost": 27.585285267159104,
+          "security_adjusted_profit": 623.5010248312797,
+          "admitted": 13,
+          "rejected": 11,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 13,
+            "reject": 11,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10068
+        },
+        {
+          "reward": 693.055017137627,
+          "raw_profit": 742.4032106691053,
+          "security_cost": 13.855827493427855,
+          "security_adjusted_profit": 728.5473831756774,
+          "admitted": 13,
+          "rejected": 11,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 13,
+            "reject": 11,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10069
+        },
+        {
+          "reward": 523.9941137983532,
+          "raw_profit": 585.9605262473046,
+          "security_cost": 34.8294977138521,
+          "security_adjusted_profit": 551.1310285334525,
+          "admitted": 11,
+          "rejected": 13,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 11,
+            "reject": 13,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10070
+        },
+        {
+          "reward": 621.4631489630508,
+          "raw_profit": 675.4915988369662,
+          "security_cost": 31.79592965625688,
+          "security_adjusted_profit": 643.6956691807093,
+          "admitted": 14,
+          "rejected": 10,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 14,
+            "reject": 10,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10071
+        },
+        {
+          "reward": 660.2577307152602,
+          "raw_profit": 713.7069395086756,
+          "security_cost": 31.520440534766568,
+          "security_adjusted_profit": 682.1864989739091,
+          "admitted": 15,
+          "rejected": 9,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 15,
+            "reject": 9,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10072
+        },
+        {
+          "reward": 626.9031029835141,
+          "raw_profit": 678.5825488237627,
+          "security_cost": 22.802159661157834,
+          "security_adjusted_profit": 655.7803891626049,
+          "admitted": 12,
+          "rejected": 12,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 12,
+            "reject": 12,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10073
+        },
+        {
+          "reward": 596.9766401195271,
+          "raw_profit": 655.588501171919,
+          "security_cost": 26.726838308834296,
+          "security_adjusted_profit": 628.8616628630847,
+          "admitted": 12,
+          "rejected": 12,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 12,
+            "reject": 12,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10074
+        },
+        {
+          "reward": 724.2215663558336,
+          "raw_profit": 793.7740410609102,
+          "security_cost": 39.40691280727948,
+          "security_adjusted_profit": 754.3671282536308,
+          "admitted": 14,
+          "rejected": 10,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 14,
+            "reject": 10,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10075
+        },
+        {
+          "reward": 557.3835198034005,
+          "raw_profit": 613.4774038591252,
+          "security_cost": 33.56368612606457,
+          "security_adjusted_profit": 579.9137177330606,
+          "admitted": 13,
+          "rejected": 11,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 13,
+            "reject": 11,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10076
+        },
+        {
+          "reward": 644.8285385037848,
+          "raw_profit": 704.3378860834404,
+          "security_cost": 26.993384948265877,
+          "security_adjusted_profit": 677.3445011351745,
+          "admitted": 14,
+          "rejected": 10,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 14,
+            "reject": 10,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10077
+        },
+        {
+          "reward": 652.8749401324809,
+          "raw_profit": 708.9435613755463,
+          "security_cost": 33.95508802691775,
+          "security_adjusted_profit": 674.9884733486285,
+          "admitted": 14,
+          "rejected": 10,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 14,
+            "reject": 10,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10078
+        },
+        {
+          "reward": 495.5698870004022,
+          "raw_profit": 559.5461430728694,
+          "security_cost": 35.26169473616264,
+          "security_adjusted_profit": 524.2844483367068,
+          "admitted": 14,
+          "rejected": 10,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 14,
+            "reject": 10,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10079
+        },
+        {
+          "reward": 497.01131018781103,
+          "raw_profit": 563.7654505794945,
+          "security_cost": 35.56723997400083,
+          "security_adjusted_profit": 528.1982106054937,
+          "admitted": 13,
+          "rejected": 11,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 13,
+            "reject": 11,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10080
+        },
+        {
+          "reward": 664.2033071566111,
+          "raw_profit": 723.0749282937619,
+          "security_cost": 29.166741914951732,
+          "security_adjusted_profit": 693.9081863788101,
+          "admitted": 13,
+          "rejected": 11,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 13,
+            "reject": 11,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10081
+        },
+        {
+          "reward": 549.212703847277,
+          "raw_profit": 604.8690048500446,
+          "security_cost": 29.903781092039075,
+          "security_adjusted_profit": 574.9652237580055,
+          "admitted": 13,
+          "rejected": 11,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 13,
+            "reject": 11,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10082
+        },
+        {
+          "reward": 689.4371395848032,
+          "raw_profit": 746.8869276191531,
+          "security_cost": 28.54636862761544,
+          "security_adjusted_profit": 718.3405589915376,
+          "admitted": 14,
+          "rejected": 10,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 14,
+            "reject": 10,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10083
+        },
+        {
+          "reward": 410.93532395279186,
+          "raw_profit": 469.71060568850237,
+          "security_cost": 25.084993197788286,
+          "security_adjusted_profit": 444.6256124907141,
+          "admitted": 11,
+          "rejected": 13,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 11,
+            "reject": 13,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10084
+        },
+        {
+          "reward": 582.1609415442244,
+          "raw_profit": 641.5902355339135,
+          "security_cost": 25.74260440614747,
+          "security_adjusted_profit": 615.847631127766,
+          "admitted": 13,
+          "rejected": 11,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 13,
+            "reject": 11,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10085
+        },
+        {
+          "reward": 682.2265427984789,
+          "raw_profit": 741.5979442739247,
+          "security_cost": 26.366518345580268,
+          "security_adjusted_profit": 715.2314259283444,
+          "admitted": 13,
+          "rejected": 11,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 13,
+            "reject": 11,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10086
+        },
+        {
+          "reward": 502.968164563374,
+          "raw_profit": 555.7896285751551,
+          "security_cost": 22.8798041203178,
+          "security_adjusted_profit": 532.9098244548373,
+          "admitted": 12,
+          "rejected": 12,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 12,
+            "reject": 12,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10087
+        },
+        {
+          "reward": 506.13736315560203,
+          "raw_profit": 565.2873592137911,
+          "security_cost": 21.044636616227336,
+          "security_adjusted_profit": 544.2427225975638,
+          "admitted": 11,
+          "rejected": 13,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 11,
+            "reject": 13,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10088
+        },
+        {
+          "reward": 602.3435335390557,
+          "raw_profit": 662.2053019602772,
+          "security_cost": 21.194400227263497,
+          "security_adjusted_profit": 641.0109017330137,
+          "admitted": 12,
+          "rejected": 12,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 12,
+            "reject": 12,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10089
+        },
+        {
+          "reward": 672.1850289423267,
+          "raw_profit": 731.2068968912802,
+          "security_cost": 38.46694123730904,
+          "security_adjusted_profit": 692.7399556539712,
+          "admitted": 14,
+          "rejected": 10,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 14,
+            "reject": 10,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10090
+        },
+        {
+          "reward": 633.3204593096671,
+          "raw_profit": 681.3484661820819,
+          "security_cost": 26.65748775278312,
+          "security_adjusted_profit": 654.6909784292988,
+          "admitted": 13,
+          "rejected": 11,
+          "deferred": 0,
+          "infeasible": 0,
+          "actions": {
+            "admit": 13,
+            "reject": 11,
+            "defer": 0
+          },
+          "steps": 24,
+          "seed": 10091
+        }
+      ],
+      "value_density": [
+        {
+          "reward": 988.6396367281383,
+          "raw_profit": 1049.2106201152178,
+          "security_cost": 39.57528224602639,
+          "security_adjusted_profit": 1009.6353378691914,
+          "admitted": 20,
+          "rejected": 4,
+          "deferred": 11,
+          "infeasible": 0,
+          "actions": {
+            "admit": 20,
+            "reject": 4,
+            "defer": 11
+          },
+          "steps": 35,
+          "seed": 10042
+        },
+        {
+          "reward": 859.4678295519225,
+          "raw_profit": 928.8879690866966,
+          "security_cost": 49.349316760054755,
+          "security_adjusted_profit": 879.5386523266418,
+          "admitted": 21,
+          "rejected": 3,
+          "deferred": 15,
+          "infeasible": 0,
+          "actions": {
+            "admit": 21,
+            "reject": 3,
+            "defer": 15
+          },
+          "steps": 39,
+          "seed": 10043
+        },
+        {
+          "reward": 895.0343584550882,
+          "raw_profit": 962.6950494543069,
+          "security_cost": 39.66934259380099,
+          "security_adjusted_profit": 923.0257068605058,
+          "admitted": 20,
+          "rejected": 4,
+          "deferred": 16,
+          "infeasible": 0,
+          "actions": {
+            "admit": 20,
+            "reject": 4,
+            "defer": 16
+          },
+          "steps": 40,
+          "seed": 10044
+        },
+        {
+          "reward": 906.4426067933365,
+          "raw_profit": 991.7256403271314,
+          "security_cost": 53.00472431735074,
+          "security_adjusted_profit": 938.7209160097806,
+          "admitted": 21,
+          "rejected": 3,
+          "deferred": 17,
+          "infeasible": 0,
+          "actions": {
+            "admit": 21,
+            "reject": 3,
+            "defer": 17
+          },
+          "steps": 41,
+          "seed": 10045
+        },
+        {
+          "reward": 1057.404620212402,
+          "raw_profit": 1139.332105004747,
+          "security_cost": 47.53152288211705,
+          "security_adjusted_profit": 1091.80058212263,
+          "admitted": 20,
+          "rejected": 4,
+          "deferred": 15,
+          "infeasible": 0,
+          "actions": {
+            "admit": 20,
+            "reject": 4,
+            "defer": 15
+          },
+          "steps": 39,
+          "seed": 10046
+        },
+        {
+          "reward": 930.944689745102,
+          "raw_profit": 1001.404151847563,
+          "security_cost": 38.10541599616766,
+          "security_adjusted_profit": 963.2987358513953,
+          "admitted": 21,
+          "rejected": 3,
+          "deferred": 18,
+          "infeasible": 0,
+          "actions": {
+            "admit": 21,
+            "reject": 3,
+            "defer": 18
+          },
+          "steps": 42,
+          "seed": 10047
+        },
+        {
+          "reward": 963.4054360263813,
+          "raw_profit": 1029.1031323008547,
+          "security_cost": 35.3523490805887,
+          "security_adjusted_profit": 993.7507832202659,
+          "admitted": 21,
+          "rejected": 3,
+          "deferred": 17,
+          "infeasible": 0,
+          "actions": {
+            "admit": 21,
+            "reject": 3,
+            "defer": 17
+          },
+          "steps": 41,
+          "seed": 10048
+        },
+        {
+          "reward": 1031.6995926580983,
+          "raw_profit": 1112.498271554076,
+          "security_cost": 42.845675103615626,
+          "security_adjusted_profit": 1069.6525964504604,
+          "admitted": 21,
+          "rejected": 3,
+          "deferred": 17,
+          "infeasible": 0,
+          "actions": {
+            "admit": 21,
+            "reject": 3,
+            "defer": 17
+          },
+          "steps": 41,
+          "seed": 10049
+        },
+        {
+          "reward": 1087.8957955322796,
+          "raw_profit": 1173.1382155449921,
+          "security_cost": 54.802308918490475,
+          "security_adjusted_profit": 1118.3359066265016,
+          "admitted": 22,
+          "rejected": 2,
+          "deferred": 17,
+          "infeasible": 0,
+          "actions": {
+            "admit": 22,
+            "reject": 2,
+            "defer": 17
+          },
+          "steps": 41,
+          "seed": 10050
+        },
+        {
+          "reward": 1071.5309080606803,
+          "raw_profit": 1140.070616888695,
+          "security_cost": 43.01126348419796,
+          "security_adjusted_profit": 1097.059353404497,
+          "admitted": 21,
+          "rejected": 3,
+          "deferred": 16,
+          "infeasible": 0,
+          "actions": {
+            "admit": 21,
+            "reject": 3,
+            "defer": 16
+          },
+          "steps": 40,
+          "seed": 10051
+        },
+        {
+          "reward": 1059.9675035310515,
+          "raw_profit": 1136.8898738154758,
+          "security_cost": 46.225541915071744,
+          "security_adjusted_profit": 1090.664331900404,
+          "admitted": 22,
+          "rejected": 2,
+          "deferred": 18,
+          "infeasible": 0,
+          "actions": {
+            "admit": 22,
+            "reject": 2,
+            "defer": 18
+          },
+          "steps": 42,
+          "seed": 10052
+        },
+        {
+          "reward": 1072.34101455978,
+          "raw_profit": 1133.1575774709079,
+          "security_cost": 36.89834987968251,
+          "security_adjusted_profit": 1096.2592275912255,
+          "admitted": 20,
+          "rejected": 4,
+          "deferred": 16,
+          "infeasible": 0,
+          "actions": {
+            "admit": 20,
+            "reject": 4,
+            "defer": 16
+          },
+          "steps": 40,
+          "seed": 10053
+        },
+        {
+          "reward": 804.9925139321015,
+          "raw_profit": 871.8170883925906,
+          "security_cost": 39.26362367030394,
+          "security_adjusted_profit": 832.5534647222867,
+          "admitted": 20,
+          "rejected": 4,
+          "deferred": 14,
+          "infeasible": 0,
+          "actions": {
+            "admit": 20,
+            "reject": 4,
+            "defer": 14
+          },
+          "steps": 38,
+          "seed": 10054
+        },
+        {
+          "reward": 929.6265701923993,
+          "raw_profit": 998.7041766195335,
+          "security_cost": 28.451117876725306,
+          "security_adjusted_profit": 970.2530587428082,
+          "admitted": 18,
+          "rejected": 6,
+          "deferred": 20,
+          "infeasible": 0,
+          "actions": {
+            "admit": 18,
+            "reject": 6,
+            "defer": 20
+          },
+          "steps": 44,
+          "seed": 10055
+        },
+        {
+          "reward": 1186.764244371911,
+          "raw_profit": 1245.2150510101185,
+          "security_cost": 28.29109750900556,
+          "security_adjusted_profit": 1216.923953501113,
+          "admitted": 20,
+          "rejected": 4,
+          "deferred": 14,
+          "infeasible": 0,
+          "actions": {
+            "admit": 20,
+            "reject": 4,
+            "defer": 14
+          },
+          "steps": 38,
+          "seed": 10056
+        },
+        {
+          "reward": 845.1807392107196,
+          "raw_profit": 911.8465298638121,
+          "security_cost": 34.12711711499106,
+          "security_adjusted_profit": 877.719412748821,
+          "admitted": 18,
+          "rejected": 6,
+          "deferred": 17,
+          "infeasible": 0,
+          "actions": {
+            "admit": 18,
+            "reject": 6,
+            "defer": 17
+          },
+          "steps": 41,
+          "seed": 10057
+        },
+        {
+          "reward": 941.3979020261286,
+          "raw_profit": 1006.7619727820097,
+          "security_cost": 42.824272039372744,
+          "security_adjusted_profit": 963.9377007426369,
+          "admitted": 21,
+          "rejected": 3,
+          "deferred": 18,
+          "infeasible": 0,
+          "actions": {
+            "admit": 21,
+            "reject": 3,
+            "defer": 18
+          },
+          "steps": 42,
+          "seed": 10058
+        },
+        {
+          "reward": 768.3543286642148,
+          "raw_profit": 838.4400684053522,
+          "security_cost": 52.59673584247019,
+          "security_adjusted_profit": 785.8433325628821,
+          "admitted": 21,
+          "rejected": 3,
+          "deferred": 14,
+          "infeasible": 0,
+          "actions": {
+            "admit": 21,
+            "reject": 3,
+            "defer": 14
+          },
+          "steps": 38,
+          "seed": 10059
+        },
+        {
+          "reward": 1090.4495907230666,
+          "raw_profit": 1168.0381457928179,
+          "security_cost": 41.920991501986215,
+          "security_adjusted_profit": 1126.1171542908316,
+          "admitted": 21,
+          "rejected": 3,
+          "deferred": 18,
+          "infeasible": 0,
+          "actions": {
+            "admit": 21,
+            "reject": 3,
+            "defer": 18
+          },
+          "steps": 42,
+          "seed": 10060
+        },
+        {
+          "reward": 897.8830034796016,
+          "raw_profit": 959.4519683865013,
+          "security_cost": 35.35525842241727,
+          "security_adjusted_profit": 924.0967099640841,
+          "admitted": 21,
+          "rejected": 3,
+          "deferred": 17,
+          "infeasible": 0,
+          "actions": {
+            "admit": 21,
+            "reject": 3,
+            "defer": 17
+          },
+          "steps": 41,
+          "seed": 10061
+        },
+        {
+          "reward": 1063.4969987013944,
+          "raw_profit": 1127.6619421815672,
+          "security_cost": 26.15276612868562,
+          "security_adjusted_profit": 1101.5091760528815,
+          "admitted": 20,
+          "rejected": 4,
+          "deferred": 17,
+          "infeasible": 0,
+          "actions": {
+            "admit": 20,
+            "reject": 4,
+            "defer": 17
+          },
+          "steps": 41,
+          "seed": 10062
+        },
+        {
+          "reward": 1044.581890873566,
+          "raw_profit": 1112.0040324019078,
+          "security_cost": 41.733474269981286,
+          "security_adjusted_profit": 1070.2705581319265,
+          "admitted": 21,
+          "rejected": 3,
+          "deferred": 17,
+          "infeasible": 0,
+          "actions": {
+            "admit": 21,
+            "reject": 3,
+            "defer": 17
+          },
+          "steps": 41,
+          "seed": 10063
+        },
+        {
+          "reward": 1021.3924645279558,
+          "raw_profit": 1090.7810248161506,
+          "security_cost": 34.40802321920055,
+          "security_adjusted_profit": 1056.3730015969502,
+          "admitted": 21,
+          "rejected": 3,
+          "deferred": 17,
+          "infeasible": 0,
+          "actions": {
+            "admit": 21,
+            "reject": 3,
+            "defer": 17
+          },
+          "steps": 41,
+          "seed": 10064
+        },
+        {
+          "reward": 1057.0719384675208,
+          "raw_profit": 1118.8101492199849,
+          "security_cost": 32.63194508371112,
+          "security_adjusted_profit": 1086.1782041362737,
+          "admitted": 20,
+          "rejected": 4,
+          "deferred": 18,
+          "infeasible": 0,
+          "actions": {
+            "admit": 20,
+            "reject": 4,
+            "defer": 18
+          },
+          "steps": 42,
+          "seed": 10065
+        },
+        {
+          "reward": 1010.6371284288767,
+          "raw_profit": 1085.5419833789567,
+          "security_cost": 37.181176908792345,
+          "security_adjusted_profit": 1048.3608064701643,
+          "admitted": 20,
+          "rejected": 4,
+          "deferred": 19,
+          "infeasible": 0,
+          "actions": {
+            "admit": 20,
+            "reject": 4,
+            "defer": 19
+          },
+          "steps": 43,
+          "seed": 10066
+        },
+        {
+          "reward": 779.9384160476604,
+          "raw_profit": 843.5804324593547,
+          "security_cost": 36.22168569864313,
+          "security_adjusted_profit": 807.3587467607116,
+          "admitted": 19,
+          "rejected": 5,
+          "deferred": 14,
+          "infeasible": 0,
+          "actions": {
+            "admit": 19,
+            "reject": 5,
+            "defer": 14
+          },
+          "steps": 38,
+          "seed": 10067
+        },
+        {
+          "reward": 1004.2164317012197,
+          "raw_profit": 1070.9235576481326,
+          "security_cost": 38.34814176109112,
+          "security_adjusted_profit": 1032.5754158870416,
+          "admitted": 21,
+          "rejected": 3,
+          "deferred": 15,
+          "infeasible": 0,
+          "actions": {
+            "admit": 21,
+            "reject": 3,
+            "defer": 15
+          },
+          "steps": 39,
+          "seed": 10068
+        },
+        {
+          "reward": 1161.7211311430897,
+          "raw_profit": 1223.7160825562307,
+          "security_cost": 23.154175599913522,
+          "security_adjusted_profit": 1200.5619069563172,
+          "admitted": 19,
+          "rejected": 5,
+          "deferred": 16,
+          "infeasible": 0,
+          "actions": {
+            "admit": 19,
+            "reject": 5,
+            "defer": 16
+          },
+          "steps": 40,
+          "seed": 10069
+        },
+        {
+          "reward": 960.3600348488848,
+          "raw_profit": 1031.7848456817223,
+          "security_cost": 43.99437196859691,
+          "security_adjusted_profit": 987.7904737131255,
+          "admitted": 20,
+          "rejected": 4,
+          "deferred": 19,
+          "infeasible": 0,
+          "actions": {
+            "admit": 20,
+            "reject": 4,
+            "defer": 19
+          },
+          "steps": 43,
+          "seed": 10070
+        },
+        {
+          "reward": 875.6991030631019,
+          "raw_profit": 948.2288766989901,
+          "security_cost": 43.95803362989936,
+          "security_adjusted_profit": 904.2708430690908,
+          "admitted": 20,
+          "rejected": 4,
+          "deferred": 15,
+          "infeasible": 0,
+          "actions": {
+            "admit": 20,
+            "reject": 4,
+            "defer": 15
+          },
+          "steps": 39,
+          "seed": 10071
+        },
+        {
+          "reward": 1022.1749987463947,
+          "raw_profit": 1087.5842654032256,
+          "security_cost": 42.87091041831434,
+          "security_adjusted_profit": 1044.7133549849113,
+          "admitted": 22,
+          "rejected": 2,
+          "deferred": 14,
+          "infeasible": 0,
+          "actions": {
+            "admit": 22,
+            "reject": 2,
+            "defer": 14
+          },
+          "steps": 38,
+          "seed": 10072
+        },
+        {
+          "reward": 954.6605878764694,
+          "raw_profit": 1034.5667966416434,
+          "security_cost": 41.99562924400528,
+          "security_adjusted_profit": 992.5711673976381,
+          "admitted": 20,
+          "rejected": 4,
+          "deferred": 19,
+          "infeasible": 0,
+          "actions": {
+            "admit": 20,
+            "reject": 4,
+            "defer": 19
+          },
+          "steps": 43,
+          "seed": 10073
+        },
+        {
+          "reward": 1036.4384167631597,
+          "raw_profit": 1111.2669881871502,
+          "security_cost": 39.26325214486979,
+          "security_adjusted_profit": 1072.0037360422805,
+          "admitted": 19,
+          "rejected": 5,
+          "deferred": 18,
+          "infeasible": 0,
+          "actions": {
+            "admit": 19,
+            "reject": 5,
+            "defer": 18
+          },
+          "steps": 42,
+          "seed": 10074
+        },
+        {
+          "reward": 1133.0943498477443,
+          "raw_profit": 1220.7825248157776,
+          "security_cost": 53.6801187047654,
+          "security_adjusted_profit": 1167.1024061110122,
+          "admitted": 21,
+          "rejected": 3,
+          "deferred": 15,
+          "infeasible": 0,
+          "actions": {
+            "admit": 21,
+            "reject": 3,
+            "defer": 15
+          },
+          "steps": 39,
+          "seed": 10075
+        },
+        {
+          "reward": 913.9694540495522,
+          "raw_profit": 985.3398275948698,
+          "security_cost": 49.888740625938,
+          "security_adjusted_profit": 935.4510869689318,
+          "admitted": 20,
+          "rejected": 4,
+          "deferred": 15,
+          "infeasible": 0,
+          "actions": {
+            "admit": 20,
+            "reject": 4,
+            "defer": 15
+          },
+          "steps": 39,
+          "seed": 10076
+        },
+        {
+          "reward": 1017.0387945520758,
+          "raw_profit": 1088.5217962835359,
+          "security_cost": 32.03015742304734,
+          "security_adjusted_profit": 1056.4916388604886,
+          "admitted": 18,
+          "rejected": 6,
+          "deferred": 16,
+          "infeasible": 0,
+          "actions": {
+            "admit": 18,
+            "reject": 6,
+            "defer": 16
+          },
+          "steps": 40,
+          "seed": 10077
+        },
+        {
+          "reward": 916.810248776261,
+          "raw_profit": 994.0348487941753,
+          "security_cost": 49.12973638991336,
+          "security_adjusted_profit": 944.905112404262,
+          "admitted": 21,
+          "rejected": 3,
+          "deferred": 15,
+          "infeasible": 0,
+          "actions": {
+            "admit": 21,
+            "reject": 3,
+            "defer": 15
+          },
+          "steps": 39,
+          "seed": 10078
+        },
+        {
+          "reward": 789.9962440439486,
+          "raw_profit": 867.1877572965891,
+          "security_cost": 37.98129998830511,
+          "security_adjusted_profit": 829.206457308284,
+          "admitted": 19,
+          "rejected": 5,
+          "deferred": 16,
+          "infeasible": 0,
+          "actions": {
+            "admit": 19,
+            "reject": 5,
+            "defer": 16
+          },
+          "steps": 40,
+          "seed": 10079
+        },
+        {
+          "reward": 1039.1447464619798,
+          "raw_profit": 1111.8590580480134,
+          "security_cost": 44.09227726486634,
+          "security_adjusted_profit": 1067.766780783147,
+          "admitted": 21,
+          "rejected": 3,
+          "deferred": 16,
+          "infeasible": 0,
+          "actions": {
+            "admit": 21,
+            "reject": 3,
+            "defer": 16
+          },
+          "steps": 40,
+          "seed": 10080
+        },
+        {
+          "reward": 1094.6676366422787,
+          "raw_profit": 1170.4908897417506,
+          "security_cost": 42.91167890697544,
+          "security_adjusted_profit": 1127.5792108347753,
+          "admitted": 20,
+          "rejected": 4,
+          "deferred": 17,
+          "infeasible": 0,
+          "actions": {
+            "admit": 20,
+            "reject": 4,
+            "defer": 17
+          },
+          "steps": 41,
+          "seed": 10081
+        },
+        {
+          "reward": 1012.2434073598774,
+          "raw_profit": 1086.738777505985,
+          "security_cost": 47.352635929652195,
+          "security_adjusted_profit": 1039.3861415763326,
+          "admitted": 22,
+          "rejected": 2,
+          "deferred": 19,
+          "infeasible": 0,
+          "actions": {
+            "admit": 22,
+            "reject": 2,
+            "defer": 19
+          },
+          "steps": 43,
+          "seed": 10082
+        },
+        {
+          "reward": 1116.4773339523974,
+          "raw_profit": 1185.0794479841777,
+          "security_cost": 37.540574393168626,
+          "security_adjusted_profit": 1147.5388735910092,
+          "admitted": 20,
+          "rejected": 4,
+          "deferred": 16,
+          "infeasible": 0,
+          "actions": {
+            "admit": 20,
+            "reject": 4,
+            "defer": 16
+          },
+          "steps": 40,
+          "seed": 10083
+        },
+        {
+          "reward": 863.3569803817599,
+          "raw_profit": 940.9385362489231,
+          "security_cost": 38.81426548606944,
+          "security_adjusted_profit": 902.1242707628537,
+          "admitted": 19,
+          "rejected": 5,
+          "deferred": 19,
+          "infeasible": 0,
+          "actions": {
+            "admit": 19,
+            "reject": 5,
+            "defer": 19
+          },
+          "steps": 43,
+          "seed": 10084
+        },
+        {
+          "reward": 1005.617666986323,
+          "raw_profit": 1084.6811858557373,
+          "security_cost": 38.92042950047927,
+          "security_adjusted_profit": 1045.760756355258,
+          "admitted": 20,
+          "rejected": 4,
+          "deferred": 16,
+          "infeasible": 0,
+          "actions": {
+            "admit": 20,
+            "reject": 4,
+            "defer": 16
+          },
+          "steps": 40,
+          "seed": 10085
+        },
+        {
+          "reward": 1152.5115668397668,
+          "raw_profit": 1225.8926243046685,
+          "security_cost": 37.770494272796334,
+          "security_adjusted_profit": 1188.122130031872,
+          "admitted": 20,
+          "rejected": 4,
+          "deferred": 16,
+          "infeasible": 0,
+          "actions": {
+            "admit": 20,
+            "reject": 4,
+            "defer": 16
+          },
+          "steps": 40,
+          "seed": 10086
+        },
+        {
+          "reward": 811.0489908831382,
+          "raw_profit": 887.9535146569148,
+          "security_cost": 35.6818941507567,
+          "security_adjusted_profit": 852.2716205061581,
+          "admitted": 19,
+          "rejected": 5,
+          "deferred": 19,
+          "infeasible": 0,
+          "actions": {
+            "admit": 19,
+            "reject": 5,
+            "defer": 19
+          },
+          "steps": 43,
+          "seed": 10087
+        },
+        {
+          "reward": 977.4996268860559,
+          "raw_profit": 1058.1913574038372,
+          "security_cost": 34.43618559477721,
+          "security_adjusted_profit": 1023.75517180906,
+          "admitted": 19,
+          "rejected": 5,
+          "deferred": 20,
+          "infeasible": 0,
+          "actions": {
+            "admit": 19,
+            "reject": 5,
+            "defer": 20
+          },
+          "steps": 44,
+          "seed": 10088
+        },
+        {
+          "reward": 1061.179759356236,
+          "raw_profit": 1136.812134474873,
+          "security_cost": 26.644083524421898,
+          "security_adjusted_profit": 1110.168050950451,
+          "admitted": 19,
+          "rejected": 5,
+          "deferred": 19,
+          "infeasible": 0,
+          "actions": {
+            "admit": 19,
+            "reject": 5,
+            "defer": 19
+          },
+          "steps": 43,
+          "seed": 10089
+        },
+        {
+          "reward": 1051.376852451283,
+          "raw_profit": 1119.850564907176,
+          "security_cost": 49.584421758010286,
+          "security_adjusted_profit": 1070.2661431491658,
+          "admitted": 22,
+          "rejected": 2,
+          "deferred": 15,
+          "infeasible": 0,
+          "actions": {
+            "admit": 22,
+            "reject": 2,
+            "defer": 15
+          },
+          "steps": 39,
+          "seed": 10090
+        },
+        {
+          "reward": 999.6136709702572,
+          "raw_profit": 1063.5643803996816,
+          "security_cost": 42.598031282990966,
+          "security_adjusted_profit": 1020.9663491166906,
+          "admitted": 21,
+          "rejected": 3,
+          "deferred": 16,
+          "infeasible": 0,
+          "actions": {
+            "admit": 21,
+            "reject": 3,
+            "defer": 16
+          },
+          "steps": 40,
+          "seed": 10091
+        }
+      ]
+    }
+  },
+  "config": {
+    "environment": {
+      "discount": 0.97,
+      "resource_cost": 0.15,
+      "isolation_cost": 0.08,
+      "exposure_cost": 0.25,
+      "rejection_cost": 0.04,
+      "deferral_cost": 0.02,
+      "infeasible_cost": 0.2,
+      "max_deferrals": 2,
+      "revenue_scale": 120.0,
+      "duration_scale": 12.0
+    },
+    "dqn": {
+      "hidden_size": 64,
+      "learning_rate": 0.005,
+      "batch_size": 32,
+      "replay_capacity": 10000,
+      "replay_warmup": 64,
+      "target_update_steps": 50,
+      "epsilon_start": 1.0,
+      "epsilon_end": 0.05,
+      "epsilon_decay": 0.9997,
+      "discount": 0.97
+    },
+    "capacity": {
+      "cpu": 100.0,
+      "radio": 100.0,
+      "bandwidth": 100.0
+    }
+  },
+  "artifacts": {
+    "model": "artifacts\\objective2_dqn.npz",
+    "plot": "artifacts\\objective2_admission_control.png"
+  },
+  "limitations": [
+    "The environment is calibrated to 5Guard service classes but does not call the MILP at every RL step.",
+    "Reported results are synthetic held-out trace results, not production-network validation.",
+    "The security term is an isolation-exposure proxy rather than measured attack propagation."
+  ]
+}

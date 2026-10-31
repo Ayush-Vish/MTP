@@ -16,6 +16,7 @@ result, known limitations, blockers, and the exact next step.
 | M4A: Reviewer-oriented validation | Complete | Oracle/random controls, paired tests, ablation, and latency | `4b2d75d` |
 | P1: Preliminary paper draft | Complete | IEEE-style preliminary paper and claim ledger | `ca5e347` |
 | P2: ARS-reviewed manuscript | Complete | Evidence-synchronized IEEE paper with adverse controls | `2e12dbc` |
+| M5: Objective 2 admission control | Complete (synthetic prototype) | Capacity-safe DQN with admit/reject/defer actions | Pending |
 | M4B: External generalization | Planned | Cross-dataset detection and measured attack propagation | Pending |
 
 ## M0: Scope selection
@@ -236,6 +237,20 @@ Status: **Planned**.
 - Remove SLA flooring, risk aggregation, and quarantine one at a time.
 - Measure attack propagation or containment so L2 and quarantine differ in the
   security outcome.
+
+## M5: Objective 2 learning-based admission control
+
+Status: **Complete as a synthetic research prototype** on 2026-10-31.
+
+Detailed report: [`milestones/07-admission-control.md`](milestones/07-admission-control.md)
+
+- Implemented a NumPy DQN with replay memory and a target network.
+- Added capacity-safe `ADMIT`, `REJECT`, and bounded `DEFER` actions.
+- Evaluated 2,000 training episodes and 50 held-out paired traces.
+- Mean held-out total reward was 987.47 for DQN, 598.71 for greedy, and
+  986.75 for a tuned value-density heuristic.
+- All 29 project tests pass; direct per-step 5Guard MILP replay remains future
+  validation work.
 
 ## P1: Paper draft
 
