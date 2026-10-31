@@ -10,6 +10,7 @@ __pycache__/
 .pytest_cache/
 data/raw/*.csv
 artifacts/*.joblib
+!artifacts/objective3_selector.joblib
 external/
 .venv_linux/
 tmp/

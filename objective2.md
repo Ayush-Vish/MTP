@@ -1,5 +1,7 @@
 # Objective 2: Learning-Based Admission Control
 
+Combined Objective 2/3 README: [`OBJECTIVES_2_3.md`](OBJECTIVES_2_3.md)
+
 ## Objective
 
 Objective 2 replaces greedy slice admission with a learning-based controller

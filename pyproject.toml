@@ -32,6 +32,7 @@ secguard-security-experiment = "secguard.security_experiment:main"
 secguard-learn-policy = "secguard.policy_learning:main"
 secguard-validate-research = "secguard.research_validation:main"
 secguard-admission-control = "secguard.admission_control:main"
+secguard-algorithm-selector = "secguard.algorithm_selector:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

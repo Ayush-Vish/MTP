@@ -2,6 +2,9 @@
 
 SecGuard is a research framework extending the **5Guard** base paper (*"5Guard: Isolation-Aware End-to-End Slicing of 5G Networks"*, IEEE TMC 2026) with an ML-derived security risk detector and an SLA-safe dynamic isolation policy.
 
+For the admission-control and intelligent solver-selection extensions, see
+[`OBJECTIVES_2_3.md`](OBJECTIVES_2_3.md).
+
 This repository allows you to:
 1. **Reproduce the 5Guard Base Paper** across all 7 algorithms (`OPT`, `IAR`, `DTR`, `RNR`, `NIS`, `CIS`, `FGR`) on both Synthetic and Berlin BRAIN topologies with publication-quality SVG plots.
 2. **Run the SecGuard Pipeline** (Random Forest packet-level threat detection $\to$ risk aggregation $\to$ SLA-floor isolation adaptation $\to$ surrogate policy learning $\to$ DQN admission control $\to$ statistical validation).
@@ -155,6 +158,9 @@ python scripts/check_paper.py
 
 # 8. Train and evaluate Objective 2 DQN admission control
 python -m secguard.admission_control
+
+# 9. Train and evaluate Objective 3 intelligent algorithm selection
+python -m secguard.algorithm_selector
 ```
 
 Generated SecGuard artifacts will appear in `artifacts/`:
@@ -163,6 +169,7 @@ Generated SecGuard artifacts will appear in `artifacts/`:
 * `learned_policy.json` & `learned_policy_comparison.png`: Optimal threshold policy $(0.30, 0.35, 0.90)$ and confidence intervals.
 * `research_validation.json` & `pareto_frontier.png`: Complete statistical validation and Pareto trade-off curve.
 * `objective2_admission_control.json` & `objective2_admission_control.png`: Held-out DQN admission-control comparison against greedy and value-density baselines.
+* `objective3_algorithm_selector.json`, `objective3_algorithm_selector.png`, and `objective3_architecture.png`: Held-out learned solver-selection results and system diagram.
 
 ---
 

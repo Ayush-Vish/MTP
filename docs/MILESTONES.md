@@ -17,6 +17,7 @@ result, known limitations, blockers, and the exact next step.
 | P1: Preliminary paper draft | Complete | IEEE-style preliminary paper and claim ledger | `ca5e347` |
 | P2: ARS-reviewed manuscript | Complete | Evidence-synchronized IEEE paper with adverse controls | `2e12dbc` |
 | M5: Objective 2 admission control | Complete (synthetic prototype) | Capacity-safe DQN with admit/reject/defer actions | Pending |
+| M6: Objective 3 algorithm selection | Complete (offline prototype) | Confidence-gated meta-selector over four 5Guard algorithms | Pending |
 | M4B: External generalization | Planned | Cross-dataset detection and measured attack propagation | Pending |
 
 ## M0: Scope selection
@@ -251,6 +252,22 @@ Detailed report: [`milestones/07-admission-control.md`](milestones/07-admission-
   986.75 for a tuned value-density heuristic.
 - All 29 project tests pass; direct per-step 5Guard MILP replay remains future
   validation work.
+
+## M6: Objective 3 intelligent algorithm selection
+
+Status: **Complete as an offline synthetic prototype** on 2026-10-31.
+
+- Trained a Random-Forest meta-selector on measured per-step outcomes from OPT,
+  IAR, DTR, and RNR.
+- Used grouped iteration split: simulations 0--6 train and 7--9 remain held out.
+- Added a 60% confidence gate that falls back to OPT for safety.
+- On 329 held-out decisions, retained 95.35% mean profit quality but was 80.98%
+  slower than measured FGR.
+- Recorded the adverse result that the 90% latency-reduction aspiration was not
+  met; the selector is only 1.05% faster than always OPT on independent traces
+  and does not yet justify replacing FGR.
+- Added numerical evidence, a trained model, figures, diagrams, and eight tests;
+  the complete suite now contains 37 passing tests.
 
 ## P1: Paper draft
 

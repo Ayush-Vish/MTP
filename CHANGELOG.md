@@ -10,6 +10,9 @@ and limitations are documented separately in `docs/MILESTONES.md`.
 - Implement Objective 2 as a reproducible DQN admission controller with replay
   memory, a target network, admit/reject/defer actions, held-out baselines, and
   security-aware resource state.
+- Implement Objective 3 as a group-held-out Random-Forest meta-selector trained
+  on measured per-step 5Guard outcomes, with latency/quality baselines, figures,
+  an architecture diagram, and reproducible evidence artifacts.
 
 ## 0.7.0 - 2026-08-14
 
