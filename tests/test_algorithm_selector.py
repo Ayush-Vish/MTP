@@ -4,6 +4,7 @@ import pytest
 
 from secguard.algorithm_selector import (
     choose_oracle,
+    computation_savings,
     evaluate_choices,
     quality_retention,
     predict_with_fallback,
@@ -40,6 +41,12 @@ def test_quality_retention_is_bounded_and_penalizes_infeasibility() -> None:
     assert quality_retention(95.0, 100.0) == pytest.approx(0.95)
     assert quality_retention(110.0, 100.0) == 1.0
     assert quality_retention(100.0, 100.0, feasible=False) == 0.0
+
+
+def test_computation_savings_separates_work_and_solver_calls() -> None:
+    result = computation_savings(1.2, 1.6)
+    assert result["solver_work_reduction"] == pytest.approx(0.25)
+    assert result["solver_call_reduction"] == pytest.approx(0.75)
 
 
 def test_group_split_keeps_iterations_disjoint() -> None:

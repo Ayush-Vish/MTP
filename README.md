@@ -169,7 +169,7 @@ Generated SecGuard artifacts will appear in `artifacts/`:
 * `learned_policy.json` & `learned_policy_comparison.png`: Optimal threshold policy $(0.30, 0.35, 0.90)$ and confidence intervals.
 * `research_validation.json` & `pareto_frontier.png`: Complete statistical validation and Pareto trade-off curve.
 * `objective2_admission_control.json` & `objective2_admission_control.png`: Held-out DQN admission-control comparison against greedy and value-density baselines.
-* `objective3_algorithm_selector.json`, `objective3_algorithm_selector.png`, and `objective3_architecture.png`: Held-out learned solver-selection results and system diagram.
+* `objective3_algorithm_selector.json`, `objective3_algorithm_selector.png`, `objective3_computation_tradeoff.png`, and `objective3_architecture.png`: Held-out solver-selection results, computation trade-off, and system diagram.
 
 ---
 

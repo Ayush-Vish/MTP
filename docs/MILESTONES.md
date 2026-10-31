@@ -260,14 +260,16 @@ Status: **Complete as an offline synthetic prototype** on 2026-10-31.
 - Trained a Random-Forest meta-selector on measured per-step outcomes from OPT,
   IAR, DTR, and RNR.
 - Used grouped iteration split: simulations 0--6 train and 7--9 remain held out.
-- Added a 60% confidence gate that falls back to OPT for safety.
-- On 329 held-out decisions, retained 95.35% mean profit quality but was 80.98%
-  slower than measured FGR.
+- Added balanced (45%) and safe (60%) confidence gates with OPT fallback.
+- The balanced profile reduced solver calls by 75.00% and estimated solver work
+  by 23.44% while retaining 94.63% mean profit quality.
+- The safe profile reduced estimated solver work by 14.88% while retaining
+  95.35% mean profit quality.
 - Recorded the adverse result that the 90% latency-reduction aspiration was not
-  met; the selector is only 1.05% faster than always OPT on independent traces
-  and does not yet justify replacing FGR.
-- Added numerical evidence, a trained model, figures, diagrams, and eight tests;
-  the complete suite now contains 37 passing tests.
+  met; balanced response latency remains 62.77% slower than measured FGR and
+  does not yet justify replacing it.
+- Added numerical evidence, a trained model, figures, diagrams, and nine tests;
+  the complete suite now contains 38 passing tests.
 
 ## P1: Paper draft
 

@@ -20,9 +20,9 @@ contain only information available before the current allocation:
   and rejection state.
 
 The training label is the fastest deadline-feasible algorithm whose observed
-profit is within 5% of the best feasible candidate. Predictions below 60%
-confidence fall back to `OPT`. This safety gate favors solution quality during
-distribution shift.
+profit is within 5% of the best feasible candidate. The default balanced profile
+falls back to `OPT` below 45% confidence. A separate safe profile uses a 60%
+threshold when profit retention is more important than computation reduction.
 
 Training uses complete simulation groups: iterations 0--6 train the selector,
 while iterations 7--9 remain held out. Rows from the same simulation are never
@@ -47,9 +47,10 @@ baselines, and regenerates the model, JSON evidence, figure, and diagram.
 The evaluation contains 329 deadline-feasible decision points from held-out
 simulation iterations 7--9.
 
-| Policy | Mean latency (s) | Mean profit retained | Feasibility/deadline rate |
+| Policy | Mean solver time (s) | Mean profit retained | Feasibility/deadline rate |
 |---|---:|---:|---:|
-| Confidence-gated selector | **1.3615** | 95.35% | 95.44% |
+| Balanced selector (45%) | **1.2245** | 94.63% | 95.14% |
+| Safe selector (60%) | 1.3615 | 95.35% | 95.44% |
 | Always OPT | 1.3760 | **96.05%** | **96.05%** |
 | Always IAR | **0.0087** | 33.44% | 51.98% |
 | Always RNR / training majority | 0.1104 | 78.67% | 79.64% |
@@ -58,21 +59,25 @@ simulation iterations 7--9.
 Measured FGR/5Guard latency was 0.7523 seconds per decision. For context, the
 independent candidate trajectories give a counterfactual parallel wait of
 1.3760 seconds and a counterfactual sequential sum of 1.5994 seconds. These are
-not causal measurements of the FGR trajectory. The selector therefore:
+not causal measurements of the FGR trajectory. The balanced selector therefore:
 
-- was **80.98% slower** than measured FGR on the held-out trace;
-- was 1.05% faster than always selecting OPT on the independent trajectories;
-- retained **95.35%** of the best observed profit on average;
-- placed **94.53%** of selections within the 5% profit-loss budget;
-- achieved **95.44%** deadline-feasible selections; and
+- executed **one solver instead of four**, a **75.00% reduction in solver calls**;
+- reduced estimated solver work by **23.44%** versus the independent run-all sum;
+- was 11.01% faster than always selecting OPT on the independent trajectories;
+- retained **94.63%** of the best observed profit on average;
+- placed **89.67%** of selections within the 5% profit-loss budget;
+- achieved **95.14%** deadline-feasible selections;
+- was still **62.77% slower** than measured FGR response latency; and
 - required sub-millisecond mean inference time per request in this run.
 
-The 60% confidence gate activated on 75.68% of held-out decisions. It protects
-quality but makes the selector behave mostly like OPT. The result does not meet
-the original aspirational target of a 90% latency reduction and does not yet
-justify replacing measured FGR execution.
+The safe 60% profile reduces estimated solver work by 14.88% while retaining
+95.35% profit quality. The balanced and safe profiles now establish computation
+improvements, but neither meets the original 90% response-latency aspiration or
+yet justifies replacing measured FGR execution.
 
 ![Objective 3 held-out results](artifacts/objective3_algorithm_selector.png)
+
+![Objective 3 computation trade-off](artifacts/objective3_computation_tradeoff.png)
 
 ## Evidence and verification
 
@@ -81,8 +86,9 @@ justify replacing measured FGR execution.
 - Metrics: `artifacts/objective3_algorithm_selector.json`
 - Trained model: `artifacts/objective3_selector.joblib`
 - Result figure: `artifacts/objective3_algorithm_selector.png`
+- Computation figure: `artifacts/objective3_computation_tradeoff.png`
 - Architecture diagram: `artifacts/objective3_architecture.png`
-- Complete project test suite: **37 tests passed**
+- Complete project test suite: **38 tests passed**
 
 ## Limitations and next work
 

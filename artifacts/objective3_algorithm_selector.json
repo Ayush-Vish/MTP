@@ -53,42 +53,3178 @@
     ]
   },
   "evaluation": {
-    "oracle_label_accuracy": 0.44680851063829785,
+    "oracle_label_accuracy": 0.6656534954407295,
     "mean_prediction_confidence": 0.5663714632156484,
-    "fallback_rate": 0.756838905775076,
-    "mean_inference_milliseconds": 0.7083951367788616,
+    "fallback_rate": 0.20972644376899696,
+    "mean_inference_milliseconds": 1.3407249240133967,
     "measured_fgr_mean_latency_seconds": 0.7522959477205529,
     "counterfactual_parallel_wait_seconds": 1.3759701835863982,
     "counterfactual_sequential_sum_seconds": 1.5994283762926944,
-    "selector_latency_change_vs_measured_fgr": 0.8098038935127378,
+    "selector_latency_change_vs_measured_fgr": 0.6276996697427553,
+    "computation": {
+      "balanced": {
+        "selected_solver_work_seconds": 1.224511865653557,
+        "ensemble_solver_work_seconds": 1.5994283762926944,
+        "solver_work_reduction": 0.23440656436779883,
+        "selected_solver_calls_per_request": 1,
+        "ensemble_solver_calls_per_request": 4,
+        "solver_call_reduction": 0.75
+      },
+      "safe": {
+        "selected_solver_work_seconds": 1.3615081352585117,
+        "ensemble_solver_work_seconds": 1.5994283762926944,
+        "solver_work_reduction": 0.1487532949650779,
+        "selected_solver_calls_per_request": 1,
+        "ensemble_solver_calls_per_request": 4,
+        "solver_call_reduction": 0.75
+      },
+      "basis": "sum of four independently replayed candidate solver times; reported separately from measured FGR response latency"
+    },
+    "confidence_profiles": [
+      {
+        "confidence_threshold": 0.0,
+        "fallback_rate": 0.0,
+        "mean_quality_retention": 0.9369075358938764,
+        "feasibility_rate": 0.9452887537993921,
+        "mean_solver_work_seconds": 1.063841441033357,
+        "solver_work_reduction": 0.33486146875846434
+      },
+      {
+        "confidence_threshold": 0.05,
+        "fallback_rate": 0.0,
+        "mean_quality_retention": 0.9369075358938764,
+        "feasibility_rate": 0.9452887537993921,
+        "mean_solver_work_seconds": 1.063841441033357,
+        "solver_work_reduction": 0.33486146875846434
+      },
+      {
+        "confidence_threshold": 0.1,
+        "fallback_rate": 0.0,
+        "mean_quality_retention": 0.9369075358938764,
+        "feasibility_rate": 0.9452887537993921,
+        "mean_solver_work_seconds": 1.063841441033357,
+        "solver_work_reduction": 0.33486146875846434
+      },
+      {
+        "confidence_threshold": 0.15,
+        "fallback_rate": 0.0,
+        "mean_quality_retention": 0.9369075358938764,
+        "feasibility_rate": 0.9452887537993921,
+        "mean_solver_work_seconds": 1.063841441033357,
+        "solver_work_reduction": 0.33486146875846434
+      },
+      {
+        "confidence_threshold": 0.2,
+        "fallback_rate": 0.0,
+        "mean_quality_retention": 0.9369075358938764,
+        "feasibility_rate": 0.9452887537993921,
+        "mean_solver_work_seconds": 1.063841441033357,
+        "solver_work_reduction": 0.33486146875846434
+      },
+      {
+        "confidence_threshold": 0.25,
+        "fallback_rate": 0.0,
+        "mean_quality_retention": 0.9369075358938764,
+        "feasibility_rate": 0.9452887537993921,
+        "mean_solver_work_seconds": 1.063841441033357,
+        "solver_work_reduction": 0.33486146875846434
+      },
+      {
+        "confidence_threshold": 0.3,
+        "fallback_rate": 0.0060790273556231,
+        "mean_quality_retention": 0.9338680222160648,
+        "feasibility_rate": 0.9422492401215805,
+        "mean_solver_work_seconds": 1.0759524586625535,
+        "solver_work_reduction": 0.3272893774984177
+      },
+      {
+        "confidence_threshold": 0.35,
+        "fallback_rate": 0.0182370820668693,
+        "mean_quality_retention": 0.9375573618937207,
+        "feasibility_rate": 0.9452887537993921,
+        "mean_solver_work_seconds": 1.0886748367781633,
+        "solver_work_reduction": 0.31933504937457946
+      },
+      {
+        "confidence_threshold": 0.4,
+        "fallback_rate": 0.0851063829787234,
+        "mean_quality_retention": 0.9417124805848031,
+        "feasibility_rate": 0.9483282674772037,
+        "mean_solver_work_seconds": 1.1363798702127899,
+        "solver_work_reduction": 0.289508747589687
+      },
+      {
+        "confidence_threshold": 0.45,
+        "fallback_rate": 0.20972644376899696,
+        "mean_quality_retention": 0.9463003187567339,
+        "feasibility_rate": 0.9513677811550152,
+        "mean_solver_work_seconds": 1.224511865653557,
+        "solver_work_reduction": 0.23440656436779883
+      },
+      {
+        "confidence_threshold": 0.5,
+        "fallback_rate": 0.4012158054711246,
+        "mean_quality_retention": 0.9471395139474283,
+        "feasibility_rate": 0.9513677811550152,
+        "mean_solver_work_seconds": 1.271519839817426,
+        "solver_work_reduction": 0.20501608032947732
+      },
+      {
+        "confidence_threshold": 0.55,
+        "fallback_rate": 0.5957446808510638,
+        "mean_quality_retention": 0.9488191317900576,
+        "feasibility_rate": 0.9513677811550152,
+        "mean_solver_work_seconds": 1.3206151449848689,
+        "solver_work_reduction": 0.17432054816614237
+      },
+      {
+        "confidence_threshold": 0.6,
+        "fallback_rate": 0.756838905775076,
+        "mean_quality_retention": 0.9535162213540974,
+        "feasibility_rate": 0.9544072948328267,
+        "mean_solver_work_seconds": 1.3615081352585117,
+        "solver_work_reduction": 0.1487532949650779
+      },
+      {
+        "confidence_threshold": 0.65,
+        "fallback_rate": 0.8024316109422492,
+        "mean_quality_retention": 0.954077082379338,
+        "feasibility_rate": 0.9544072948328267,
+        "mean_solver_work_seconds": 1.3695726948329368,
+        "solver_work_reduction": 0.14371114384786568
+      },
+      {
+        "confidence_threshold": 0.7,
+        "fallback_rate": 0.8115501519756839,
+        "mean_quality_retention": 0.954077082379338,
+        "feasibility_rate": 0.9544072948328267,
+        "mean_solver_work_seconds": 1.370511547720437,
+        "solver_work_reduction": 0.14312415108131465
+      },
+      {
+        "confidence_threshold": 0.75,
+        "fallback_rate": 0.8267477203647416,
+        "mean_quality_retention": 0.9543597237283964,
+        "feasibility_rate": 0.9544072948328267,
+        "mean_solver_work_seconds": 1.3725815583585717,
+        "solver_work_reduction": 0.14182993205355632
+      },
+      {
+        "confidence_threshold": 0.8,
+        "fallback_rate": 0.8571428571428571,
+        "mean_quality_retention": 0.954393685598587,
+        "feasibility_rate": 0.9544072948328267,
+        "mean_solver_work_seconds": 1.373088616717325,
+        "solver_work_reduction": 0.14151290731755112
+      }
+    ],
     "selector_confusion_matrix": [
       [
-        101,
+        100,
         0,
         0,
-        0
-      ],
-      [
-        5,
-        39,
-        0,
-        0
-      ],
-      [
-        50,
-        1,
-        1,
         1
       ],
       [
-        120,
+        3,
+        41,
+        0,
+        0
+      ],
+      [
+        14,
         1,
-        4,
-        6
+        13,
+        25
+      ],
+      [
+        32,
+        1,
+        33,
+        65
       ]
     ],
     "policies": {
       "selector": {
+        "requests": 329,
+        "mean_latency_seconds": 1.224511865653557,
+        "p95_latency_seconds": 4.931763140001567,
+        "mean_profit": 35865.50632560186,
+        "mean_quality_retention": 0.9463003187567339,
+        "within_5_percent_rate": 0.8966565349544073,
+        "feasibility_rate": 0.9513677811550152,
+        "deadline_success_rate": 0.9513677811550152,
+        "selection_counts": {
+          "iar": 43,
+          "rnr": 91,
+          "dtr": 46,
+          "opt": 149
+        },
+        "per_request": [
+          {
+            "algorithm": "iar",
+            "profit": -4.60502512562814,
+            "latency": 0.000970900000538677,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 5.7899497487437195,
+            "latency": 0.0006138999888207763,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 16.184924623115577,
+            "latency": 0.0010135000047739595,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 2894.1849246231154,
+            "latency": 0.0011266999936196953,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.999309436361264,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 2906.5798994974875,
+            "latency": 0.0013218999956734478,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 2916.974874371859,
+            "latency": 0.0010557000059634447,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 5793.974874371859,
+            "latency": 0.0018848000036086887,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9994824887005699,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 8673.97487437186,
+            "latency": 0.0016629000019747764,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9996542573830817,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 8687.369849246232,
+            "latency": 0.0015233999874908477,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 8727.969839195977,
+            "latency": 0.002439600008074194,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9998854389442943,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 8739.364814070352,
+            "latency": 0.0017257000145036727,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999998,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 8749.759788944724,
+            "latency": 0.0019160000083502382,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999998,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 8760.154763819095,
+            "latency": 0.001974799990421161,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999998,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 8770.549738693468,
+            "latency": 0.0022578999924007803,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999998,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 8780.944713567838,
+            "latency": 0.00335429998813197,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999998,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 8817.544703517586,
+            "latency": 0.0033549000218044966,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9994332700861226,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 8832.93967839196,
+            "latency": 0.004038199986098334,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999996,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 8843.33465326633,
+            "latency": 0.002830500015988946,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999996,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 8853.729628140703,
+            "latency": 0.0030373000190593302,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999996,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 8890.32961809045,
+            "latency": 0.00465820002136752,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9994379072822848,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 8905.724592964823,
+            "latency": 0.004658000019844621,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999996,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 8916.119567839196,
+            "latency": 0.003128799988189712,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999996,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 8926.514542713569,
+            "latency": 0.003180900006555021,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999996,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 8936.90951758794,
+            "latency": 0.004760000010719523,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999996,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 8936.90951758794,
+            "latency": 0.0028263000131119043,
+            "feasible": false,
+            "deadline_met": false,
+            "quality_retention": 0.0,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 25065.693592462314,
+            "latency": 0.03466490001301281,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 25076.088567336687,
+            "latency": 0.06123500000103377,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 25117.68855728644,
+            "latency": 0.030546900001354516,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 25128.08353216081,
+            "latency": 0.02540519999456592,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 22258.478507035183,
+            "latency": 0.027554100000998005,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.8854345938560279,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 25148.873481909555,
+            "latency": 0.03754380001919344,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 25159.268456783928,
+            "latency": 0.06739939999533817,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 25169.6634316583,
+            "latency": 0.03589599998667836,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 25180.05840653267,
+            "latency": 0.06081240001367405,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 25190.453381407042,
+            "latency": 0.050856799993198365,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 28070.453381407042,
+            "latency": 0.04587739999988116,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 28080.848356281414,
+            "latency": 0.03680619999067858,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 28091.243331155787,
+            "latency": 0.04737239997484721,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 28101.63830603016,
+            "latency": 0.06237850000616163,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 28112.03328090453,
+            "latency": 0.04380029998719692,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 28122.428255778894,
+            "latency": 0.28005090000806376,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999998,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 28164.028245728652,
+            "latency": 0.055986400024266914,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 28174.42322060302,
+            "latency": 0.0587768999976106,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 28184.818195477394,
+            "latency": 0.05003179999766871,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 31064.818195477397,
+            "latency": 0.05508479999843985,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 28226.418185427145,
+            "latency": 0.05194599999231286,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9074146054736307,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 31116.813160301514,
+            "latency": 0.056237899989355356,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 28247.208135175886,
+            "latency": 0.0673440000100527,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9074764435187039,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 28257.60311005026,
+            "latency": 0.09092759998748079,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9075073315752289,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 28299.20310000001,
+            "latency": 0.08821899999747984,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9076307373615974,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 28309.598074874382,
+            "latency": 0.08268220000900328,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9076615225022711,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 28319.993049748755,
+            "latency": 0.07023640000261366,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9076922871294297,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 28361.593039698502,
+            "latency": 0.08774909999920055,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9078152001935241,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 28371.988014572875,
+            "latency": 0.08410479998565279,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9078458625205841,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 31262.38298944725,
+            "latency": 0.10250929999165237,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 28392.77796432162,
+            "latency": 0.09258290001889691,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9079071260223277,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 28403.172939195993,
+            "latency": 0.09629660000791773,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9079377272376508,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 28413.56791407036,
+            "latency": 0.10069749999092892,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9079683081229902,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 31303.96288894474,
+            "latency": 0.10988590001943521,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 28434.357863819107,
+            "latency": 0.09881659998791292,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9080294089847015,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 28444.75283869348,
+            "latency": 0.08674979998613708,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9080599290014981,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 31335.147813567855,
+            "latency": 0.11507880000863224,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 31345.542788442224,
+            "latency": 0.13091760000679642,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 28507.14277839197,
+            "latency": 0.1370701999985613,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9082426833071695,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 31387.14277839197,
+            "latency": 0.09201570000732318,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9159544751476607,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 31397.537753266348,
+            "latency": 0.10811059997649863,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9159799627169672,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 37157.53775326635,
+            "latency": 0.10556140000699088,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 34319.137743216095,
+            "latency": 0.12570650002453476,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9225788506206648,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 37209.532718090464,
+            "latency": 0.12456130000646226,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 37219.927692964826,
+            "latency": 1.038090199988801,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999996,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 37230.32266783921,
+            "latency": 0.14640320002217777,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 40110.3226678392,
+            "latency": 0.14320500000030734,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 42990.32266783921,
+            "latency": 0.1528820999956224,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 45870.32266783921,
+            "latency": 0.13194429999566637,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 45880.717642713586,
+            "latency": 0.1451229000231251,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 45880.717642713586,
+            "latency": 0.15778639999916777,
+            "feasible": false,
+            "deadline_met": false,
+            "quality_retention": 0.0,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "opt",
+            "profit": 48756.11261758787,
+            "latency": 1.5647526000102516,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 48766.50759246231,
+            "latency": 2.2458175999927334,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 48776.902567336685,
+            "latency": 1.8609920000017155,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 48787.297542211054,
+            "latency": 1.5483058000099845,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 48797.69251708543,
+            "latency": 1.5970494000066537,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 48808.07855240605,
+            "latency": 2.2187276000040583,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 48807.85256683417,
+            "latency": 2.927644599985797,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 48757.49754170852,
+            "latency": 2.4301506000047084,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 48707.1425165829,
+            "latency": 3.130016200011596,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 48656.78749145727,
+            "latency": 2.7499823000107426,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 48606.432466331644,
+            "latency": 2.5668087999802083,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 48556.07744120601,
+            "latency": 2.7356665000261273,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 48505.72241608039,
+            "latency": 3.309440699988045,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 48455.36739095476,
+            "latency": 4.146948200010229,
+            "feasible": false,
+            "deadline_met": false,
+            "quality_retention": 0.0,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "opt",
+            "profit": 48405.01236582913,
+            "latency": 3.1472838999761734,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 48354.6573407035,
+            "latency": 4.171688100002939,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 48354.6573407035,
+            "latency": 4.40771090000635,
+            "feasible": false,
+            "deadline_met": false,
+            "quality_retention": 0.0,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "opt",
+            "profit": 48292.152315577885,
+            "latency": 3.5511180000030436,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 48294.15231828354,
+            "latency": 2.5616363000008278,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 48231.647280402016,
+            "latency": 5.430624100001296,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 48231.647280402016,
+            "latency": 3.0991320999746677,
+            "feasible": false,
+            "deadline_met": false,
+            "quality_retention": 0.0,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "opt",
+            "profit": 48168.14225527638,
+            "latency": 4.233333900017897,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 48097.63723015076,
+            "latency": 3.4920559999882244,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 48036.13220502512,
+            "latency": 3.7044103000080213,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 47981.62717989949,
+            "latency": 5.191929699998582,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 47919.122154773875,
+            "latency": 14.253975400002673,
+            "feasible": false,
+            "deadline_met": false,
+            "quality_retention": 0.0,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "opt",
+            "profit": 47919.122154773875,
+            "latency": 14.236657600005856,
+            "feasible": false,
+            "deadline_met": false,
+            "quality_retention": 0.0,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "opt",
+            "profit": 47919.122154773875,
+            "latency": 6.510764300008304,
+            "feasible": false,
+            "deadline_met": false,
+            "quality_retention": 0.0,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "opt",
+            "profit": 47856.61712964822,
+            "latency": 3.067033600003924,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 47794.112104522595,
+            "latency": 3.0866069000039715,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 47794.112104522595,
+            "latency": 4.934218700014753,
+            "feasible": false,
+            "deadline_met": false,
+            "quality_retention": 0.0,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "opt",
+            "profit": 47796.11209447235,
+            "latency": 5.449616900004912,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 47796.11209447235,
+            "latency": 7.002691199973924,
+            "feasible": false,
+            "deadline_met": false,
+            "quality_retention": 0.0,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "opt",
+            "profit": 47798.1120844221,
+            "latency": 5.598352700006217,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 47800.11207437186,
+            "latency": 7.53696709999349,
+            "feasible": false,
+            "deadline_met": false,
+            "quality_retention": 0.0,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "opt",
+            "profit": 47735.60704924623,
+            "latency": 5.9902288999874145,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 47673.10202412061,
+            "latency": 5.203702900005737,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 47548.09197386934,
+            "latency": 4.140759700007038,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 47486.58694874371,
+            "latency": 5.718123900005594,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 47424.581923618076,
+            "latency": 3.1330008000077214,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 47367.07689849246,
+            "latency": 3.571047900011763,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 47304.57187336683,
+            "latency": 3.253597600007197,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 47242.06684824121,
+            "latency": 3.1217964999959804,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 47179.561823115575,
+            "latency": 3.2274093000160065,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": -4.60502512562814,
+            "latency": 0.0012414999946486205,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 5.7899497487437195,
+            "latency": 0.0009159999899566174,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 16.184924623115577,
+            "latency": 0.0007372999971266836,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 26.57989949748744,
+            "latency": 0.000764199998229742,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 36.9748743718593,
+            "latency": 0.0012889000063296407,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 47.369849246231155,
+            "latency": 0.0015361999976448715,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 57.76482412060301,
+            "latency": 0.0019094000163022429,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 2933.764824120603,
+            "latency": 0.0014489000022877008,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9986384206226592,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 2948.159798994975,
+            "latency": 0.0016659999964758754,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 2958.5547738693467,
+            "latency": 0.001541099976748228,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 2997.154763819094,
+            "latency": 0.0024585000064689666,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.999000051585278,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 3010.549738693467,
+            "latency": 0.0020835000032093376,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999996,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 3020.9447135678392,
+            "latency": 0.001909599988721311,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999996,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 3031.339688442211,
+            "latency": 0.0029824999801348895,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999996,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 3041.734663316583,
+            "latency": 0.0034408000065013766,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999996,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 3052.1296381909547,
+            "latency": 0.0030166000069584697,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999996,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 3052.1296381909547,
+            "latency": 0.002146499988157302,
+            "feasible": false,
+            "deadline_met": false,
+            "quality_retention": 0.0,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "opt",
+            "profit": 19180.913713065325,
+            "latency": 0.15278159998706542,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 19191.308687939698,
+            "latency": 0.14776539997546934,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 22071.308687939698,
+            "latency": 0.26811830000951886,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 22081.70366281407,
+            "latency": 0.016216799995163456,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 22092.098637688443,
+            "latency": 0.2998788999975659,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 22102.493612562816,
+            "latency": 0.1826481000171043,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 22112.888587437184,
+            "latency": 0.03129740001168102,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 22123.283562311557,
+            "latency": 0.034803800022928044,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 22133.67853718593,
+            "latency": 0.037551799992797896,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 22144.073512060302,
+            "latency": 0.029917700012447312,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 22154.468486934675,
+            "latency": 0.033726599998772144,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 22164.863461809044,
+            "latency": 0.02907940000295639,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 25044.863461809044,
+            "latency": 0.027438300021458417,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 25055.258436683416,
+            "latency": 0.05163239999092184,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 25065.65341155779,
+            "latency": 0.03465479999431409,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 27945.65341155779,
+            "latency": 0.04093280000961386,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 27987.25340150754,
+            "latency": 0.047899400000460446,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 27997.648376381912,
+            "latency": 0.056691600009799004,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 28008.043351256285,
+            "latency": 0.045600100012961775,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 28018.438326130658,
+            "latency": 0.04296380002051592,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 28060.038316080405,
+            "latency": 0.050954699981957674,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 28070.433290954774,
+            "latency": 0.2605559000221547,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999999,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 30950.433290954774,
+            "latency": 0.36675040001864545,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999998,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 30960.828265829143,
+            "latency": 0.43774319998919964,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999998,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 30971.223240703526,
+            "latency": 0.04934589998447336,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 30981.618215577888,
+            "latency": 0.4705793999892194,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999998,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 33861.618215577895,
+            "latency": 0.08517529998789541,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 33872.013190452264,
+            "latency": 0.4376306999765802,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999998,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 36752.013190452264,
+            "latency": 0.3422797000093851,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999998,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 39632.013190452264,
+            "latency": 0.32622609997633845,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999998,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 42512.01319045227,
+            "latency": 0.0844980999827385,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 42522.40816532664,
+            "latency": 0.06859300000360236,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 42532.803140201,
+            "latency": 0.3569744999986142,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999998,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 42543.198115075385,
+            "latency": 0.0647060000046622,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 42553.593089949754,
+            "latency": 0.07443710000370629,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 42563.98806482413,
+            "latency": 0.08313600000110455,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 42605.58805477388,
+            "latency": 0.07027380002546124,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 42615.98302964825,
+            "latency": 0.08687349999672733,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 42626.37800452262,
+            "latency": 0.0743310000107158,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 42636.77297939699,
+            "latency": 0.10857439998653717,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 42647.16795427136,
+            "latency": 0.08703319999040104,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 42657.56292914573,
+            "latency": 0.6344182000029832,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999998,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 42667.957904020106,
+            "latency": 0.08440120000159368,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 42709.55789396985,
+            "latency": 0.11027520001516677,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 42719.95286884423,
+            "latency": 0.12603859999217093,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 42761.55285879398,
+            "latency": 0.12400529999285936,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 42771.947833668346,
+            "latency": 0.12006159999873489,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 42813.5478236181,
+            "latency": 0.14100919998600148,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 42823.94279849247,
+            "latency": 0.12401490000775084,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 45703.94279849247,
+            "latency": 0.1379525000229478,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 45714.33777336683,
+            "latency": 1.0203789000224788,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999999,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 45755.9377633166,
+            "latency": 0.14203419999103062,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 45797.53775326635,
+            "latency": 0.13920460001099855,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 48677.53775326635,
+            "latency": 0.12050170000293292,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 50892.70785326633,
+            "latency": 2.6796930999844335,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 50853.35282814069,
+            "latency": 1.6048715999932028,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 50802.99780301507,
+            "latency": 1.508657200000016,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 50752.642777889436,
+            "latency": 1.6831376000191085,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 50702.28775276381,
+            "latency": 1.6425744000007398,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 50651.93272763818,
+            "latency": 1.481639899982838,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 50601.57770251255,
+            "latency": 1.4521476000081748,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 50551.222677386926,
+            "latency": 1.6566170000005513,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 52094.72267738695,
+            "latency": 1.5562586000014562,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 52044.36765226132,
+            "latency": 1.4992479000065941,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 52046.367642211066,
+            "latency": 2.8833247000002302,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 52059.5176321608,
+            "latency": 1.8522402000089642,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 52010.16260703518,
+            "latency": 2.3070565999951214,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51959.80758190955,
+            "latency": 1.9889494999952149,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51959.80758190955,
+            "latency": 1.8240251000097487,
+            "feasible": false,
+            "deadline_met": false,
+            "quality_retention": 0.0,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51909.452556783915,
+            "latency": 2.0819367000076454,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51858.09753165829,
+            "latency": 3.5341101000085473,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51808.742506532675,
+            "latency": 1.9398569999902975,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51758.387481407044,
+            "latency": 2.2663610000163317,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51692.88245628141,
+            "latency": 3.1092404999944847,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51633.37743115578,
+            "latency": 2.825488000002224,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51556.27240603015,
+            "latency": 2.963434999983292,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51507.91738090453,
+            "latency": 2.747501000005286,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51445.41235577889,
+            "latency": 3.597086199995829,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51386.40733065326,
+            "latency": 3.1706933999957982,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51324.90230552763,
+            "latency": 3.1186978000041563,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51249.397280402016,
+            "latency": 3.146440300013637,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51132.38723015074,
+            "latency": 2.8898669999907725,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51134.38722010051,
+            "latency": 8.425537499977509,
+            "feasible": false,
+            "deadline_met": false,
+            "quality_retention": 0.0,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51076.88219497488,
+            "latency": 5.928931399976136,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "iar",
+            "profit": 15938.291,
+            "latency": 0.001002399978460744,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9888265447072498,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 18988.3891,
+            "latency": 0.0022148999851197004,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 18993.784074874373,
+            "latency": 0.0037409999931696802,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 19004.179049748745,
+            "latency": 0.0036435000074561685,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 19014.574024623114,
+            "latency": 0.004539499990642071,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 21894.574024623114,
+            "latency": 0.005343799974070862,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 21904.968999497487,
+            "latency": 0.0069537000090349466,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 21915.36397437186,
+            "latency": 0.008317100000567734,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 21925.758949246232,
+            "latency": 0.014320700021926314,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 21936.153924120605,
+            "latency": 0.013305000000400469,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 21946.548898994974,
+            "latency": 0.009881999983917922,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 24826.548898994974,
+            "latency": 0.017855799989774823,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 24836.943873869346,
+            "latency": 0.01906249998137355,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 24847.33884874372,
+            "latency": 0.018257100018672645,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 24857.73382361809,
+            "latency": 0.014029000012669712,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 24868.128798492464,
+            "latency": 0.020913199987262487,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 27748.128798492464,
+            "latency": 0.01864719999139197,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 27758.523773366833,
+            "latency": 0.022193400014657527,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 27768.918748241205,
+            "latency": 0.02023140000528656,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 27779.313723115578,
+            "latency": 0.02204640000127256,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 27789.70869798995,
+            "latency": 0.032566600013524294,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 27800.103672864323,
+            "latency": 0.03225489999749698,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 30680.103672864323,
+            "latency": 0.034951800014823675,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 30690.498647738692,
+            "latency": 0.03568989998893812,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 30700.893622613068,
+            "latency": 0.033449499984271824,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 30711.288597487437,
+            "latency": 0.04032319999532774,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 33591.28859748744,
+            "latency": 0.03343660000246018,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 33601.683572361806,
+            "latency": 0.04373809997923672,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 33612.07854723618,
+            "latency": 0.03806869999971241,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 33622.47352211055,
+            "latency": 0.03517300001112744,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 36502.47352211055,
+            "latency": 0.04391060001216829,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 39382.47352211055,
+            "latency": 0.032982800010358915,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 39392.86849698493,
+            "latency": 0.05197510001016781,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 39403.263471859296,
+            "latency": 0.04670140001690015,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 39413.658446733665,
+            "latency": 0.05766649998258799,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 39455.25843668342,
+            "latency": 0.05832519999239594,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 39465.65341155779,
+            "latency": 0.053972399997292086,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 39476.04838643216,
+            "latency": 0.0687018999888096,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 39486.443361306534,
+            "latency": 0.069225599989295,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 39496.8383361809,
+            "latency": 0.057278099993709475,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 39507.23331105528,
+            "latency": 0.05746280000312254,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 39548.83330100503,
+            "latency": 0.07102740000118501,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 39559.228275879395,
+            "latency": 0.07816510001430288,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 39569.62325075377,
+            "latency": 0.09436809999169782,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 39580.01822562814,
+            "latency": 0.052853900007903576,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "dtr",
+            "profit": 39621.618215577895,
+            "latency": 0.06340000001364388,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 39632.01319045227,
+            "latency": 0.08643329999176785,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 39642.40816532663,
+            "latency": 0.2984416999970563,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999998,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 42522.40816532664,
+            "latency": 0.0737811999861151,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 42564.00815527639,
+            "latency": 0.07819949998520315,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 45444.00815527639,
+            "latency": 0.06328229999053292,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 45485.60814522613,
+            "latency": 0.5032972000190057,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999999,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 45496.003120100504,
+            "latency": 0.5500464999931864,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999999,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 48376.003120100504,
+            "latency": 0.5093466000107583,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 0.9999999999999999,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "rnr",
+            "profit": 48386.39809497488,
+            "latency": 0.0807218000118155,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51247.39810145984,
+            "latency": 1.0927272999833804,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 53013.18909497487,
+            "latency": 1.0623541999957524,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 52966.834069849254,
+            "latency": 0.7105536999879405,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 52916.47904472362,
+            "latency": 0.8864262999850325,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 52866.124019598,
+            "latency": 0.7538499000074808,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 52870.10310954774,
+            "latency": 0.9322658999881241,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 52819.74808442211,
+            "latency": 1.2828767000173684,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 52769.39305929648,
+            "latency": 0.8643790000060108,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 52719.03803417086,
+            "latency": 1.1358244000002742,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 52668.68300904522,
+            "latency": 1.129198099981295,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 52618.3279839196,
+            "latency": 0.9638560999883339,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 52567.97295879397,
+            "latency": 1.0724558999936562,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 52517.61793366834,
+            "latency": 1.2693610999849625,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 52467.26290854271,
+            "latency": 1.4717129000055138,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 52416.907883417094,
+            "latency": 1.4618928000272717,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 52366.552877494956,
+            "latency": 1.5148977999924682,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 52316.19783316583,
+            "latency": 1.6429243000166025,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 52329.347823115575,
+            "latency": 1.4875153999892063,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 52279.99279798995,
+            "latency": 1.6648506000055932,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 52229.63777286432,
+            "latency": 2.3757259999983944,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 52179.282747738696,
+            "latency": 1.4030803999921773,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 52128.927722613065,
+            "latency": 2.0345395999902394,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 52078.57269748744,
+            "latency": 1.3665712999936659,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 52028.21767236181,
+            "latency": 1.580022000009194,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51977.862647236194,
+            "latency": 1.637272899999516,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51927.507622110556,
+            "latency": 1.5394655999843962,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51877.15259698494,
+            "latency": 1.5446057000081055,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51826.79757185931,
+            "latency": 1.719188299990492,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51776.44254673367,
+            "latency": 1.982195500022499,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51726.08752160804,
+            "latency": 1.6193165000004228,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51675.73249648241,
+            "latency": 1.9893637000059243,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51625.377471356784,
+            "latency": 1.6743867000041064,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51562.87244623115,
+            "latency": 2.6412632999999914,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51500.367421105526,
+            "latency": 2.6701581000234,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51432.86239597989,
+            "latency": 2.604117499984568,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51432.86239597989,
+            "latency": 5.139709899987793,
+            "feasible": false,
+            "deadline_met": false,
+            "quality_retention": 0.0,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51439.86238592964,
+            "latency": 8.061683200008702,
+            "feasible": false,
+            "deadline_met": false,
+            "quality_retention": 0.0,
+            "within_5_percent": false
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51441.862375879406,
+            "latency": 2.567697299993597,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51379.35735075377,
+            "latency": 2.87249409998185,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51316.852325628155,
+            "latency": 2.8975630000059027,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51254.347300502515,
+            "latency": 3.5713343000097666,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51191.392275376886,
+            "latency": 4.928079799981788,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 51066.38222512564,
+            "latency": 2.7528503999928944,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 50940.372174874385,
+            "latency": 3.4395900999952573,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 50815.36212462312,
+            "latency": 2.926912299997639,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 50752.85709949749,
+            "latency": 3.4083324000239372,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 50693.85207437186,
+            "latency": 3.146784199983813,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 50633.34704924624,
+            "latency": 3.0095665999979246,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 50570.842024120604,
+            "latency": 3.098470400000224,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 50508.33699899497,
+            "latency": 3.743300599977374,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 50445.831973869346,
+            "latency": 3.455351899989182,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 50383.326948743714,
+            "latency": 3.4999105999886524,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          },
+          {
+            "algorithm": "opt",
+            "profit": 50320.82192361809,
+            "latency": 3.225964799989015,
+            "feasible": true,
+            "deadline_met": true,
+            "quality_retention": 1.0,
+            "within_5_percent": true
+          }
+        ]
+      },
+      "selector_safe": {
         "requests": 329,
         "mean_latency_seconds": 1.3615081352585117,
         "p95_latency_seconds": 4.931763140001567,
@@ -15068,7 +18204,7 @@
   ],
   "config": {
     "quality_floor": 0.95,
-    "confidence_threshold": 0.6,
+    "confidence_threshold": 0.45,
     "fallback_algorithm": "opt",
     "train_iterations": 7,
     "random_state": 42,
@@ -15077,12 +18213,13 @@
   "limitations": [
     "Offline counterfactual evaluation uses independent algorithm trajectories, not one causal replay trajectory.",
     "Training and held-out runs share the synthetic topology and seeded traffic generator.",
-    "The measured FGR implementation executes candidates sequentially; the parallel lower bound is also reported.",
+    "The local FGR executes candidates sequentially, but its stored time is the maximum candidate runtime rather than total CPU work.",
     "BRAIN-topology and live-system generalization remain untested."
   ],
   "artifacts": {
     "model": "artifacts\\objective3_selector.joblib",
     "figure": "artifacts\\objective3_algorithm_selector.png",
-    "architecture_diagram": "artifacts\\objective3_architecture.png"
+    "architecture_diagram": "artifacts\\objective3_architecture.png",
+    "computation_figure": "artifacts\\objective3_computation_tradeoff.png"
   }
 }

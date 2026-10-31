@@ -32,7 +32,7 @@ flowchart LR
 | Objective | Model | Main held-out result | Status |
 |---|---|---|---|
 | Objective 2: admission | NumPy DQN | 64.9% more reward than greedy | Synthetic prototype complete |
-| Objective 3: solver selection | Random Forest | 95.35% profit retained, but 80.98% slower than measured FGR | Offline prototype; performance target not met |
+| Objective 3: solver selection | Random Forest | 75% fewer solver calls and 23.44% less estimated solver work | Offline computational improvement; response target not met |
 
 ## Objective 2: learning-based admission control
 
@@ -70,19 +70,22 @@ prediction falls back to OPT.
 | Metric | Result |
 |---|---:|
 | Held-out decisions | 329 |
-| Latency change vs measured FGR | **+80.98% (slower)** |
-| Mean profit quality retained | **95.35%** |
-| Within-5%-of-best rate | **94.53%** |
-| Deadline-feasible selection rate | **95.44%** |
+| Solver-call reduction vs run-all | **75.00%** |
+| Estimated solver-work reduction | **23.44%** |
+| Mean profit quality retained | **94.63%** |
+| Within-5%-of-best rate | **89.67%** |
+| Deadline-feasible selection rate | **95.14%** |
+| Response latency vs measured FGR | **+62.77% (slower)** |
 | Mean selector inference | **Sub-millisecond** |
 
-The safe selector did not achieve the originally proposed 90% latency reduction.
-It is 80.98% slower than measured FGR and only 1.05% faster than always selecting
-OPT on the independent candidate traces because the confidence gate falls back
-to OPT on 75.68% of held-out requests. This is an adverse result and shows that
-Objective 3 needs further calibration and causal online evaluation.
+The balanced selector improves computation by running one solver rather than
+four. A safe 60% confidence profile is also retained: it preserves 95.35% profit
+quality while reducing estimated solver work by 14.88%. Response latency still
+does not meet the proposed target, so causal online evaluation remains required.
 
 ![Objective 3 comparison](artifacts/objective3_algorithm_selector.png)
+
+![Objective 3 computational improvement](artifacts/objective3_computation_tradeoff.png)
 
 Detailed note: [`objective3.md`](objective3.md)
 
@@ -110,6 +113,7 @@ python -m pytest tests -q
 | `artifacts/objective3_algorithm_selector.json` | Objective 3 numerical evidence |
 | `artifacts/objective3_selector.joblib` | Trained meta-selector |
 | `artifacts/objective3_algorithm_selector.png` | Latency, quality, and confusion figure |
+| `artifacts/objective3_computation_tradeoff.png` | Solver-work, invocation, and quality trade-off |
 | `artifacts/objective3_architecture.png` | Objective 3 architecture diagram |
 
 ## Research boundaries

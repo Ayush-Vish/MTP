@@ -44,7 +44,7 @@ SERVICE_PROFILES = (
 @dataclass(frozen=True)
 class SelectorConfig:
     quality_floor: float = 0.95
-    confidence_threshold: float = 0.60
+    confidence_threshold: float = 0.45
     fallback_algorithm: str = "opt"
     train_iterations: int = 7
     random_state: int = 42
@@ -99,6 +99,35 @@ def quality_retention(profit: float, best_profit: float, feasible: bool = True) 
         return 0.0
     loss = max(best_profit - profit, 0.0)
     return float(np.clip(1.0 - loss / max(abs(best_profit), 1.0), 0.0, 1.0))
+
+
+def computation_savings(
+    selected_solver_work: float,
+    ensemble_solver_work: float,
+    selected_calls: int = 1,
+    ensemble_calls: int = 4,
+) -> dict:
+    """Quantify solver work and invocation reduction separately from latency."""
+
+    if min(selected_solver_work, ensemble_solver_work) < 0:
+        raise ValueError("solver work cannot be negative")
+    if selected_calls < 1 or ensemble_calls < 1:
+        raise ValueError("solver call counts must be positive")
+    work_reduction = (
+        (ensemble_solver_work - selected_solver_work) / ensemble_solver_work
+        if ensemble_solver_work > 0
+        else 0.0
+    )
+    return {
+        "selected_solver_work_seconds": float(selected_solver_work),
+        "ensemble_solver_work_seconds": float(ensemble_solver_work),
+        "solver_work_reduction": float(work_reduction),
+        "selected_solver_calls_per_request": selected_calls,
+        "ensemble_solver_calls_per_request": ensemble_calls,
+        "solver_call_reduction": float(
+            (ensemble_calls - selected_calls) / ensemble_calls
+        ),
+    }
 
 
 def _load_pickle(path: Path, fiveguard_dir: Path) -> dict:
@@ -328,21 +357,16 @@ def evaluate_choices(
 
 
 def _save_results_figure(result: dict, path: Path) -> None:
-    policies = ("selector", "always_opt", "always_iar", "majority")
-    labels = ("Selector", "Always OPT", "Always IAR", "Majority")
+    policies = ("selector", "selector_safe", "always_opt", "always_iar")
+    labels = ("Balanced", "Safe", "Always OPT", "Always IAR")
     colors = ("#1f77b4", "#e4ac3e", "#416fbd", "#777777")
     summaries = result["evaluation"]["policies"]
-    latency_labels = (
-        "Selector",
-        "Measured 5Guard",
-        "CF parallel wait",
-        "CF sequential sum",
-    )
+    latency_labels = ("Balanced", "Safe", "Measured 5Guard", "Always OPT")
     latencies = (
         summaries["selector"]["mean_latency_seconds"],
+        summaries["selector_safe"]["mean_latency_seconds"],
         result["evaluation"]["measured_fgr_mean_latency_seconds"],
-        result["evaluation"]["counterfactual_parallel_wait_seconds"],
-        result["evaluation"]["counterfactual_sequential_sum_seconds"],
+        summaries["always_opt"]["mean_latency_seconds"],
     )
     qualities = [100 * summaries[name]["mean_quality_retention"] for name in policies]
     counts = result["evaluation"]["selector_confusion_matrix"]
@@ -373,6 +397,56 @@ def _save_results_figure(result: dict, path: Path) -> None:
     for axis in axes[:2]:
         axis.spines[["top", "right"]].set_visible(False)
     fig.suptitle("Objective 3: learned 5Guard algorithm selection")
+    fig.tight_layout()
+    fig.savefig(path, dpi=200, bbox_inches="tight")
+    plt.close(fig)
+
+
+def _save_computation_figure(result: dict, path: Path) -> None:
+    computation = result["evaluation"]["computation"]
+    profiles = result["evaluation"]["confidence_profiles"]
+    labels = ("Balanced", "Safe", "Run-all sum")
+    work = (
+        computation["balanced"]["selected_solver_work_seconds"],
+        computation["safe"]["selected_solver_work_seconds"],
+        computation["balanced"]["ensemble_solver_work_seconds"],
+    )
+    calls = (1, 1, 4)
+    colors = ("#1f77b4", "#2ca02c", "#777777")
+
+    fig, axes = plt.subplots(1, 3, figsize=(13.5, 4.1))
+    bars = axes[0].bar(labels, work, color=colors)
+    axes[0].bar_label(bars, fmt="%.3f", padding=3)
+    axes[0].set(title="Estimated solver work", ylabel="Solver-seconds per decision")
+    bars = axes[1].bar(labels, calls, color=colors)
+    axes[1].bar_label(bars, padding=3)
+    axes[1].set(title="Solver invocations", ylabel="Calls per decision", ylim=(0, 4.6))
+
+    reductions = [100 * row["solver_work_reduction"] for row in profiles]
+    qualities = [100 * row["mean_quality_retention"] for row in profiles]
+    axes[2].plot(reductions, qualities, marker="o", color="#1f77b4")
+    for row in profiles:
+        if row["confidence_threshold"] in (0.45, 0.60):
+            axes[2].annotate(
+                f"threshold={row['confidence_threshold']:.2f}",
+                (
+                    100 * row["solver_work_reduction"],
+                    100 * row["mean_quality_retention"],
+                ),
+                xytext=(5, 6),
+                textcoords="offset points",
+                fontsize=8,
+            )
+    axes[2].axhline(95, color="#777777", linestyle="--", linewidth=1)
+    axes[2].set(
+        title="Compute-quality trade-off",
+        xlabel="Solver-work reduction (%)",
+        ylabel="Profit quality retained (%)",
+    )
+    for axis in axes:
+        axis.spines[["top", "right"]].set_visible(False)
+        axis.tick_params(axis="x", rotation=20)
+    fig.suptitle("Objective 3 computational improvement")
     fig.tight_layout()
     fig.savefig(path, dpi=200, bbox_inches="tight")
     plt.close(fig)
@@ -437,6 +511,7 @@ def run_objective3(
         config.confidence_threshold,
         config.fallback_algorithm,
     )
+    safe_predictions, _ = predict_with_fallback(model, x_test, 0.60, "opt")
     inference_seconds = time.perf_counter() - start
     majority = Counter(y_train_rows["oracle"]).most_common(1)[0][0]
 
@@ -444,6 +519,7 @@ def run_objective3(
         # Solver latency and model inference are reported separately so timing
         # noise in the classifier does not alter the allocation comparison.
         "selector": evaluate_choices(predictions, y_test_rows),
+        "selector_safe": evaluate_choices(safe_predictions, y_test_rows),
         "always_opt": evaluate_choices(["opt"] * len(y_test_rows), y_test_rows),
         "always_iar": evaluate_choices(["iar"] * len(y_test_rows), y_test_rows),
         "majority": evaluate_choices([majority] * len(y_test_rows), y_test_rows),
@@ -458,6 +534,29 @@ def run_objective3(
         if measured_fgr > 0
         else 0.0
     )
+    balanced_computation = computation_savings(selector_latency, sequential_sum)
+    safe_computation = computation_savings(
+        policies["selector_safe"]["mean_latency_seconds"], sequential_sum
+    )
+    confidence_profiles = []
+    for threshold in np.arange(0.0, 0.81, 0.05):
+        profile_predictions, profile_confidence = predict_with_fallback(
+            model, x_test, float(threshold), "opt"
+        )
+        profile = evaluate_choices(profile_predictions, y_test_rows)
+        savings = computation_savings(
+            profile["mean_latency_seconds"], sequential_sum
+        )
+        confidence_profiles.append(
+            {
+                "confidence_threshold": float(round(threshold, 2)),
+                "fallback_rate": float(np.mean(profile_confidence < threshold)),
+                "mean_quality_retention": profile["mean_quality_retention"],
+                "feasibility_rate": profile["feasibility_rate"],
+                "mean_solver_work_seconds": profile["mean_latency_seconds"],
+                "solver_work_reduction": savings["solver_work_reduction"],
+            }
+        )
     confusion = confusion_matrix(
         y_test_rows["oracle"], predictions, labels=list(ALGORITHMS)
     )
@@ -495,6 +594,15 @@ def run_objective3(
             "counterfactual_parallel_wait_seconds": parallel_wait,
             "counterfactual_sequential_sum_seconds": sequential_sum,
             "selector_latency_change_vs_measured_fgr": latency_change,
+            "computation": {
+                "balanced": balanced_computation,
+                "safe": safe_computation,
+                "basis": (
+                    "sum of four independently replayed candidate solver times; "
+                    "reported separately from measured FGR response latency"
+                ),
+            },
+            "confidence_profiles": confidence_profiles,
             "selector_confusion_matrix": confusion.tolist(),
             "policies": policies,
         },
@@ -513,7 +621,7 @@ def run_objective3(
         "limitations": [
             "Offline counterfactual evaluation uses independent algorithm trajectories, not one causal replay trajectory.",
             "Training and held-out runs share the synthetic topology and seeded traffic generator.",
-            "The measured FGR implementation executes candidates sequentially; the parallel lower bound is also reported.",
+            "The local FGR executes candidates sequentially, but its stored time is the maximum candidate runtime rather than total CPU work.",
             "BRAIN-topology and live-system generalization remain untested.",
         ],
     }
@@ -522,10 +630,12 @@ def run_objective3(
     model_file.parent.mkdir(parents=True, exist_ok=True)
     figure_file = output_file.with_name("objective3_algorithm_selector.png")
     diagram_file = output_file.with_name("objective3_architecture.png")
+    computation_figure = output_file.with_name("objective3_computation_tradeoff.png")
     result["artifacts"] = {
         "model": str(model_file),
         "figure": str(figure_file),
         "architecture_diagram": str(diagram_file),
+        "computation_figure": str(computation_figure),
     }
     joblib.dump(
         {
@@ -539,6 +649,7 @@ def run_objective3(
     )
     _save_results_figure(result, figure_file)
     _save_architecture_diagram(diagram_file)
+    _save_computation_figure(result, computation_figure)
     output_file.write_text(json.dumps(result, indent=2), encoding="utf-8")
 
     selector = policies["selector"]
@@ -547,6 +658,14 @@ def run_objective3(
     print(f"selector mean latency: {selector['mean_latency_seconds']:.6f}s")
     print(f"selector mean quality retention: {selector['mean_quality_retention']:.2%}")
     print(f"latency change vs measured FGR: {latency_change:+.2%}")
+    print(
+        "solver-work reduction vs run-all sum: "
+        f"{balanced_computation['solver_work_reduction']:.2%}"
+    )
+    print(
+        "solver-call reduction: "
+        f"{balanced_computation['solver_call_reduction']:.2%}"
+    )
     return result
 
 
@@ -569,7 +688,7 @@ def main() -> None:
         default=Path("artifacts/objective3_selector.joblib"),
     )
     parser.add_argument("--quality-floor", type=float, default=0.95)
-    parser.add_argument("--confidence-threshold", type=float, default=0.60)
+    parser.add_argument("--confidence-threshold", type=float, default=0.45)
     parser.add_argument("--train-iterations", type=int, default=7)
     args = parser.parse_args()
     run_objective3(
