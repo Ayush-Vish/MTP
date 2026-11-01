@@ -3,7 +3,8 @@
 SecGuard is a research framework extending the **5Guard** base paper (*"5Guard: Isolation-Aware End-to-End Slicing of 5G Networks"*, IEEE TMC 2026) with an ML-derived security risk detector and an SLA-safe dynamic isolation policy.
 
 For the admission-control and intelligent solver-selection extensions, see
-[`OBJECTIVES_2_3.md`](OBJECTIVES_2_3.md).
+[`OBJECTIVES_2_3.md`](OBJECTIVES_2_3.md), which includes measured improvements,
+baseline comparisons, figures, and the computation-versus-quality trade-off.
 
 The auditable status of all three objectives is recorded in
 [`OBJECTIVE_STATUS.md`](OBJECTIVE_STATUS.md). Run

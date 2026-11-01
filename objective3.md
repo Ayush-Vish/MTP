@@ -68,7 +68,8 @@ not causal measurements of the FGR trajectory. The balanced selector therefore:
 - placed **89.67%** of selections within the 5% profit-loss budget;
 - achieved **95.14%** deadline-feasible selections;
 - was still **62.77% slower** than measured FGR response latency; and
-- required sub-millisecond mean inference time per request in this run.
+- recorded 1.34 ms of inference timing per held-out row, including both the
+  balanced and safe prediction batches (not single-request online timing).
 
 The safe 60% profile reduces estimated solver work by 14.88% while retaining
 95.35% profit quality. The balanced and safe profiles now establish computation
