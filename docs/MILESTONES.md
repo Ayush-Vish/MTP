@@ -271,6 +271,19 @@ Status: **Complete as an offline synthetic prototype** on 2026-10-31.
 - Added numerical evidence, a trained model, figures, diagrams, and nine tests;
   the complete suite now contains 38 passing tests.
 
+## M7: Consolidated objective acceptance audit
+
+Status: **Complete as research prototypes** on 2026-11-01.
+
+- Added `python -m secguard.objective_status` as a machine-checkable gate over
+  the committed Objective 1, 2, and 3 artifacts.
+- Confirmed all three prototype acceptance sets pass and kept journal readiness
+  as a separate false status until external, causal, multi-topology validation
+  is complete.
+- Confirmed that the BRAIN topology and SCIP backend run on the local 16-thread,
+  16-GB machine with a one-step IAR smoke test.
+- The complete project suite now contains 40 passing tests.
+
 ## P1: Paper draft
 
 Status: **Complete** on 2026-08-14.

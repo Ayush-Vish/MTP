@@ -5,6 +5,10 @@ SecGuard is a research framework extending the **5Guard** base paper (*"5Guard: 
 For the admission-control and intelligent solver-selection extensions, see
 [`OBJECTIVES_2_3.md`](OBJECTIVES_2_3.md).
 
+The auditable status of all three objectives is recorded in
+[`OBJECTIVE_STATUS.md`](OBJECTIVE_STATUS.md). Run
+`python -m secguard.objective_status` to verify the committed acceptance metrics.
+
 This repository allows you to:
 1. **Reproduce the 5Guard Base Paper** across all 7 algorithms (`OPT`, `IAR`, `DTR`, `RNR`, `NIS`, `CIS`, `FGR`) on both Synthetic and Berlin BRAIN topologies with publication-quality SVG plots.
 2. **Run the SecGuard Pipeline** (Random Forest packet-level threat detection $\to$ risk aggregation $\to$ SLA-floor isolation adaptation $\to$ surrogate policy learning $\to$ DQN admission control $\to$ statistical validation).
@@ -161,6 +165,9 @@ python -m secguard.admission_control
 
 # 9. Train and evaluate Objective 3 intelligent algorithm selection
 python -m secguard.algorithm_selector
+
+# 10. Verify all three prototype acceptance gates
+python -m secguard.objective_status
 ```
 
 Generated SecGuard artifacts will appear in `artifacts/`:

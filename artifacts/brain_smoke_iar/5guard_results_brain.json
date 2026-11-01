@@ -1,0 +1,20 @@
+{
+  "topology": "brain",
+  "iterations": 1,
+  "simulation_interval": 1,
+  "total_wall_clock_seconds": 1.0,
+  "algorithms": {
+    "iar": {
+      "final_profit_mean": -4.605,
+      "final_violation_mean": 0.0,
+      "cumulative_migration_mean": 0.0,
+      "final_overhead_mean": 15.0,
+      "final_deployment_mean": 2.605,
+      "mean_resource_efficiency": 67.7821,
+      "total_rejections_L0": 0.0,
+      "total_rejections_L1": 0.0,
+      "total_rejections_L2": 0.0,
+      "mean_alloc_time_sec": 0.002004
+    }
+  }
+}

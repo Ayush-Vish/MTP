@@ -7,6 +7,13 @@ and limitations are documented separately in `docs/MILESTONES.md`.
 
 - Add cross-dataset and full-ensemble validation before paper submission.
 - Compile and proofread the paper with the final author metadata.
+- Add a machine-checkable completion gate for Objectives 1--3 with explicit
+  prototype thresholds and a separate journal-validation status.
+- Add the missing top-level Objective 1 report and a consolidated objective
+  status document.
+- Validate the Berlin BRAIN topology locally with the open-source SCIP backend
+  and record a one-step IAR smoke-test artifact.
+- Expand the test suite from 38 to 40 passing tests.
 - Implement Objective 2 as a reproducible DQN admission controller with replay
   memory, a target network, admit/reject/defer actions, held-out baselines, and
   security-aware resource state.

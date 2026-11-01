@@ -1,0 +1,133 @@
+{
+  "status": "all_objectives_prototype_complete",
+  "prototype_complete": true,
+  "journal_validation_complete": false,
+  "objectives": [
+    {
+      "objective": 1,
+      "title": "Intelligent security-to-isolation mapping",
+      "prototype_complete": true,
+      "scope": "within-source, trace-derived synthetic evaluation",
+      "criteria": [
+        {
+          "name": "isolation-exposure reduction versus static 5Guard",
+          "value": 0.6711539160465635,
+          "operator": ">=",
+          "threshold": 0.6,
+          "passed": true,
+          "source": "artifacts/research_validation.json"
+        },
+        {
+          "name": "profit retained versus static 5Guard",
+          "value": 0.9044041057857827,
+          "operator": ">=",
+          "threshold": 0.85,
+          "passed": true,
+          "source": "artifacts/research_validation.json"
+        },
+        {
+          "name": "profit gain versus fixed SecGuard",
+          "value": 1.6492058970082377,
+          "operator": ">",
+          "threshold": 0.0,
+          "passed": true,
+          "source": "artifacts/research_validation.json"
+        },
+        {
+          "name": "adapter SLA-floor violations",
+          "value": 0.0,
+          "operator": "==",
+          "threshold": 0.0,
+          "passed": true,
+          "source": "artifacts/fiveguard_adapter.json"
+        },
+        {
+          "name": "mutated input requests",
+          "value": 0.0,
+          "operator": "==",
+          "threshold": 0.0,
+          "passed": true,
+          "source": "artifacts/fiveguard_adapter.json"
+        }
+      ]
+    },
+    {
+      "objective": 2,
+      "title": "Learning-based admission control",
+      "prototype_complete": true,
+      "scope": "capacity-safe synthetic admission environment",
+      "criteria": [
+        {
+          "name": "DQN reward gain versus greedy",
+          "value": 0.6493354058976966,
+          "operator": ">=",
+          "threshold": 0.2,
+          "passed": true,
+          "source": "artifacts/objective2_admission_control.json"
+        },
+        {
+          "name": "paired DQN wins versus greedy",
+          "value": 50.0,
+          "operator": ">=",
+          "threshold": 40.0,
+          "passed": true,
+          "source": "artifacts/objective2_admission_control.json"
+        },
+        {
+          "name": "mean infeasible DQN admissions",
+          "value": 0.0,
+          "operator": "==",
+          "threshold": 0.0,
+          "passed": true,
+          "source": "artifacts/objective2_admission_control.json"
+        }
+      ]
+    },
+    {
+      "objective": 3,
+      "title": "Intelligent algorithm selection",
+      "prototype_complete": true,
+      "scope": "offline synthetic 5Guard traces; computation criterion",
+      "criteria": [
+        {
+          "name": "solver-call reduction versus run-all",
+          "value": 0.75,
+          "operator": ">=",
+          "threshold": 0.75,
+          "passed": true,
+          "source": "artifacts/objective3_algorithm_selector.json"
+        },
+        {
+          "name": "estimated solver-work reduction versus run-all",
+          "value": 0.23440656436779883,
+          "operator": ">=",
+          "threshold": 0.1,
+          "passed": true,
+          "source": "artifacts/objective3_algorithm_selector.json"
+        },
+        {
+          "name": "mean profit quality retained",
+          "value": 0.9463003187567339,
+          "operator": ">=",
+          "threshold": 0.9,
+          "passed": true,
+          "source": "artifacts/objective3_algorithm_selector.json"
+        },
+        {
+          "name": "deadline-feasible selection rate",
+          "value": 0.9513677811550152,
+          "operator": ">=",
+          "threshold": 0.9,
+          "passed": true,
+          "source": "artifacts/objective3_algorithm_selector.json"
+        }
+      ]
+    }
+  ],
+  "journal_validation_gaps": [
+    "external or cross-dataset threat-detection validation",
+    "direct causal integration of admission and selection with 5Guard",
+    "multi-seed BRAIN-topology evaluation for all proposed components",
+    "measured attack propagation or containment rather than an exposure proxy"
+  ]
+}
