@@ -207,16 +207,16 @@ The higher admission rate also has costs: DQN's mean modeled security cost is
 already accounts for the configured penalties, but it is not a measured
 operational currency or a measured attack-containment rate.
 
-![Objective 2 training and evaluation](artifacts/objective2_admission_control.png)
+![Objective 2 DQN versus greedy results](artifacts/objective2_dqn_vs_greedy.png)
 
-*Figure 1. The left panel shows the 25-episode training reward average; the
-right panel compares held-out mean reward. The almost equal DQN and
-value-density bars make the stronger-baseline result visible.*
+*Figure 1. DQN versus greedy admission across 50 paired held-out synthetic
+episodes. Bars show means; error bars show approximate 95% confidence intervals
+for each policy mean. Improvements are relative to greedy. The complete
+baseline comparison is retained in the source JSON.*
 
-Training reward increased over the course of learning. On held-out episode
-seeds, DQN achieved higher mean reward than greedy, while value density
-achieved a similar result. Figure 1 represents one training run; consistency
-across independent training seeds remains to be evaluated.
+Figure 1 shows higher mean reward, security-adjusted profit, and admissions
+than greedy. Results use one trained DQN; consistency across independent
+training seeds remains to be evaluated.
 
 The practical impact demonstrated here is more profitable use of the modeled
 capacity than immediate greedy admission. Zero infeasible admissions comes
@@ -399,6 +399,9 @@ python -m secguard.admission_control --episodes 2000 `
 # Objective 3
 python -m secguard.algorithm_selector
 
+# Regenerate the focused Objective 2 figure from saved results
+python scripts/plot_objective2_focused.py
+
 # Verification
 python -m pytest tests -q
 python -m secguard.objective_status
@@ -410,7 +413,8 @@ python -m secguard.objective_status
 |---|---|
 | `artifacts/objective2_admission_control.json` | Objective 2 numerical evidence |
 | `artifacts/objective2_dqn.npz` | Trained admission DQN |
-| `artifacts/objective2_admission_control.png` | DQN training and baseline figure |
+| `artifacts/objective2_dqn_vs_greedy.png` | Focused DQN-versus-greedy figure used in this report |
+| `artifacts/objective2_admission_control.png` | Original training and complete baseline figure |
 | `artifacts/objective3_algorithm_selector.json` | Objective 3 numerical evidence |
 | `artifacts/objective3_selector.joblib` | Trained meta-selector |
 | `artifacts/objective3_algorithm_selector.png` | Latency, quality, and confusion figure |
