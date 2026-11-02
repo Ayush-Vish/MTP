@@ -181,14 +181,16 @@ of allowing deferral. A greedy-with-deferral ablation is still needed.
 
 ### 6. Results and impact
 
-| Metric | DQN | Greedy | Value density |
-|---|---:|---:|---:|
-| Mean total reward | **987.47** | 598.71 | 986.75 |
-| Security-adjusted profit | **1020.62** | 626.46 | 1018.05 |
-| Admitted requests | 18.92 | 12.92 | **20.26** |
-| Rejected requests | 5.08 | 11.08 | **3.74** |
-| Deferral actions per episode | 24.76 | 0.00 | 16.56 |
-| Infeasible admissions | **0.00** | **0.00** | **0.00** |
+The main comparison below focuses on DQN versus greedy admission.
+
+| Metric | DQN | Greedy |
+|---|---:|---:|
+| Mean total reward | **987.47** | 598.71 |
+| Security-adjusted profit | **1020.62** | 626.46 |
+| Admitted requests | **18.92** | 12.92 |
+| Rejected requests | **5.08** | 11.08 |
+| Deferral actions per episode | 24.76 | 0.00 |
+| Infeasible admissions | **0.00** | **0.00** |
 
 Against greedy, this means **54.15% fewer rejected requests** as well as the
 reward, profit, and admission gains above. Deferral actions can exceed the
