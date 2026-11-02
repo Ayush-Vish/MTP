@@ -1,41 +1,21 @@
-# SecGuard Objectives 2 and 3: Implementation, Impact, and Explanation Guide
+# SecGuard Objectives 2 and 3: Methodology and Experimental Results
 
 This README documents the two decision-intelligence layers added after SecGuard's
 threat-to-isolation mapping: learning-based admission control (Objective 2) and
 intelligent 5Guard algorithm selection (Objective 3).
 
-## Start here: what are the two objectives?
+## Overview
 
-| Question | Objective 2 | Objective 3 |
+| Aspect | Objective 2 | Objective 3 |
 |---|---|---|
-| What decision do we make? | Should we admit, reject, or defer this slice? | Which allocation algorithm should handle this request? |
-| Why is it needed? | An admission consumes resources that later requests may need. | Running every candidate algorithm requires extra computation. |
+| Decision | Admit, reject, or defer an incoming slice | Select the allocation algorithm for a request |
+| Motivation | Admission consumes resources that later requests may need. | Running every candidate algorithm requires extra computation. |
 | Method | Deep Q-Network (DQN): reinforcement learning | Random Forest: supervised classification |
 | Input | 14 numerical features about capacity and the request | 22 features about the request and previous simulation state |
 | Output | One action: admit, reject, or defer | One algorithm: OPT, IAR, DTR, or RNR |
-| What have we evaluated? | A synthetic admission simulator | Offline selection using saved 5Guard solver traces |
+| Evaluation environment | A synthetic admission simulator | Offline selection using saved 5Guard solver traces |
 
-### One-minute explanation to present
-
-> **Objective 2:** I implemented an admission controller that considers the
-> future consequences of accepting a slice. It observes the resource load and
-> request requirements, then uses reinforcement learning to admit, reject, or
-> defer the request. I trained a small DQN and compared it with greedy and
-> value-density policies on the same held-out request sequences. It improved
-> mean reward by 64.93% over greedy, with zero infeasible admissions. Its reward
-> was approximately tied with value density, so I do not claim it is the best
-> admission method.
-
-> **Objective 3:** I implemented a classifier that predicts which of four
-> 5Guard allocation algorithms to choose. I generated training labels from
-> saved solver outcomes, choosing the fastest feasible candidate close to the
-> best profit. On held-out simulations, choosing one algorithm instead of four
-> gave a 75% architectural reduction in solver calls and a 23.44% reduction in
-> estimated solver work, while retaining 94.63% mean profit quality. The
-> response-latency target was not achieved, and online integration remains to
-> be evaluated.
-
-## What improved?
+## Summary of improvements
 
 | Objective | Comparison | Measured improvement | Evaluation |
 |---|---|---|---|
@@ -86,11 +66,10 @@ flowchart LR
 
 ### 1. Problem and approach
 
-Suppose resources are nearly full and an incoming slice needs a large amount
-of capacity for a long time. Accepting it immediately may prevent later
-requests from being served. A short deferral may instead allow active slices
-to finish and release resources. This is an illustrative motivation; it is
-not a claim that the trained agent always makes the best decision.
+Admission decisions affect both immediate revenue and future resource
+availability. Accepting a resource-intensive, long-duration slice may prevent
+later requests from being served. Bounded deferral allows active slices to
+finish and release resources before a pending request is reconsidered.
 
 Objective 2 observes current capacity, request demands, revenue, duration,
 isolation, and risk before choosing `ADMIT`, `REJECT`, or bounded `DEFER`.
@@ -130,7 +109,7 @@ The evaluation generator creates synthetic risk scores and isolation levels
 that preserve the base isolation floor. It does not stream predictions from
 the Objective 1 detector into a live 5Guard admission loop.
 
-### 3. What the agent learns from
+### 3. Reward formulation
 
 There are no manually labeled correct admission actions. The simulator gives
 the agent a reward after each action:
@@ -162,7 +141,7 @@ Episode reward includes rejection and deferral penalties; security-adjusted
 profit is admitted revenue after the three admission charges and excludes
 those rejection/deferral penalties. This explains why their totals differ.
 
-### 4. How it was implemented and trained
+### 4. Implementation and training
 
 1. Built an environment with CPU, radio, and bandwidth capacities of 100 units
    each. Requests come from four service profiles: eMBB, uRLLC, mMTC, and MC,
@@ -182,7 +161,7 @@ discrete action set and numerical state features. The experiment does not
 establish that a neural network is necessary or that DQN is better than other
 RL algorithms such as PPO; those comparisons have not been run.
 
-### 5. How it was evaluated
+### 5. Evaluation design
 
 Training used 2,000 episodes of 24 requests, with seed 42. Evaluation used
 50 held-out episode seeds, 10042--10091. All policies receive the same request
@@ -232,17 +211,17 @@ operational currency or a measured attack-containment rate.
 right panel compares held-out mean reward. The almost equal DQN and
 value-density bars make the stronger-baseline result visible.*
 
-**How to explain this figure:** "Training reward increased as the agent learned.
-On unseen episode seeds, the DQN achieved much higher mean reward than greedy,
-but value density was nearly equal. The curve is one training run, not evidence
-of consistency across multiple independent training seeds."
+Training reward increased over the course of learning. On held-out episode
+seeds, DQN achieved higher mean reward than greedy, while value density
+achieved a similar result. Figure 1 represents one training run; consistency
+across independent training seeds remains to be evaluated.
 
 The practical impact demonstrated here is more profitable use of the modeled
 capacity than immediate greedy admission. Zero infeasible admissions comes
 from the capacity mask and environment checks; it is not evidence of perfect
 learned decision accuracy.
 
-**If asked for accuracy:** this RL evaluation has no ground-truth action labels,
+This RL evaluation has no ground-truth action labels,
 so classification accuracy is not reported. Winning against greedy in 50/50
 episodes is a paired reward result, not 100% accuracy. The agent admits about
 78.83% of incoming requests (18.92/24); that is an admission rate, not accuracy.
@@ -280,7 +259,7 @@ The output is one class from **OPT, IAR, DTR, RNR**. The input uses resource
 demands and historical state summaries; the current model does not consume a
 full slice graph or raw physical-network graph.
 
-To obtain supervised labels, we read each candidate's saved profit, solver
+Supervised labels are constructed from each candidate's saved profit, solver
 time, feasibility, and timeout outcome. At each decision point:
 
 1. Keep candidates that are feasible and meet the request deadline.
@@ -298,7 +277,7 @@ trajectory, while candidate outcomes come from each algorithm's independent
 trajectory. These are therefore offline counterfactual comparisons rather than
 four alternatives replayed from one identical evolving allocation state.
 
-### 3. How it was trained and used
+### 3. Training and inference
 
 The 400-tree Random Forest uses 22 features available before allocation. It
 trains on simulation iterations 0--6 (771 rows) and tests on iterations 7--9
@@ -312,7 +291,7 @@ building this dataset. The 95.14% success rate therefore applies to the retained
 decision points, not to all possible arrivals or all overload conditions.
 
 The Random Forest has maximum tree depth 14 and minimum leaf size 2. At
-prediction time, we select the highest-probability class. If that probability
+prediction time, the highest-probability class is selected. If that probability
 is below 0.45, the balanced profile chooses OPT instead. The safe profile uses
 0.60. These are configured confidence thresholds, not guaranteed probabilities
 of a correct or feasible allocation. OPT fallback can still miss a deadline.
@@ -386,11 +365,11 @@ online validation.
 *Figure 4. Estimated solver work, solver invocations, and the confidence-gate
 trade-off between computation and retained profit quality.*
 
-**How to explain Figures 3 and 4:** "The selector has a lower estimated aggregate
-solver workload because it chooses one candidate. However, the selected solver
-can be slower than the ensemble's stored response time. The safe profile gives
-up some computation saving to preserve more profit quality. These plots show
-a compute-quality trade-off, not an achieved 90% response-latency reduction."
+Figures 3 and 4 show that selecting one candidate reduces estimated aggregate
+solver work. The selected solver can nevertheless be slower than the
+ensemble's stored response time. The safe profile exchanges some computation
+saving for higher profit quality. The original 90% response-latency reduction
+target was not achieved.
 
 The reported solver-time comparisons exclude selector inference, which is
 recorded separately. No CPU-utilization, energy-saving, or cloud-cost saving
@@ -398,20 +377,7 @@ was measured.
 
 Detailed note: [`objective3.md`](objective3.md)
 
-## How to defend the results in a discussion
-
-| Likely question | Evidence-backed answer |
-|---|---|
-| Why DQN? | It can estimate long-term values for three discrete actions from numerical network state. It was a practical first RL implementation; we have not compared it with PPO or other RL methods. |
-| Is Objective 2 supervised or self-supervised? | Neither: it uses reinforcement learning from simulator rewards. Objective 3 uses supervised labels derived from saved solver outcomes. |
-| Did DQN outperform every baseline? | No. It clearly improved over greedy, but its reward was approximately tied with value density. |
-| Is zero infeasibility proof of optimal decisions? | No. The capacity mask prevents invalid admissions. It does not prove maximum profit or optimal scheduling. |
-| Did Objective 3 reduce response latency by 90%? | No. It reduced architectural solver calls by 75% and estimated work by 23.44%; recorded response latency was 62.77% slower than measured FGR. |
-| Is 94.63% the classifier accuracy? | No. It is mean profit quality. Oracle-label accuracy is 66.57%. |
-| Are these real network deployments? | No. Objective 2 uses synthetic episodes and Objective 3 uses offline 5Guard synthetic traces. |
-| Are the two models already validated together? | No. A causal online experiment integrating admission and selection with the allocator remains to be completed. |
-
-## Where the implementation lives
+## Implementation and verification artifacts
 
 | Component | Code / evidence |
 |---|---|
@@ -421,7 +387,7 @@ Detailed note: [`objective3.md`](objective3.md)
 | Selection tests | [`tests/test_algorithm_selector.py`](tests/test_algorithm_selector.py) |
 | Prototype acceptance checks | [`src/secguard/objective_status.py`](src/secguard/objective_status.py) |
 
-## Reproduce both objectives
+## Reproduction
 
 ```powershell
 # Objective 2
