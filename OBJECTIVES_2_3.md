@@ -20,13 +20,14 @@ intelligent 5Guard algorithm selection (Objective 3).
 | Objective | Comparison | Measured improvement | Evaluation |
 |---|---|---|---|
 | 2: Admission control | DQN versus greedy | **64.93% higher reward**, **62.92% higher security-adjusted profit**, **46.44% more admissions** | 50 paired held-out synthetic episodes |
-| 3: Algorithm selection | One selected solver versus four candidates | **75.00% fewer solver calls**, **23.44% lower estimated solver work** | 329 held-out offline decisions |
+| 3: Algorithm selection, new replay | Performance selector versus sequential cold-rebuilt FGR-style reference | **86.49% lower measured elapsed time**, **86.37% lower process CPU time**, **99.73% final profit retained** | 72 online decisions per policy across six unseen synthetic sequences |
 
 These improvements use different baselines and should not be added together.
-Objective 2's reward advantage over value density is inconclusive. Objective 3
-preserves 94.63% mean profit quality, but its response latency is 62.77% slower
-than the stored measured FGR response. The following sections report those
-trade-offs alongside the gains.
+Objective 2's reward advantage over value density is inconclusive. The new
+Objective 3 result uses measured elapsed time and a sequential cold-rebuilt
+FGR-style reference; it does not establish superiority over a parallel ensemble.
+The earlier offline experiment and its adverse timing result are retained below
+with their original scope.
 
 ## End-to-end workflow
 
@@ -60,7 +61,7 @@ flowchart LR
 | Objective | Model | Main held-out result | Status |
 |---|---|---|---|
 | Objective 2: admission | NumPy DQN | 64.9% more reward than greedy | Synthetic prototype complete |
-| Objective 3: solver selection | Random Forest | 75% fewer solver calls and 23.44% less estimated solver work | Offline computational improvement; response target not met |
+| Objective 3: solver selection | Extra-Trees performance predictor with budget-aware retry | 86.49% lower elapsed time versus sequential cold-rebuilt FGR-style reference, retaining 99.73% final profit | Causal synthetic replay complete; parallel/BRAIN validation remains |
 
 ## Objective 2: learning-based admission control
 
@@ -231,6 +232,54 @@ episodes is a paired reward result, not 100% accuracy. The agent admits about
 Detailed note: [`objective2.md`](objective2.md)
 
 ## Objective 3: intelligent algorithm selection
+
+### Additional experiment: performance-based selection and causal replay
+
+The newer implementation adds common-state training data, actual resource and
+request-complexity features, candidate-specific runtime/profit/success
+prediction, validation-only configuration selection, and a budget-aware retry.
+Each policy's accepted allocations update its own next state.
+
+See the [measured replay report](artifacts/objective3_online/README.md) for the
+new metrics and [replay comparison figure](artifacts/objective3_online/comparison.png).
+The new benchmark times a sequential cold-rebuilt FGR-style reference. It is
+separate from the legacy offline figures below; the original 66.57% accuracy
+and 0.7523-second stored FGR time are not directly comparable with it.
+
+| Metric | Performance selector | Sequential FGR-style reference | Change |
+|---|---:|---:|---:|
+| Mean measured elapsed time per decision | **0.1655 s** | 1.2252 s | **86.49% lower** |
+| p95 measured elapsed time | **0.2952 s** | 2.7413 s | Lower tail latency |
+| Mean process CPU time per decision | **0.1593 s** | 1.1691 s | **86.37% lower** |
+| Mean solver calls, including retries | **1.028** | 4.000 | **74.31% fewer** |
+| Mean final trajectory profit | 12445.70 | 12479.38 | **99.73% retained** |
+| Admission within total deadline | **98.61%** | **98.61%** | Matched |
+| Solver errors | **0** | **0** | None recorded |
+
+The test contains six unseen seeds (400--405), with 12 arrivals each. Against
+always selecting OPT, the new selector reduces mean elapsed time by **57.33%**
+while retaining the same 99.73% final-profit ratio. Against the retrained
+RF-plus-OPT rule on these new features, it increases mean final profit by
+**27.41%** and admission-within-deadline by **1.39 percentage points**, but takes
+**14.27% more elapsed time**. Those comparisons use actual policy trajectories.
+
+![Objective 3 measured causal replay](artifacts/objective3_online/comparison.png)
+
+*New replay figure. Each policy receives identical incoming sequences and
+updates its own allocation state. Elapsed time includes feature extraction,
+inference, model rebuilding, allocation, and retries. The FGR-style reference
+runs four candidates sequentially; these numbers do not measure a parallel
+production ensemble.*
+
+A separate held-out common-state audit gives **77.46% oracle-label accuracy**
+(55/71 eligible decisions) for the performance selector, versus **76.06%**
+(54/71) for the retrained RF-plus-OPT rule. This is one additional exact match
+on the new audit, not a demonstrated increase from the legacy 66.57% on a
+different dataset. In this separate audit the first ranked solver is feasible
+on 77.78% of all 72 rows; the online result above follows each policy's own
+state trajectory and includes bounded retries.
+
+### Earlier offline classifier experiment
 
 ### 1. Problem and approach
 
@@ -434,6 +483,7 @@ actually update the next state. Broader security claims also need measured
 containment instead of the current exposure-cost proxy. The synthetic
 evaluation supports the reported improvements within this scope.
 
-The current project suite contains **40 passing tests**. The source JSON files
-listed above are the numerical authority for these figures and tables. No new
-training or solver benchmark was run for this documentation update.
+The current project suite contains **49 passing tests**. The source JSON files
+are the numerical authority for these figures and tables. The new causal replay
+uses separate training, calibration, tuning, and test seed groups; its full
+configuration and decision records are retained in `artifacts/objective3_online/`.

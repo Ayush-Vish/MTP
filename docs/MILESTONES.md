@@ -284,6 +284,25 @@ Status: **Complete as research prototypes** on 2026-11-01.
   16-GB machine with a one-step IAR smoke test.
 - The complete project suite now contains 40 passing tests.
 
+## M8: Objective 3 performance prediction and causal solver replay
+
+Status: **Complete as a short synthetic benchmark** on 2026-11-14.
+
+- Added actual request and placement-state features, per-candidate performance
+  prediction, held-out calibration, validation-only gate selection, and a
+  budget-aware retry.
+- Corrected cold reconstruction of upstream cached constraints and validated
+  solver outputs before using them for training or committing next states.
+- On six unseen test seeds (400--405), with 12 requests per seed, reduced mean
+  elapsed time by 86.49% and process CPU time by 86.37% versus a sequential
+  cold-rebuilt FGR-style reference; mean final profit retention was 99.73%.
+- Achieved 98.61% admission within total deadline, matching the reference; the
+  selector was also 57.33% faster than always-OPT on these sequences.
+- Preserved the legacy independent-trace experiment separately. Parallel
+  ensemble, longer-horizon, and BRAIN generalization are not established.
+- Added tracked SCIP compatibility code, reproducible numerical artifacts,
+  figures, audit, and report generation. Current suite: 49 tests passing.
+
 ## P1: Paper draft
 
 Status: **Complete** on 2026-08-14.

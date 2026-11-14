@@ -40,6 +40,19 @@ The objectives are implemented, but a strong journal submission still needs:
 
 These are validation extensions, not missing objective implementations.
 
+## Additional Objective 3 causal replay
+
+The newer performance selector has been evaluated on 72 decisions per policy
+across six unseen synthetic sequences. It reduces mean elapsed time by 86.49%
+against a sequential cold-rebuilt FGR-style reference and by 57.33% against
+always-OPT, retaining 99.73% of their mean final profit. Admission within the
+total deadline is 98.61%, matching both references.
+
+The [replay report](artifacts/objective3_online/README.md) contains all baselines,
+timings, and limitations. This adds direct causal solver replay, but the reference
+is a controlled sequential implementation rather than native parallel 5Guard;
+large-scale BRAIN and complete Objective 1/2/3 integration remain unvalidated.
+
 ## Compute requirement
 
 A server is optional. The present 16-logical-CPU, 16-GB machine passes all unit

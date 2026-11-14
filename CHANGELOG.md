@@ -5,6 +5,13 @@ and limitations are documented separately in `docs/MILESTONES.md`.
 
 ## Unreleased
 
+- Add a performance-based Objective 3 selector with isolated causal 5Guard
+  replay, common-state candidate data, explicit deadlines, bounded fallback,
+  validation calibration, actual elapsed/CPU timing, and a sequential FGR-style
+  reference; retain the original offline experiment separately.
+- Add a held-out common-state audit, paired seed-level intervals, and a
+  reproducible report generator for the new replay experiment.
+
 - Add cross-dataset and full-ensemble validation before paper submission.
 - Compile and proofread the paper with the final author metadata.
 - Add a machine-checkable completion gate for Objectives 1--3 with explicit

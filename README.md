@@ -10,6 +10,11 @@ The auditable status of all three objectives is recorded in
 [`OBJECTIVE_STATUS.md`](OBJECTIVE_STATUS.md). Run
 `python -m secguard.objective_status` to verify the committed acceptance metrics.
 
+Objective 3 now also includes a performance-based selector and causal solver
+replay. See [`artifacts/objective3_online/README.md`](artifacts/objective3_online/README.md)
+for measured elapsed time, process CPU time, final profit, and the precise
+sequential cold-rebuild reference used in that benchmark.
+
 This repository allows you to:
 1. **Reproduce the 5Guard Base Paper** across all 7 algorithms (`OPT`, `IAR`, `DTR`, `RNR`, `NIS`, `CIS`, `FGR`) on both Synthetic and Berlin BRAIN topologies with publication-quality SVG plots.
 2. **Run the SecGuard Pipeline** (Random Forest packet-level threat detection $\to$ risk aggregation $\to$ SLA-floor isolation adaptation $\to$ surrogate policy learning $\to$ DQN admission control $\to$ statistical validation).
@@ -169,6 +174,11 @@ python -m secguard.algorithm_selector
 
 # 10. Verify all three prototype acceptance gates
 python -m secguard.objective_status
+
+# 11. Collect common-state data and evaluate causal solver selection
+python -m secguard.online_selector --steps 12
+python -m secguard.online_selector --steps 12 --audit-only
+python scripts/report_objective3_online.py
 ```
 
 Generated SecGuard artifacts will appear in `artifacts/`:

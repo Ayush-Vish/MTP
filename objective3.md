@@ -1,5 +1,41 @@
 # Objective 3: Intelligent Algorithm Selection
 
+## New causal replay experiment
+
+A performance-based selector is implemented in `src/secguard/online_selector.py`.
+It predicts candidate runtime, profit gain, and completion success from actual
+requests and allocation-state features, then uses a deadline-aware fallback.
+Training candidates start from copies of the same state, and online policies
+update their own subsequent states.
+
+The measured results, figures, seed groups, and limitations are documented in
+[`artifacts/objective3_online/README.md`](artifacts/objective3_online/README.md).
+That benchmark uses a consistently timed sequential FGR-style cold-rebuild
+reference. Its results are distinct from the earlier independent-trace
+experiment below and do not establish superiority over a parallel ensemble.
+
+On six fresh synthetic test seeds (400--405), with 12 requests each, the
+performance selector achieved:
+
+- **86.49% lower mean elapsed time** than the sequential cold-rebuilt FGR-style
+  reference: 0.1655 s versus 1.2252 s.
+- **86.37% less process CPU time** and **74.31% fewer actual solver calls**,
+  including retries.
+- **99.73% retention of mean final trajectory profit** and the same **98.61%**
+  admission-within-deadline rate.
+- **57.33% lower elapsed time than always-OPT** on the same test sequences.
+- **27.41% higher final profit than a retrained RF-plus-OPT rule**, at the cost
+  of 14.27% more elapsed time than that rule.
+- **77.46% first-choice oracle-label accuracy** on a separate common-state
+  audit, versus 76.06% for the retrained RF-plus-OPT rule. The new audit has 71
+  oracle-eligible rows and is not directly comparable with the legacy test.
+
+These are short-horizon synthetic measurements with a sequential reference,
+not a result against native parallel 5Guard. The total test contains 72
+decisions per policy and is separate from the legacy 329-row classifier test.
+
+## Original offline experiment
+
 ## Objective
 
 Objective 3 replaces 5Guard's run-all ensemble with a lightweight meta-selector.

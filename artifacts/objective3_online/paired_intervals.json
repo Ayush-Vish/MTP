@@ -1,0 +1,74 @@
+{
+  "rf_opt_fallback": {
+    "profit": {
+      "mean_paired_delta": 2677.1613440155024,
+      "bootstrap_ci95": [
+        0.0,
+        8031.484032046507
+      ],
+      "seeds": 6
+    },
+    "latency": {
+      "mean_paired_delta": 0.020669655555530478,
+      "bootstrap_ci95": [
+        0.0030292944444328027,
+        0.04108855694437353
+      ],
+      "seeds": 6
+    }
+  },
+  "fgr_sequential": {
+    "profit": {
+      "mean_paired_delta": -33.68301666666975,
+      "bootstrap_ci95": [
+        -99.71571666667053,
+        -2.605323364453701e-12
+      ],
+      "seeds": 6
+    },
+    "latency": {
+      "mean_paired_delta": -1.0596687125000195,
+      "bootstrap_ci95": [
+        -1.1091935722221882,
+        -1.0105205444445018
+      ],
+      "seeds": 6
+    }
+  },
+  "always_opt": {
+    "profit": {
+      "mean_paired_delta": -33.68301666666975,
+      "bootstrap_ci95": [
+        -99.71571666667053,
+        -2.605323364453701e-12
+      ],
+      "seeds": 6
+    },
+    "latency": {
+      "mean_paired_delta": -0.22243968611113965,
+      "bootstrap_ci95": [
+        -0.24279148472219778,
+        -0.20041415555562656
+      ],
+      "seeds": 6
+    }
+  },
+  "always_iar": {
+    "profit": {
+      "mean_paired_delta": 2677.1613440155024,
+      "bootstrap_ci95": [
+        0.0,
+        8031.484032046507
+      ],
+      "seeds": 6
+    },
+    "latency": {
+      "mean_paired_delta": 0.04606209722221088,
+      "bootstrap_ci95": [
+        0.029107083333378286,
+        0.06623074583323312
+      ],
+      "seeds": 6
+    }
+  }
+}

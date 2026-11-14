@@ -11,6 +11,7 @@ __pycache__/
 data/raw/*.csv
 artifacts/*.joblib
 !artifacts/objective3_selector.joblib
+!artifacts/objective3_online/selector.joblib
 external/
 .venv_linux/
 tmp/
