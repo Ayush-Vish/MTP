@@ -10,10 +10,10 @@ intelligent 5Guard algorithm selection (Objective 3).
 |---|---|---|
 | Decision | Admit, reject, or defer an incoming slice | Select the allocation algorithm for a request |
 | Motivation | Admission consumes resources that later requests may need. | Running every candidate algorithm requires extra computation. |
-| Method | Deep Q-Network (DQN): reinforcement learning | Random Forest: supervised classification |
-| Input | 14 numerical features about capacity and the request | 22 features about the request and previous simulation state |
+| Method | Deep Q-Network (DQN): reinforcement learning | Extra-Trees performance prediction; earlier version used Random Forest classification |
+| Input | 14 numerical features about capacity and the request | 27 actual request, topology, and allocation-state features; earlier version used 22 features |
 | Output | One action: admit, reject, or defer | One algorithm: OPT, IAR, DTR, or RNR |
-| Evaluation environment | A synthetic admission simulator | Offline selection using saved 5Guard solver traces |
+| Evaluation environment | A synthetic admission simulator | Causal synthetic solver replay, with the earlier offline trace experiment retained separately |
 
 ## Summary of improvements
 
@@ -233,12 +233,102 @@ Detailed note: [`objective2.md`](objective2.md)
 
 ## Objective 3: intelligent algorithm selection
 
-### Additional experiment: performance-based selection and causal replay
+### 1. Previous approach and its limitations
+
+The earlier implementation used a 400-tree Random Forest classifier. From 22
+request and previous-state features, it predicted one label: OPT, IAR, DTR, or
+RNR. A confidence gate chose OPT when the prediction probability was below
+0.45 in the balanced profile or 0.60 in the safe profile.
+
+Training labels identified the fastest deadline-feasible candidate within the
+configured 5% profit-loss tolerance. Evaluation looked up saved candidate
+outcomes from independently evolving solver trajectories. The resulting
+66.57% label accuracy and 23.44% estimated solver-work saving established an
+offline proof of concept. The selected solver's mean recorded time was still
+62.77% higher than the stored measured FGR response.
+
+Two limitations motivated the changes. The classifier predicted the algorithm
+name without explicitly estimating its runtime, profit, or completion success.
+Also, independent outcome traces did not show how the selector's allocations
+would change subsequent network states. Stored FGR time was the maximum
+candidate runtime even though the local implementation ran candidates
+sequentially, so it did not measure total elapsed execution time.
+
+### 2. Current approach and implementation changes
 
 The newer implementation adds common-state training data, actual resource and
 request-complexity features, candidate-specific runtime/profit/success
 prediction, validation-only configuration selection, and a budget-aware retry.
 Each policy's accepted allocations update its own next state.
+
+| Component | Previous implementation | Current implementation | Intended effect |
+|---|---|---|---|
+| Prediction task | Classify one algorithm label | Predict runtime, incremental profit, and completion-success score for each algorithm | Compare expected outcomes explicitly |
+| Features | 22 service-profile and historical-state features | 27 actual request, topology-size, and allocation-state features | Represent request difficulty and current resource pressure |
+| Candidate training data | Outcomes from separate solver trajectories | Four candidates evaluated on copies of the same pre-decision state | Make candidate comparisons consistent |
+| Selection rule | Highest class probability, with OPT confidence fallback | Fastest predicted candidate meeting configured quality, feasibility, and deadline gates | Balance computation against expected allocation quality |
+| Failure handling | Fixed OPT fallback for low-confidence predictions | At most one retry when predicted runtime fits the remaining deadline budget | Recover from a failed first choice while accounting for extra work |
+| State transition | Saved-trace lookup | Execute the selected solver and commit its accepted allocation | Measure consequences over an evolving sequence |
+| Timing | Stored candidate solver times | Actual elapsed time and process CPU time, including selection overhead and retries | Measure the policy's execution cost |
+
+The new Extra-Trees model has 128 trees. Its inputs include actual CPU, radio,
+and bandwidth demands; VNF, VNF-instance, and virtual-link counts; topology
+size; active slices; existing placements; demand-based load and remaining
+capacity proxies; fragmentation; isolation; deadline; revenue; and previous
+profit and runtime. The load proxies exclude some isolation/orchestration
+overhead, and exact residual transport bandwidth is not available from X/Y.
+
+At each request, the controller:
+
+1. Extracts the 27 features from the incoming request and its own current state.
+2. Predicts runtime, incremental profit, and completion success for all four
+   candidate algorithms.
+3. Filters candidates using the predicted completion score and request
+   deadline, and applies a profit-loss budget relative to predicted **total
+   allocation profit**. The selected validation settings were 0.95 for quality
+   and 0.50 for the completion-score gate.
+4. Ranks qualifying algorithms by predicted runtime and executes the first.
+   If none qualifies, it ranks candidates by predicted completion success and
+   runtime; these predictions do not guarantee feasibility.
+5. If the first solver fails, considers one additional candidate only when
+   its predicted runtime, with a margin, fits the remaining time budget.
+6. Commits the allocation only when it is feasible and completes within the
+   total measured request deadline. Otherwise it preserves the prior state.
+
+The runtime adapter reconstructs all required constraints in isolated temporary
+models rather than mixing cached models from different solver histories.
+Output checks reject invalid results such as profit exceeding total admitted
+revenue. Deadline checks count overruns as failures; upstream model
+construction is not preemptible, so the runner is not a hard real-time system.
+
+```mermaid
+flowchart TD
+    A[Actual slice request and current allocation state] --> B[Extract 27 features]
+    B --> C[Extra-Trees performance predictor]
+    C --> D[Runtime, profit gain, completion score for each candidate]
+    D --> E[Apply quality and deadline gates; rank candidates]
+    E --> F[Execute first selected solver]
+    F --> G{Feasible within total deadline?}
+    G -->|Yes| H[Commit allocation and update next state]
+    G -->|No| I{Retry unused and predicted time fits remaining budget?}
+    I -->|Yes| J[Execute one additional candidate]
+    J --> G
+    I -->|No| K[Record failure and preserve prior allocation]
+```
+
+Both versions aim to choose one solver, so avoiding four calls is a comparison
+with the run-all reference, not a new reduction from the earlier classifier.
+The current measured average is 1.028 calls because retries are included.
+
+### 3. Evaluation design and measured impact
+
+The experiment uses 72 training decision points from seeds 100--105, 12
+calibration points from seed 200, and 12 configuration-selection points from
+seed 201. The final online evaluation uses six fresh seeds, 400--405, with 12
+arrivals each. Models and gates are fixed before those final tests. Completion
+scores receive sigmoid calibration only where calibration data contain both
+success and failure classes; the small sample does not guarantee reliable
+probabilities.
 
 See the [measured replay report](artifacts/objective3_online/README.md) for the
 new metrics and [replay comparison figure](artifacts/objective3_online/comparison.png).
@@ -271,6 +361,27 @@ inference, model rebuilding, allocation, and retries. The FGR-style reference
 runs four candidates sequentially; these numbers do not measure a parallel
 production ensemble.*
 
+The elapsed-time saving versus the sequential reference comes primarily from
+executing approximately one candidate instead of four, while the performance
+estimates guide which candidate to run. The state features and bounded retry
+help preserve trajectory profit. These components were changed together;
+separate ablations are still required to attribute a numerical gain to each.
+
+The baselines answer different questions:
+
+| Comparison | What it establishes in this benchmark |
+|---|---|
+| Sequential cold-rebuilt FGR-style reference | 86.49% less elapsed time and 86.37% less process CPU time while retaining 99.73% of mean final profit |
+| Always OPT | 57.33% less elapsed time with 99.73% of mean final profit retained |
+| Retrained RF-plus-OPT decision rule | 27.41% higher mean final profit and +1.39 percentage points admission within deadline, at a cost of 14.27% more elapsed time |
+
+The retrained RF comparator uses the new training data and richer features. It
+represents the earlier decision rule under the new replay conditions, not the
+unchanged legacy saved classifier. Consequently, the profit gain against it
+does not isolate the contribution of extra features alone.
+
+### 4. Accuracy, profit retention, and scope
+
 A separate held-out common-state audit gives **77.46% oracle-label accuracy**
 (55/71 eligible decisions) for the performance selector, versus **76.06%**
 (54/71) for the retrained RF-plus-OPT rule. This is one additional exact match
@@ -279,9 +390,22 @@ different dataset. In this separate audit the first ranked solver is feasible
 on 77.78% of all 72 rows; the online result above follows each policy's own
 state trajectory and includes bounded retries.
 
-### Earlier offline classifier experiment
+Accuracy measures agreement with the fastest qualifying oracle algorithm.
+Final-profit retention measures the ratio of average profits at the end of
+complete policy trajectories. Admission within deadline counts accepted,
+feasible requests among all online arrivals. These percentages have different
+denominators and should not be treated as interchangeable measures of success.
 
-### 1. Problem and approach
+The evidence supports a faster selector than the controlled sequential
+reference and always-OPT on short synthetic sequences, with a small profit
+trade-off. It does not yet establish superiority over native parallel 5Guard,
+longer-horizon workloads, or the BRAIN topology. Earlier results are retained
+below for traceability.
+
+<details>
+<summary>Earlier offline classifier experiment: methodology and original figures</summary>
+
+#### 1. Problem and approach
 
 Objective 3 uses request features and the previous 5Guard state to choose one
 solver rather than executing all four ensemble candidates. A low-confidence
@@ -296,7 +420,7 @@ placements; the chosen 5Guard algorithm performs the allocation.
 *Figure 2. The selector predicts a single solver from request information and
 previous network state, with an OPT fallback for low-confidence predictions.*
 
-### 2. Input, output, and label generation
+#### 2. Input, output, and label generation
 
 | Feature group | Inputs | Count |
 |---|---|---:|
@@ -328,7 +452,7 @@ trajectory, while candidate outcomes come from each algorithm's independent
 trajectory. These are therefore offline counterfactual comparisons rather than
 four alternatives replayed from one identical evolving allocation state.
 
-### 3. Training and inference
+#### 3. Training and inference
 
 The 400-tree Random Forest uses 22 features available before allocation. It
 trains on simulation iterations 0--6 (771 rows) and tests on iterations 7--9
@@ -352,7 +476,7 @@ prediction. On the held-out rows, only 89.67% of selections actually meet that
 quality budget. The profile comparisons are descriptive held-out results;
 they are not a nested-validation study of threshold selection.
 
-### 4. Results and impact
+#### 4. Results and impact
 
 | Metric | Result |
 |---|---:|
@@ -428,14 +552,19 @@ was measured.
 
 Detailed note: [`objective3.md`](objective3.md)
 
+</details>
+
 ## Implementation and verification artifacts
 
 | Component | Code / evidence |
 |---|---|
 | Admission simulator, reward, DQN, baselines, evaluation | [`src/secguard/admission_control.py`](src/secguard/admission_control.py) |
-| Selector features, label rule, Random Forest, evaluation | [`src/secguard/algorithm_selector.py`](src/secguard/algorithm_selector.py) |
+| Current performance predictor, state features, replay, and deadline-aware retry | [`src/secguard/online_selector.py`](src/secguard/online_selector.py) |
+| Original offline classifier, label rule, and evaluation | [`src/secguard/algorithm_selector.py`](src/secguard/algorithm_selector.py) |
+| New replay metrics, baselines, and uncertainty intervals | [`artifacts/objective3_online/README.md`](artifacts/objective3_online/README.md) |
 | Admission tests | [`tests/test_admission_control.py`](tests/test_admission_control.py) |
 | Selection tests | [`tests/test_algorithm_selector.py`](tests/test_algorithm_selector.py) |
+| Performance selection, state-feature, and audit tests | [`tests/test_online_selector.py`](tests/test_online_selector.py) |
 | Prototype acceptance checks | [`src/secguard/objective_status.py`](src/secguard/objective_status.py) |
 
 ## Reproduction
@@ -445,8 +574,13 @@ Detailed note: [`objective3.md`](objective3.md)
 python -m secguard.admission_control --episodes 2000 `
   --evaluation-episodes 50 --requests 24 --seed 42
 
-# Objective 3
+# Objective 3: original offline experiment
 python -m secguard.algorithm_selector
+
+# Objective 3: reproduce the current causal replay on final test seeds
+python -m secguard.online_selector --steps 12 --test-seeds 400 401 402 403 404 405
+python -m secguard.online_selector --steps 12 --test-seeds 400 401 402 403 404 405 --audit-only
+python scripts/report_objective3_online.py
 
 # Regenerate the focused Objective 2 figure from saved results
 python scripts/plot_objective2_focused.py
@@ -469,12 +603,18 @@ python -m secguard.objective_status
 | `artifacts/objective3_algorithm_selector.png` | Latency, quality, and confusion figure |
 | `artifacts/objective3_computation_tradeoff.png` | Solver-work, invocation, and quality trade-off |
 | `artifacts/objective3_architecture.png` | Objective 3 architecture diagram |
+| `artifacts/objective3_online/results.json` | Current online trajectories, summaries, comparisons, and common-state audit |
+| `artifacts/objective3_online/comparison.png` | Current measured elapsed-time, final-profit, and deadline-success figure |
+| `artifacts/objective3_online/selector.joblib` | Trained performance predictor and retrained RF comparator |
+| `artifacts/objective3_online/paired_intervals.json` | Seed-level paired bootstrap intervals |
 
 ## Research boundaries
 
-Both objectives are reproducible synthetic/offline prototypes. Publication-level
-claims require direct 5Guard causal replay, BRAIN or additional topologies,
-unseen traffic distributions, and online timing under realistic deployment load.
+Both objectives remain research prototypes. Objective 2 uses a synthetic
+admission environment; Objective 3 now includes causal synthetic solver replay.
+Publication-level generalization claims require BRAIN or additional topologies,
+unseen traffic distributions, longer sequences, and timing under realistic
+deployment load.
 
 Priorities for stronger evidence are a deferral-matched admission baseline,
 multiple independent DQN training seeds, comparisons with alternative RL
