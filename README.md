@@ -10,6 +10,10 @@ The auditable status of all three objectives is recorded in
 [`OBJECTIVE_STATUS.md`](OBJECTIVE_STATUS.md). Run
 `python -m secguard.objective_status` to verify the committed acceptance metrics.
 
+For a standalone report of completed Objectives 2 and 3, including methods,
+figures, measured comparisons, and evaluation scope, see
+[`OBJECTIVES_2_3_COMPLETED.md`](OBJECTIVES_2_3_COMPLETED.md).
+
 Objective 3 now also includes a performance-based selector and causal solver
 replay. See [`artifacts/objective3_online/README.md`](artifacts/objective3_online/README.md)
 for measured elapsed time, process CPU time, final profit, and the precise
