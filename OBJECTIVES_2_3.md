@@ -313,15 +313,35 @@ The benchmark times a sequential cold-rebuilt FGR-style reference. All policy
 timing includes feature extraction, inference, model rebuilding, allocation,
 and any retry.
 
-| Metric | Performance selector | Sequential FGR-style reference | Change |
+| Metric | Previous selection rule: RF + OPT | Current approach: performance selector | Baseline: sequential FGR-style |
 |---|---:|---:|---:|
-| Mean measured elapsed time per decision | **0.1655 s** | 1.2252 s | **86.49% lower** |
-| p95 measured elapsed time | **0.2952 s** | 2.7413 s | Lower tail latency |
-| Mean process CPU time per decision | **0.1593 s** | 1.1691 s | **86.37% lower** |
-| Mean solver calls, including retries | **1.028** | 4.000 | **74.31% fewer** |
-| Mean final trajectory profit | 12445.70 | 12479.38 | **99.73% retained** |
-| Admission within total deadline | **98.61%** | **98.61%** | Matched |
-| Solver errors | **0** | **0** | None recorded |
+| Online decisions evaluated | 72 | 72 | 72 |
+| Mean measured elapsed time per decision | 0.1449 s | **0.1655 s** | 1.2252 s |
+| p95 measured elapsed time | 0.2693 s | **0.2952 s** | 2.7413 s |
+| Mean process CPU time per decision | 0.1400 s | **0.1593 s** | 1.1691 s |
+| Mean solver calls, including retries | 1.000 | **1.028** | 4.000 |
+| Mean final trajectory profit | 9768.54 | **12445.70** | 12479.38 |
+| Admission within total deadline | 97.22% | **98.61%** | 98.61% |
+| Solver errors | 0 | **0** | 0 |
+| Oracle-label agreement, separate common-state audit | 76.06% (54/71) | **77.46% (55/71)** | 2.82% (2/71) |
+
+The previous selection rule is retrained on the same training data and 27
+features used in this benchmark; it is not the unchanged saved classifier from
+a different experiment. All online columns use the same six input sequences.
+The baseline executes four cold-rebuilt candidates sequentially and applies
+the FGR OPT-priority rule; it is not native parallel 5Guard.
+
+Oracle-label agreement is measured separately from online trajectory profit
+and timing. Its oracle chooses the fastest feasible algorithm within the
+configured profit-loss tolerance. FGR prioritizes OPT rather than optimizing
+agreement with that label, so its low label agreement does not imply low
+allocation profit. One audit row has no feasible candidate, leaving 71
+oracle-eligible rows out of 72; all arrivals remain in the online metrics.
+
+| Current approach compared with | Measured impact |
+|---|---|
+| Previous RF-plus-OPT selection rule | **27.41% higher final profit**, **+1.39 percentage points** admission within deadline, and **+1.41 percentage points** oracle-label agreement; elapsed time is **14.27% higher** |
+| Sequential FGR-style baseline | **86.49% lower elapsed time**, **86.37% lower process CPU time**, **74.31% fewer solver calls**, and **99.73% of final profit retained**, with the same admission-within-deadline rate |
 
 The test contains six unseen seeds (400--405), with 12 arrivals each. Against
 always selecting OPT, the new selector reduces mean elapsed time by **57.33%**
