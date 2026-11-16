@@ -42,8 +42,8 @@ These are validation extensions, not missing objective implementations.
 
 ## Additional Objective 3 causal replay
 
-The newer performance selector has been evaluated on 72 decisions per policy
-across six unseen synthetic sequences. It reduces mean elapsed time by 86.49%
+The newer performance selector has been evaluated across six unseen synthetic
+sequences. It reduces mean elapsed time by 86.49%
 against a sequential cold-rebuilt FGR-style reference and by 57.33% against
 always-OPT, retaining 99.73% of their mean final profit. Admission within the
 total deadline is 98.61%, matching both references.

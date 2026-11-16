@@ -22,7 +22,7 @@ algorithms. Measured results are drawn from retained experimental artifacts.
 | Objective | Comparison | Measured improvement | Evaluation |
 |---|---|---|---|
 | 2: Admission control | DQN versus greedy | **64.93% higher reward**, **62.92% higher security-adjusted profit**, **46.44% more admissions** | 50 paired held-out synthetic episodes |
-| 3: Algorithm selection, new replay | Performance selector versus sequential cold-rebuilt FGR-style reference | **86.49% lower measured elapsed time**, **86.37% lower process CPU time**, **99.73% final profit retained** | 72 online decisions per policy across six unseen synthetic sequences |
+| 3: Algorithm selection, new replay | Performance selector versus sequential cold-rebuilt FGR-style reference | **86.49% lower measured elapsed time**, **86.37% lower process CPU time**, **99.73% final profit retained** | Matched online evaluations across six unseen synthetic sequences |
 
 These improvements use different baselines and should not be added together.
 Objective 2's reward advantage over value density is inconclusive. The new
@@ -250,6 +250,23 @@ Each policy's accepted allocations update its own next state.
 | State transition | Execute the selected solver and commit its accepted allocation | Measure consequences over an evolving sequence |
 | Timing | Actual elapsed time and process CPU time, including selection overhead and retries | Measure the policy's execution cost |
 
+
+### Difference between the previous and current approaches
+
+| Aspect | Previous selection rule: RF + OPT | Current approach: performance selector |
+|---|---|---|
+| Input | 27 request, topology, and allocation-state features | The same 27 features |
+| Learning method | Random Forest classification | Extra-Trees regression with 128 trees |
+| Model output | One predicted algorithm label and its classification confidence | Predicted runtime, incremental profit, and completion score for each of OPT, IAR, DTR, and RNR |
+| Selection decision | Use the predicted label when confidence is at least 0.45; otherwise choose OPT | Prefer the fastest candidate passing the deadline, completion-score, and predicted total-profit quality gates |
+| Failure handling | One solver call | At most one additional solver call if the remaining deadline budget allows |
+| Measured tradeoff | Lower elapsed time than the current selector | 27.41% higher final profit and 1.41 percentage points higher oracle-label agreement, with 14.27% more elapsed time |
+
+Both approaches use supervised learning to choose an allocation algorithm.
+The chosen solver computes the actual allocation and realized profit. The
+current model estimates candidate outcomes before execution; it does not
+execute all four solvers for each online decision.
+
 The Extra-Trees model has 128 trees. Its inputs include actual CPU, radio,
 and bandwidth demands; VNF, VNF-instance, and virtual-link counts; topology
 size; active slices; existing placements; demand-based load and remaining
@@ -301,7 +318,7 @@ executes four candidates per decision.
 
 ### 2. Evaluation design and measured impact
 
-The experiment uses 72 training decision points from seeds 100--105, 12
+The experiment uses training decision points from seeds 100--105, 12
 calibration points from seed 200, and 12 configuration-selection points from
 seed 201. The final online evaluation uses six fresh seeds, 400--405, with 12
 arrivals each. Models and gates are fixed before those final tests. Completion
@@ -323,7 +340,6 @@ and any retry.
 
 | Metric | Previous selection rule: RF + OPT | Current approach: performance selector | Baseline: sequential FGR-style | Current vs previous rule | Current vs FGR-style baseline |
 |---|---:|---:|---:|---|---|
-| Online decisions evaluated | 72 | 72 | 72 | Same evaluation count | Same evaluation count |
 | Mean measured elapsed time per decision | 0.1449 s | **0.1655 s** | 1.2252 s | 14.27% higher (slower) | **86.49% lower (faster)** |
 | p95 measured elapsed time | 0.2693 s | **0.2952 s** | 2.7413 s | 9.62% higher (slower) | **89.23% lower (faster)** |
 | Mean process CPU time per decision | 0.1400 s | **0.1593 s** | 1.1691 s | 13.80% higher | **86.37% lower** |
@@ -351,7 +367,7 @@ and timing. Its oracle chooses the fastest feasible algorithm within the
 configured profit-loss tolerance. FGR prioritizes OPT rather than optimizing
 agreement with that label, so its low label agreement does not imply low
 allocation profit. One audit row has no feasible candidate, leaving 71
-oracle-eligible rows out of 72; all arrivals remain in the online metrics.
+oracle-eligible rows; all arrivals remain in the online metrics.
 
 | Current approach compared with | Measured impact |
 |---|---|
@@ -371,8 +387,8 @@ RF-plus-OPT rule on these new features, it increases mean final profit by
 performance selector, and sequential FGR-style reference. The panels show mean
 and p95 elapsed time, mean final profit, admission within deadline, process CPU
 time, actual solver calls, recorded solver errors, and first-choice oracle-label
-accuracy. Online metrics use 72 decisions per
-policy; accuracy uses a separate audit with 71 oracle-eligible states. FGR's
+accuracy. Online metrics follow each policy's own trajectory;
+accuracy uses a separate audit with 71 oracle-eligible states. FGR's
 2.82% oracle-label agreement is recorded in the table rather than plotted as
 classifier accuracy. Elapsed time includes selection, rebuilding, allocation,
 and retries. The reference is sequential, not a parallel production ensemble.*
@@ -415,7 +431,7 @@ A separate held-out common-state audit gives **77.46% oracle-label accuracy**
 (55/71 eligible decisions) for the performance selector, versus **76.06%**
 (54/71) for the retrained RF-plus-OPT baseline. This is one additional exact
 match on the same audit and does not establish a consistent accuracy gain. In this separate audit the first ranked solver is feasible
-on 77.78% of all 72 rows; the online result above follows each policy's own
+on 77.78% of all audit rows; the online result above follows each policy's own
 state trajectory and includes bounded retries.
 
 Accuracy measures agreement with the fastest qualifying oracle algorithm.

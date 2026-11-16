@@ -10,7 +10,7 @@ Training labels come from four candidates evaluated on copies of one common stat
 - Requests per sequence: **12**.
 - Training seed groups: `[100, 101, 102, 103, 104, 105]`.
 - Validation seed groups: `[200, 201]`; calibration and threshold tuning use separate validation groups when available.
-- Test seed groups: `[400, 401, 402, 403, 404, 405]`; **72 online decisions per policy**.
+- Test seed groups: `[400, 401, 402, 403, 404, 405]`; identical incoming sequences for every policy.
 - SCIP optimization limit: 2.0 seconds per call; full elapsed deadline is checked separately.
 - The RF + OPT comparator is retrained on the new training data and richer features. It represents the old decision rule, not the exact saved legacy model.
 - FGR-style reference: sequentially evaluate four cold-rebuilt candidates and apply the upstream OPT-priority rule.
@@ -63,11 +63,11 @@ Figure: online elapsed time, final trajectory profit, and admission within the t
 
 This diagnostic runs all candidates on common test states after the model is frozen. These additional diagnostic solves are excluded from online policy latency and call counts. Ranking is evaluated before retry.
 
-| Rule | Oracle-label accuracy | Mean bounded quality, all rows | Feasible, all rows | Eligible oracle rows / all rows |
+| Rule | Oracle-label accuracy | Mean bounded quality, all rows | Feasible, all rows | Eligible oracle rows |
 |---|---:|---:|---:|---:|
-| performance_selector | 77.46% | 77.21% | 77.78% | 71 / 72 |
-| rf_opt_fallback | 76.06% | 76.74% | 77.78% | 71 / 72 |
-| fgr_style | 2.82% | 98.61% | 98.61% | 71 / 72 |
+| performance_selector | 77.46% | 77.21% | 77.78% | 71 |
+| rf_opt_fallback | 76.06% | 76.74% | 77.78% | 71 |
+| fgr_style | 2.82% | 98.61% | 98.61% | 71 |
 
 Rows where no candidate is feasible have no oracle algorithm label; they remain in quality and success denominators with zero score. These audit rows differ from the legacy 329-row test set, so new accuracy must not be described as a direct improvement from 66.57%.
 
