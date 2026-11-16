@@ -319,11 +319,11 @@ and any retry.
 
 The recorded columns below contain measured results. The **requested target**
 and **target improvement** columns show the modest improvements requested for
-the current performance selector; they are **unvalidated planning targets**.
+the current performance selector; they are **proposed planning targets**.
 Improvement amounts are relative to the recorded current selector, not the
 RF-plus-OPT rule or the sequential reference.
 
-| Metric | Previous selection rule: RF + OPT (recorded) | Current approach: performance selector (recorded) | Requested target (unvalidated) | Target improvement over current selector | Baseline: sequential FGR-style (recorded) |
+| Metric | Previous selection rule: RF + OPT (recorded) | Current approach: performance selector (recorded) | Proposed target | Target improvement over current selector | Baseline: sequential FGR-style (recorded) |
 |---|---:|---:|---:|---|---:|
 | Online decisions evaluated | 72 | 72 | **72 (same evaluation size)** | **Unchanged; evaluation size is not a performance gain** | 72 |
 | Mean elapsed time per decision | 0.1449 s | 0.1655 s | **0.1622 s** | **2% lower; 0.0033 s saved** | 1.2252 s |
@@ -360,13 +360,13 @@ RF-plus-OPT rule on these new features, it increases mean final profit by
 **27.41%** and admission-within-deadline by **1.39 percentage points**, but takes
 **14.27% more elapsed time**. Those comparisons use actual policy trajectories.
 
-![Objective 3 measured comparisons and unvalidated accuracy and latency targets](artifacts/objective3_online/approach_comparison.png)
+![Objective 3 measured comparisons and proposed accuracy and latency targets](artifacts/objective3_online/approach_comparison.png)
 
 *Figure 2. Direct comparison of the previous RF-plus-OPT rule, current
 performance selector, and sequential FGR-style reference. The panels show
 mean elapsed time, mean final profit, admission within deadline, and
 first-choice oracle-label accuracy. Solid bars are recorded measurements;
-orange hatched bars are modest unvalidated targets against the current
+orange hatched bars are modest proposed targets against the current
 selector. Additional panels cover p95 latency, process CPU time, solver calls,
 and solver errors. Online metrics use 72 decisions per
 policy; accuracy uses a separate audit with 71 oracle-eligible states. FGR's
@@ -516,7 +516,7 @@ python -m secguard.objective_status
 | `artifacts/objective2_admission_control.png` | Original training and complete baseline figure |
 | `artifacts/objective3_online/results.json` | Current online trajectories, summaries, comparisons, and common-state audit |
 | `artifacts/objective3_online/comparison.png` | Current measured elapsed-time, final-profit, and deadline-success figure |
-| `artifacts/objective3_online/approach_comparison.png` | Figure 2: measured policy comparison with distinct unvalidated accuracy and latency targets |
+| `artifacts/objective3_online/approach_comparison.png` | Figure 2: measured policy comparison with distinct proposed accuracy and latency targets |
 | `artifacts/objective3_online/selection_workflow.png` | Figure 3: implemented previous-rule, current-selector, and baseline workflows |
 | `artifacts/objective3_online/selector.joblib` | Trained performance predictor and retrained RF comparator |
 | `artifacts/objective3_online/paired_intervals.json` | Seed-level paired bootstrap intervals |
