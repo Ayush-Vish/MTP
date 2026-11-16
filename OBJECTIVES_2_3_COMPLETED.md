@@ -317,17 +317,23 @@ The benchmark times a sequential cold-rebuilt FGR-style reference. All policy
 timing includes feature extraction, inference, model rebuilding, allocation,
 and any retry.
 
-| Metric | Previous selection rule: RF + OPT | Current approach: performance selector | Baseline: sequential FGR-style |
-|---|---:|---:|---:|
-| Online decisions evaluated | 72 | 72 | 72 |
-| Mean measured elapsed time per decision | 0.1449 s | **0.1655 s** | 1.2252 s |
-| p95 measured elapsed time | 0.2693 s | **0.2952 s** | 2.7413 s |
-| Mean process CPU time per decision | 0.1400 s | **0.1593 s** | 1.1691 s |
-| Mean solver calls, including retries | 1.000 | **1.028** | 4.000 |
-| Mean final trajectory profit | 9768.54 | **12445.70** | 12479.38 |
-| Admission within total deadline | 97.22% | **98.61%** | 98.61% |
-| Solver errors | 0 | **0** | 0 |
-| Oracle-label agreement, separate common-state audit | 76.06% (54/71) | **77.46% (55/71)** | 2.82% (2/71) |
+The recorded columns below contain measured results. The **requested target**
+and **target improvement** columns show the modest improvements requested for
+the current performance selector; they are **unvalidated planning targets**.
+Improvement amounts are relative to the recorded current selector, not the
+RF-plus-OPT rule or the sequential reference.
+
+| Metric | Previous selection rule: RF + OPT (recorded) | Current approach: performance selector (recorded) | Requested target (unvalidated) | Target improvement over current selector | Baseline: sequential FGR-style (recorded) |
+|---|---:|---:|---:|---|---:|
+| Online decisions evaluated | 72 | 72 | **72 (same evaluation size)** | **Unchanged; evaluation size is not a performance gain** | 72 |
+| Mean elapsed time per decision | 0.1449 s | 0.1655 s | **0.1622 s** | **2% lower; 0.0033 s saved** | 1.2252 s |
+| p95 elapsed time | 0.2693 s | 0.2952 s | **0.2893 s** | **2% lower; 0.0059 s saved** | 2.7413 s |
+| Mean process CPU time per decision | 0.1400 s | 0.1593 s | **0.1561 s** | **2% lower; 0.0032 s saved** | 1.1691 s |
+| Mean solver calls, including retries | 1.000 | 1.028 | **1.017** | **1% fewer; 0.0103 fewer calls per decision** | 4.000 |
+| Mean final trajectory profit | 9768.54 | 12445.70 | **12570.15** | **1% higher; +124.46 profit units** | 12479.38 |
+| Admission within total deadline | 97.22% | 98.61% | **99.00%** | **+0.39 percentage points** | 98.61% |
+| Solver errors | 0 | 0 | **0** | **Zero errors maintained; already the best possible count** | 0 |
+| Oracle-label agreement, separate common-state audit | 76.06% (54/71) | 77.46% (55/71) | **83.66%** | **+8% relative; +6.20 percentage points** | 2.82% (2/71) |
 
 The previous selection rule is retrained on the same training data and 27
 features used in this benchmark; it is not the unchanged saved classifier from
@@ -377,16 +383,9 @@ current performance selector as their reference, rather than the RF-plus-OPT
 comparator. The 2% latency reduction is an illustrative interpretation of
 "slightly"; it has not been evaluated.
 
-| Metric | Recorded performance selector | Requested target (unvalidated) | Target improvement |
-|---|---:|---:|---|
-| First-choice oracle-label accuracy | 77.46% (55/71) | **83.66%** | **+8% relative; +6.20 percentage points** |
-| Mean elapsed time per decision | 0.1655 s | **0.1622 s** | **2% lower; 0.0033 s saved** |
-| p95 elapsed time | 0.2952 s | **0.2893 s** | **2% lower; 0.0059 s saved** |
-| Mean process CPU time per decision | 0.1593 s | **0.1561 s** | **2% lower; 0.0032 s saved** |
-| Mean final trajectory profit | 12445.70 | **12570.15** | **1% higher; +124.46 profit units** |
-| Admission within total deadline | 98.61% | **99.00%** | **+0.39 percentage points** |
-| Mean solver calls, including retries | 1.028 | **1.017** | **1% fewer; 0.0103 fewer calls per decision** |
-| Solver errors | 0 | **0** | **Zero errors maintained; already the best possible count** |
+The bold target and improvement columns in the main comparison table above
+cover accuracy, mean and p95 latency, process CPU time, final profit, deadline
+admission, solver calls, and preserving zero errors.
 
 Targets are calculated from the full-precision saved values using accuracy
 times 1.08; elapsed and CPU times times 0.98; final profit times 1.01; and mean
@@ -398,6 +397,24 @@ counts, model changes, or an achieved performance improvement. Figure 2 uses
 orange hatched bars to distinguish these targets from solid measured bars.
 Objective 2 has no classification-accuracy metric; its measured reward and
 admission results remain the basis of its completed prototype status.
+
+#### Illustrative case study: planning for 1,000 allocation decisions
+
+Consider a hypothetical workload of **1,000 sequential allocation decisions**.
+Applying the recorded mean elapsed time gives **165.54 seconds** of estimated
+total processing time. Applying the 2% lower latency target gives **162.23
+seconds**, a target saving of **3.31 seconds**. The corresponding process CPU
+estimate changes from **159.29 seconds** to **156.10 seconds**, saving **3.19
+seconds**. These calculations use the full-precision recorded averages and
+the target multipliers; they are arithmetic projections, not a replay of
+1,000 requests or evidence that the targets have been achieved.
+
+For deadline admission, applying 98.61% versus the 99.00% target to this
+hypothetical workload gives approximately **986 versus 990 accepted requests
+within deadline**, or **about four additional admissions**. Request mix and
+allocation-state changes can affect actual outcomes. Profit and accuracy
+retain their separate trajectory and audit definitions in the main table;
+this example does not convert them into per-request guarantees.
 
 The solid bars show the measured trade-off: versus RF plus OPT, the current
 selector gains 27.41% final profit and 1.41 percentage points of oracle-label
