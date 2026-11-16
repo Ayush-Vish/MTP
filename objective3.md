@@ -88,17 +88,24 @@ The benchmark times a sequential cold-rebuilt FGR-style reference. All policy
 timing includes feature extraction, inference, model rebuilding, allocation,
 and any retry.
 
-| Metric | Previous selection rule: RF + OPT | Current approach: performance selector | Baseline: sequential FGR-style |
-|---|---:|---:|---:|
-| Online decisions evaluated | 72 | 72 | 72 |
-| Mean measured elapsed time per decision | 0.1449 s | **0.1655 s** | 1.2252 s |
-| p95 measured elapsed time | 0.2693 s | **0.2952 s** | 2.7413 s |
-| Mean process CPU time per decision | 0.1400 s | **0.1593 s** | 1.1691 s |
-| Mean solver calls, including retries | 1.000 | **1.028** | 4.000 |
-| Mean final trajectory profit | 9768.54 | **12445.70** | 12479.38 |
-| Admission within total deadline | 97.22% | **98.61%** | 98.61% |
-| Solver errors | 0 | **0** | 0 |
-| Oracle-label agreement, separate common-state audit | 76.06% (54/71) | **77.46% (55/71)** | 2.82% (2/71) |
+| Metric | Previous selection rule: RF + OPT | Current approach: performance selector | Baseline: sequential FGR-style | Current vs previous rule | Current vs FGR-style baseline |
+|---|---:|---:|---:|---|---|
+| Online decisions evaluated | 72 | 72 | 72 | Same evaluation count | Same evaluation count |
+| Mean measured elapsed time per decision | 0.1449 s | **0.1655 s** | 1.2252 s | 14.27% higher (slower) | **86.49% lower (faster)** |
+| p95 measured elapsed time | 0.2693 s | **0.2952 s** | 2.7413 s | 9.62% higher (slower) | **89.23% lower (faster)** |
+| Mean process CPU time per decision | 0.1400 s | **0.1593 s** | 1.1691 s | 13.80% higher | **86.37% lower** |
+| Mean solver calls, including retries | 1.000 | **1.028** | 4.000 | 2.78% more calls | **74.31% fewer calls** |
+| Mean final trajectory profit | 9768.54 | **12445.70** | 12479.38 | **27.41% higher** | 0.27% lower (99.73% retained) |
+| Admission within total deadline | 97.22% | **98.61%** | 98.61% | **+1.39 percentage points** | Unchanged |
+| Solver errors | 0 | **0** | 0 | Unchanged: zero errors | Unchanged: zero errors |
+| Oracle-label agreement, separate common-state audit | 76.06% (54/71) | **77.46% (55/71)** | 2.82% (2/71) | **+1.41 percentage points (one additional correct decision)** | +74.65 percentage points (different selection objective; see audit explanation below) |
+
+Changes are calculated from the unrounded saved results. Relative change is
+100 × (current − reference) / reference; changes in admission rate and
+oracle-label agreement are expressed in percentage points. Higher profit and
+admission rates are favorable; lower elapsed time, CPU time, and solver calls
+are favorable. The accuracy gain over the previous rule is one additional
+correct decision out of 71.
 
 The previous selection rule is retrained on the same training data and 27
 features used in this benchmark; it is not the unchanged saved classifier from
