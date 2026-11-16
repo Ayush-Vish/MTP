@@ -377,16 +377,16 @@ current performance selector as their reference, rather than the RF-plus-OPT
 comparator. The 2% latency reduction is an illustrative interpretation of
 "slightly"; it has not been evaluated.
 
-| Metric | Recorded performance selector | Requested target (unvalidated) |
-|---|---:|---:|
-| First-choice oracle-label accuracy | 77.46% (55/71) | **83.66%** (+8% relative; +6.20 percentage points) |
-| Mean elapsed time per decision | 0.1655 s | **0.1622 s** (-2%) |
-| p95 elapsed time | 0.2952 s | **0.2893 s** (-2%) |
-| Mean process CPU time per decision | 0.1593 s | **0.1561 s** (-2%) |
-| Mean final trajectory profit | 12445.70 | **12570.15** (+1%) |
-| Admission within total deadline | 98.61% | **99.00%** (+0.39 percentage points) |
-| Mean solver calls, including retries | 1.028 | **1.017** (-1%; rounded from the saved floating-point value) |
-| Solver errors | 0 | **0** (preserve the existing best value) |
+| Metric | Recorded performance selector | Requested target (unvalidated) | Target improvement |
+|---|---:|---:|---|
+| First-choice oracle-label accuracy | 77.46% (55/71) | **83.66%** | **+8% relative; +6.20 percentage points** |
+| Mean elapsed time per decision | 0.1655 s | **0.1622 s** | **2% lower; 0.0033 s saved** |
+| p95 elapsed time | 0.2952 s | **0.2893 s** | **2% lower; 0.0059 s saved** |
+| Mean process CPU time per decision | 0.1593 s | **0.1561 s** | **2% lower; 0.0032 s saved** |
+| Mean final trajectory profit | 12445.70 | **12570.15** | **1% higher; +124.46 profit units** |
+| Admission within total deadline | 98.61% | **99.00%** | **+0.39 percentage points** |
+| Mean solver calls, including retries | 1.028 | **1.017** | **1% fewer; 0.0103 fewer calls per decision** |
+| Solver errors | 0 | **0** | **Zero errors maintained; already the best possible count** |
 
 Targets are calculated from the full-precision saved values using accuracy
 times 1.08; elapsed and CPU times times 0.98; final profit times 1.01; and mean
