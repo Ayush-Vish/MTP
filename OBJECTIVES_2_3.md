@@ -307,6 +307,12 @@ scores receive sigmoid calibration only where calibration data contain both
 success and failure classes; the small sample does not guarantee reliable
 probabilities.
 
+In this run, sigmoid calibration was fitted for IAR only. OPT, DTR, and RNR
+had only one outcome class in the calibration group, so their calibration was
+unavailable. The backend was SCIP with one solver thread and a two-second
+optimization limit per call; total elapsed deadline checks also include model
+construction, inference, and retries.
+
 See the [measured replay report](artifacts/objective3_online/README.md) for the
 metrics and [three-approach comparison figure](artifacts/objective3_online/approach_comparison.png).
 The benchmark times a sequential cold-rebuilt FGR-style reference. All policy
@@ -353,9 +359,10 @@ RF-plus-OPT rule on these new features, it increases mean final profit by
 ![Objective 3 previous rule, current selector, and baseline results](artifacts/objective3_online/approach_comparison.png)
 
 *Figure 2. Direct comparison of the previous RF-plus-OPT rule, current
-performance selector, and sequential FGR-style reference. The four panels show
-mean elapsed time, mean final profit, admission within deadline, and
-first-choice oracle-label accuracy. Online metrics use 72 decisions per
+performance selector, and sequential FGR-style reference. The panels show mean
+and p95 elapsed time, mean final profit, admission within deadline, process CPU
+time, actual solver calls, recorded solver errors, and first-choice oracle-label
+accuracy. Online metrics use 72 decisions per
 policy; accuracy uses a separate audit with 71 oracle-eligible states. FGR's
 2.82% oracle-label agreement is recorded in the table rather than plotted as
 classifier accuracy. Elapsed time includes selection, rebuilding, allocation,

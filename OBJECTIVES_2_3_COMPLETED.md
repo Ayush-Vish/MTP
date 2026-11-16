@@ -5,8 +5,6 @@ components of SecGuard, their evaluation procedures, and measured results.
 Objective 2 uses a Deep Q-Network for admission decisions. Objective 3 uses an
 Extra-Trees performance predictor to select among four 5Guard allocation
 algorithms. Measured results are drawn from retained experimental artifacts.
-The Objective 3 improvement targets below are illustrative documentation values,
-not new experimental results. This update does not rerun training or solvers.
 
 ## Overview
 
@@ -311,29 +309,29 @@ scores receive sigmoid calibration only where calibration data contain both
 success and failure classes; the small sample does not guarantee reliable
 probabilities.
 
+In this run, sigmoid calibration was fitted for IAR only. OPT, DTR, and RNR
+had only one outcome class in the calibration group, so their calibration was
+unavailable. The backend was SCIP with one solver thread and a two-second
+optimization limit per call; total elapsed deadline checks also include model
+construction, inference, and retries.
+
 See the [measured replay report](artifacts/objective3_online/README.md) for the
 metrics and [three-approach comparison figure](artifacts/objective3_online/approach_comparison.png).
 The benchmark times a sequential cold-rebuilt FGR-style reference. All policy
 timing includes feature extraction, inference, model rebuilding, allocation,
 and any retry.
 
-The recorded columns below contain measured results. The **requested target**
-and **target improvement** columns show the modest improvements requested for
-the current performance selector; they are **proposed planning targets**.
-Improvement amounts are relative to the recorded current selector, not the
-RF-plus-OPT rule or the sequential reference.
-
-| Metric | Previous selection rule: RF + OPT (recorded) | Current approach: performance selector (recorded) | Proposed target | Target improvement over current selector | Baseline: sequential FGR-style (recorded) |
-|---|---:|---:|---:|---|---:|
-| Online decisions evaluated | 72 | 72 | **72 (same evaluation size)** | **Unchanged; evaluation size is not a performance gain** | 72 |
-| Mean elapsed time per decision | 0.1449 s | 0.1655 s | **0.1622 s** | **2% lower; 0.0033 s saved** | 1.2252 s |
-| p95 elapsed time | 0.2693 s | 0.2952 s | **0.2893 s** | **2% lower; 0.0059 s saved** | 2.7413 s |
-| Mean process CPU time per decision | 0.1400 s | 0.1593 s | **0.1561 s** | **2% lower; 0.0032 s saved** | 1.1691 s |
-| Mean solver calls, including retries | 1.000 | 1.028 | **1.017** | **1% fewer; 0.0103 fewer calls per decision** | 4.000 |
-| Mean final trajectory profit | 9768.54 | 12445.70 | **12570.15** | **1% higher; +124.46 profit units** | 12479.38 |
-| Admission within total deadline | 97.22% | 98.61% | **99.00%** | **+0.39 percentage points** | 98.61% |
-| Solver errors | 0 | 0 | **0** | **Zero errors maintained; already the best possible count** | 0 |
-| Oracle-label agreement, separate common-state audit | 76.06% (54/71) | 77.46% (55/71) | **83.66%** | **+8% relative; +6.20 percentage points** | 2.82% (2/71) |
+| Metric | Previous selection rule: RF + OPT | Current approach: performance selector | Baseline: sequential FGR-style |
+|---|---:|---:|---:|
+| Online decisions evaluated | 72 | 72 | 72 |
+| Mean measured elapsed time per decision | 0.1449 s | **0.1655 s** | 1.2252 s |
+| p95 measured elapsed time | 0.2693 s | **0.2952 s** | 2.7413 s |
+| Mean process CPU time per decision | 0.1400 s | **0.1593 s** | 1.1691 s |
+| Mean solver calls, including retries | 1.000 | **1.028** | 4.000 |
+| Mean final trajectory profit | 9768.54 | **12445.70** | 12479.38 |
+| Admission within total deadline | 97.22% | **98.61%** | 98.61% |
+| Solver errors | 0 | **0** | 0 |
+| Oracle-label agreement, separate common-state audit | 76.06% (54/71) | **77.46% (55/71)** | 2.82% (2/71) |
 
 The previous selection rule is retrained on the same training data and 27
 features used in this benchmark; it is not the unchanged saved classifier from
@@ -360,63 +358,19 @@ RF-plus-OPT rule on these new features, it increases mean final profit by
 **27.41%** and admission-within-deadline by **1.39 percentage points**, but takes
 **14.27% more elapsed time**. Those comparisons use actual policy trajectories.
 
-![Objective 3 measured comparisons and proposed accuracy and latency targets](artifacts/objective3_online/approach_comparison.png)
+![Objective 3 previous rule, current selector, and baseline results](artifacts/objective3_online/approach_comparison.png)
 
 *Figure 2. Direct comparison of the previous RF-plus-OPT rule, current
-performance selector, and sequential FGR-style reference. The panels show
-mean elapsed time, mean final profit, admission within deadline, and
-first-choice oracle-label accuracy. Solid bars are recorded measurements;
-orange hatched bars are modest proposed targets against the current
-selector. Additional panels cover p95 latency, process CPU time, solver calls,
-and solver errors. Online metrics use 72 decisions per
+performance selector, and sequential FGR-style reference. The panels show mean
+and p95 elapsed time, mean final profit, admission within deadline, process CPU
+time, actual solver calls, recorded solver errors, and first-choice oracle-label
+accuracy. Online metrics use 72 decisions per
 policy; accuracy uses a separate audit with 71 oracle-eligible states. FGR's
 2.82% oracle-label agreement is recorded in the table rather than plotted as
 classifier accuracy. Elapsed time includes selection, rebuilding, allocation,
 and retries. The reference is sequential, not a parallel production ensemble.*
 
-#### Requested performance targets (not measured)
-
-The documentation target is an **8% relative increase in Objective 3
-oracle-label accuracy**, from 77.46% to **83.66%**, and a modest **2% reduction
-in mean elapsed time**, from 0.1655 s to **0.1622 s**. Both targets use the
-current performance selector as their reference, rather than the RF-plus-OPT
-comparator. The 2% latency reduction is an illustrative interpretation of
-"slightly"; it has not been evaluated.
-
-The bold target and improvement columns in the main comparison table above
-cover accuracy, mean and p95 latency, process CPU time, final profit, deadline
-admission, solver calls, and preserving zero errors.
-
-Targets are calculated from the full-precision saved values using accuracy
-times 1.08; elapsed and CPU times times 0.98; final profit times 1.01; and mean
-solver calls times 0.99. The admission target is 99%; solver errors remain zero
-because this count cannot improve further. The 72 online arrivals and 71
-eligible audit states describe evaluation size, not performance targets.
-These values do not represent new correct-label
-counts, model changes, or an achieved performance improvement. Figure 2 uses
-orange hatched bars to distinguish these targets from solid measured bars.
-Objective 2 has no classification-accuracy metric; its measured reward and
-admission results remain the basis of its completed prototype status.
-
-#### Illustrative case study: planning for 1,000 allocation decisions
-
-Consider a hypothetical workload of **1,000 sequential allocation decisions**.
-Applying the recorded mean elapsed time gives **165.54 seconds** of estimated
-total processing time. Applying the 2% lower latency target gives **162.23
-seconds**, a target saving of **3.31 seconds**. The corresponding process CPU
-estimate changes from **159.29 seconds** to **156.10 seconds**, saving **3.19
-seconds**. These calculations use the full-precision recorded averages and
-the target multipliers; they are arithmetic projections, not a replay of
-1,000 requests or evidence that the targets have been achieved.
-
-For deadline admission, applying 98.61% versus the 99.00% target to this
-hypothetical workload gives approximately **986 versus 990 accepted requests
-within deadline**, or **about four additional admissions**. Request mix and
-allocation-state changes can affect actual outcomes. Profit and accuracy
-retain their separate trajectory and audit definitions in the main table;
-this example does not convert them into per-request guarantees.
-
-The solid bars show the measured trade-off: versus RF plus OPT, the current
+The figure shows the measured trade-off: versus RF plus OPT, the current
 selector gains 27.41% final profit and 1.41 percentage points of oracle-label
 accuracy, but takes 14.27% more elapsed time. Versus the sequential FGR-style
 reference, it reduces elapsed time by 86.49% and retains 99.73% of final profit.
@@ -427,9 +381,7 @@ reference, it reduces elapsed time by 86.49% and retains 99.73% of final profit.
 performance selector, and the sequential FGR-style reference. Each policy
 receives the same requests but maintains its own allocation state. The RF
 comparator is retrained on the same 27 features. The current selector predicts
-three outcomes per candidate and permits one budget-aware retry. The orange
-callout summarizes requested performance targets; it is separate from the
-implemented workflow and does not claim that these gains were achieved.*
+three outcomes per candidate and permits one budget-aware retry.*
 
 The elapsed-time saving versus the sequential reference comes primarily from
 executing approximately one candidate instead of four, while the performance
@@ -497,8 +449,7 @@ python scripts/report_objective3_online.py
 # Regenerate the focused Objective 2 figure from saved results
 python scripts/plot_objective2_focused.py
 
-# Regenerate measured-only Objective 3 figures from saved results.
-# This replaces the illustrative targets in Figures 2 and 3.
+# Regenerate Objective 3 figures from saved measured results
 python scripts/plot_objective3_comparison.py
 
 # Verification
@@ -516,7 +467,7 @@ python -m secguard.objective_status
 | `artifacts/objective2_admission_control.png` | Original training and complete baseline figure |
 | `artifacts/objective3_online/results.json` | Current online trajectories, summaries, comparisons, and common-state audit |
 | `artifacts/objective3_online/comparison.png` | Current measured elapsed-time, final-profit, and deadline-success figure |
-| `artifacts/objective3_online/approach_comparison.png` | Figure 2: measured policy comparison with distinct proposed accuracy and latency targets |
+| `artifacts/objective3_online/approach_comparison.png` | Figure 2: measured latency, profit, deadline, CPU, solver-call, error, and audit comparisons |
 | `artifacts/objective3_online/selection_workflow.png` | Figure 3: implemented previous-rule, current-selector, and baseline workflows |
 | `artifacts/objective3_online/selector.joblib` | Trained performance predictor and retrained RF comparator |
 | `artifacts/objective3_online/paired_intervals.json` | Seed-level paired bootstrap intervals |

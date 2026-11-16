@@ -112,7 +112,7 @@ def main() -> None:
         for metric, units in (("latency", "seconds"), ("profit", "profit units")):
             row = summary[metric]
             low, high = row["bootstrap_ci95"]
-            lines.append(f"- Proposed minus {reference}, {metric}: mean paired delta {row['mean_paired_delta']:.4f} {units}; seed-level bootstrap 95% interval [{low:.4f}, {high:.4f}].")
+            lines.append(f"- Current selector minus {reference}, {metric}: mean paired delta {row['mean_paired_delta']:.4f} {units}; seed-level bootstrap 95% interval [{low:.4f}, {high:.4f}].")
     lines += ["", "The intervals resample whole test seeds. With only a few short sequences, they are descriptive and do not establish broad generalization.", ""]
     lines += [f"- {limitation}" for limitation in result["limitations"]]
     lines += [

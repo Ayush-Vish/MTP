@@ -1,137 +1,219 @@
-# Objective 3: Intelligent Algorithm Selection
+# Objective 3: Implemented Algorithm Selection and Measured Results
 
-## New causal replay experiment
+## 1. Methodology and implementation
 
-A performance-based selector is implemented in `src/secguard/online_selector.py`.
-It predicts candidate runtime, profit gain, and completion success from actual
-requests and allocation-state features, then uses a deadline-aware fallback.
-Training candidates start from copies of the same state, and online policies
-update their own subsequent states.
+The implementation uses common-state training data, actual resource and
+request-complexity features, candidate-specific runtime/profit/success
+prediction, validation-only configuration selection, and a budget-aware retry.
+Each policy's accepted allocations update its own next state.
 
-The measured results, figures, seed groups, and limitations are documented in
-[`artifacts/objective3_online/README.md`](artifacts/objective3_online/README.md).
-That benchmark uses a consistently timed sequential FGR-style cold-rebuild
-reference. Its results are distinct from the earlier independent-trace
-experiment below and do not establish superiority over a parallel ensemble.
+| Component | Implementation | Purpose |
+|---|---|---|
+| Prediction task | Predict runtime, incremental profit, and completion-success score for each algorithm | Compare expected outcomes explicitly |
+| Features | 27 actual request, topology-size, and allocation-state features | Represent request difficulty and current resource pressure |
+| Candidate training data | Four candidates evaluated on copies of the same pre-decision state | Make candidate comparisons consistent |
+| Selection rule | Fastest predicted candidate meeting configured quality, feasibility, and deadline gates | Balance computation against expected allocation quality |
+| Failure handling | At most one retry when predicted runtime fits the remaining deadline budget | Recover from a failed first choice while accounting for extra work |
+| State transition | Execute the selected solver and commit its accepted allocation | Measure consequences over an evolving sequence |
+| Timing | Actual elapsed time and process CPU time, including selection overhead and retries | Measure the policy's execution cost |
 
-On six fresh synthetic test seeds (400--405), with 12 requests each, the
-performance selector achieved:
+The Extra-Trees model has 128 trees. Its inputs include actual CPU, radio,
+and bandwidth demands; VNF, VNF-instance, and virtual-link counts; topology
+size; active slices; existing placements; demand-based load and remaining
+capacity proxies; fragmentation; isolation; deadline; revenue; and previous
+profit and runtime. The load proxies exclude some isolation/orchestration
+overhead, and exact residual transport bandwidth is not available from X/Y.
 
-- **86.49% lower mean elapsed time** than the sequential cold-rebuilt FGR-style
-  reference: 0.1655 s versus 1.2252 s.
-- **86.37% less process CPU time** and **74.31% fewer actual solver calls**,
-  including retries.
-- **99.73% retention of mean final trajectory profit** and the same **98.61%**
-  admission-within-deadline rate.
-- **57.33% lower elapsed time than always-OPT** on the same test sequences.
-- **27.41% higher final profit than a retrained RF-plus-OPT rule**, at the cost
-  of 14.27% more elapsed time than that rule.
-- **77.46% first-choice oracle-label accuracy** on a separate common-state
-  audit, versus 76.06% for the retrained RF-plus-OPT rule. The new audit has 71
-  oracle-eligible rows and is not directly comparable with the legacy test.
+At each request, the controller:
 
-These are short-horizon synthetic measurements with a sequential reference,
-not a result against native parallel 5Guard. The total test contains 72
-decisions per policy and is separate from the legacy 329-row classifier test.
+1. Extracts the 27 features from the incoming request and its own current state.
+2. Predicts runtime, incremental profit, and completion success for all four
+   candidate algorithms.
+3. Filters candidates using the predicted completion score and request
+   deadline, and applies a profit-loss budget relative to predicted **total
+   allocation profit**. The selected validation settings were 0.95 for quality
+   and 0.50 for the completion-score gate.
+4. Ranks qualifying algorithms by predicted runtime and executes the first.
+   If none qualifies, it ranks candidates by predicted completion success and
+   runtime; these predictions do not guarantee feasibility.
+5. If the first solver fails, considers one additional candidate only when
+   its predicted runtime, with a margin, fits the remaining time budget.
+6. Commits the allocation only when it is feasible and completes within the
+   total measured request deadline. Otherwise it preserves the prior state.
 
-## Original offline experiment
+The runtime adapter reconstructs all required constraints in isolated temporary
+models rather than mixing cached models from different solver histories.
+Output checks reject invalid results such as profit exceeding total admitted
+revenue. Deadline checks count overruns as failures; upstream model
+construction is not preemptible, so the runner is not a hard real-time system.
 
-## Objective
+```mermaid
+flowchart TD
+    A[Actual slice request and current allocation state] --> B[Extract 27 features]
+    B --> C[Extra-Trees performance predictor]
+    C --> D[Runtime, profit gain, completion score for each candidate]
+    D --> E[Apply quality and deadline gates; rank candidates]
+    E --> F[Execute first selected solver]
+    F --> G{Feasible within total deadline?}
+    G -->|Yes| H[Commit allocation and update next state]
+    G -->|No| I{Retry unused and predicted time fits remaining budget?}
+    I -->|Yes| J[Execute one additional candidate]
+    J --> G
+    I -->|No| K[Record failure and preserve prior allocation]
+```
 
-Objective 3 replaces 5Guard's run-all ensemble with a lightweight meta-selector.
-For each admitted slice, the selector predicts one algorithm from `OPT`, `IAR`,
-`DTR`, and `RNR` using request complexity and the previous network state. The
-goal is to reduce allocation latency without materially sacrificing profit or
-deadline feasibility.
+The controller aims to execute one solver per decision. The measured average
+is 1.028 calls because bounded retries are included; the run-all reference
+executes four candidates per decision.
 
-## Implementation
+## 2. Evaluation design and measured impact
 
-The current research prototype uses a 400-tree Random Forest trained on measured
-per-step outcomes from the existing 5Guard reproduction. Its 22 input features
-contain only information available before the current allocation:
+The experiment uses 72 training decision points from seeds 100--105, 12
+calibration points from seed 200, and 12 configuration-selection points from
+seed 201. The final online evaluation uses six fresh seeds, 400--405, with 12
+arrivals each. Models and gates are fixed before those final tests. Completion
+scores receive sigmoid calibration only where calibration data contain both
+success and failure classes; the small sample does not guarantee reliable
+probabilities.
 
-- service type, isolation, CPU, radio, bandwidth, revenue, and deadline;
-- time within the simulation and the recent service-arrival mix; and
-- previous profit, migration, latency, violation, overhead, resource-efficiency,
-  and rejection state.
+In this run, sigmoid calibration was fitted for IAR only. OPT, DTR, and RNR
+had only one outcome class in the calibration group, so their calibration was
+unavailable. The backend was SCIP with one solver thread and a two-second
+optimization limit per call; total elapsed deadline checks also include model
+construction, inference, and retries.
 
-The training label is the fastest deadline-feasible algorithm whose observed
-profit is within 5% of the best feasible candidate. The default balanced profile
-falls back to `OPT` below 45% confidence. A separate safe profile uses a 60%
-threshold when profit retention is more important than computation reduction.
+See the [measured replay report](artifacts/objective3_online/README.md) for the
+metrics and [three-approach comparison figure](artifacts/objective3_online/approach_comparison.png).
+The benchmark times a sequential cold-rebuilt FGR-style reference. All policy
+timing includes feature extraction, inference, model rebuilding, allocation,
+and any retry.
 
-Training uses complete simulation groups: iterations 0--6 train the selector,
-while iterations 7--9 remain held out. Rows from the same simulation are never
-randomly split between training and evaluation.
+| Metric | Previous selection rule: RF + OPT | Current approach: performance selector | Baseline: sequential FGR-style |
+|---|---:|---:|---:|
+| Online decisions evaluated | 72 | 72 | 72 |
+| Mean measured elapsed time per decision | 0.1449 s | **0.1655 s** | 1.2252 s |
+| p95 measured elapsed time | 0.2693 s | **0.2952 s** | 2.7413 s |
+| Mean process CPU time per decision | 0.1400 s | **0.1593 s** | 1.1691 s |
+| Mean solver calls, including retries | 1.000 | **1.028** | 4.000 |
+| Mean final trajectory profit | 9768.54 | **12445.70** | 12479.38 |
+| Admission within total deadline | 97.22% | **98.61%** | 98.61% |
+| Solver errors | 0 | **0** | 0 |
+| Oracle-label agreement, separate common-state audit | 76.06% (54/71) | **77.46% (55/71)** | 2.82% (2/71) |
 
-## Architecture
+The previous selection rule is retrained on the same training data and 27
+features used in this benchmark; it is not the unchanged saved classifier from
+a different experiment. All online columns use the same six input sequences.
+The baseline executes four cold-rebuilt candidates sequentially and applies
+the FGR OPT-priority rule; it is not native parallel 5Guard.
 
-![Objective 3 architecture](artifacts/objective3_architecture.png)
+Oracle-label agreement is measured separately from online trajectory profit
+and timing. Its oracle chooses the fastest feasible algorithm within the
+configured profit-loss tolerance. FGR prioritizes OPT rather than optimizing
+agreement with that label, so its low label agreement does not imply low
+allocation profit. One audit row has no feasible candidate, leaving 71
+oracle-eligible rows out of 72; all arrivals remain in the online metrics.
+
+| Current approach compared with | Measured impact |
+|---|---|
+| Previous RF-plus-OPT selection rule | **27.41% higher final profit**, **+1.39 percentage points** admission within deadline, and **+1.41 percentage points** oracle-label agreement; elapsed time is **14.27% higher** |
+| Sequential FGR-style baseline | **86.49% lower elapsed time**, **86.37% lower process CPU time**, **74.31% fewer solver calls**, and **99.73% of final profit retained**, with the same admission-within-deadline rate |
+
+The test contains six unseen seeds (400--405), with 12 arrivals each. Against
+always selecting OPT, the new selector reduces mean elapsed time by **57.33%**
+while retaining the same 99.73% final-profit ratio. Against the retrained
+RF-plus-OPT rule on these new features, it increases mean final profit by
+**27.41%** and admission-within-deadline by **1.39 percentage points**, but takes
+**14.27% more elapsed time**. Those comparisons use actual policy trajectories.
+
+![Objective 3 previous rule, current selector, and baseline results](artifacts/objective3_online/approach_comparison.png)
+
+*Figure 2. Direct comparison of the previous RF-plus-OPT rule, current
+performance selector, and sequential FGR-style reference. The panels show mean
+and p95 elapsed time, mean final profit, admission within deadline, process CPU
+time, actual solver calls, recorded solver errors, and first-choice oracle-label
+accuracy. Online metrics use 72 decisions per
+policy; accuracy uses a separate audit with 71 oracle-eligible states. FGR's
+2.82% oracle-label agreement is recorded in the table rather than plotted as
+classifier accuracy. Elapsed time includes selection, rebuilding, allocation,
+and retries. The reference is sequential, not a parallel production ensemble.*
+
+The figure shows the measured trade-off: versus RF plus OPT, the current
+selector gains 27.41% final profit and 1.41 percentage points of oracle-label
+accuracy, but takes 14.27% more elapsed time. Versus the sequential FGR-style
+reference, it reduces elapsed time by 86.49% and retains 99.73% of final profit.
+
+![Objective 3 implemented selection workflows](artifacts/objective3_online/selection_workflow.png)
+
+*Figure 3. Implemented workflows for the previous RF-plus-OPT rule, the current
+performance selector, and the sequential FGR-style reference. Each policy
+receives the same requests but maintains its own allocation state. The RF
+comparator is retrained on the same 27 features. The current selector predicts
+three outcomes per candidate and permits one budget-aware retry.*
+
+The elapsed-time saving versus the sequential reference comes primarily from
+executing approximately one candidate instead of four, while the performance
+estimates guide which candidate to run. The state features and bounded retry
+help preserve trajectory profit. These components were changed together;
+separate ablations are still required to attribute a numerical gain to each.
+
+The baselines answer different questions:
+
+| Comparison | What it establishes in this benchmark |
+|---|---|
+| Sequential cold-rebuilt FGR-style reference | 86.49% less elapsed time and 86.37% less process CPU time while retaining 99.73% of mean final profit |
+| Always OPT | 57.33% less elapsed time with 99.73% of mean final profit retained |
+| Retrained RF-plus-OPT decision rule | 27.41% higher mean final profit and +1.39 percentage points admission within deadline, at a cost of 14.27% more elapsed time |
+
+The RF-plus-OPT comparator is a classification baseline trained on the same
+request features and training data. It chooses the predicted algorithm when
+confidence is at least 0.45 and chooses OPT otherwise. This comparison tests
+the selection rules under the same replay conditions.
+
+## 3. Accuracy, profit retention, and scope
+
+A separate held-out common-state audit gives **77.46% oracle-label accuracy**
+(55/71 eligible decisions) for the performance selector, versus **76.06%**
+(54/71) for the retrained RF-plus-OPT baseline. This is one additional exact
+match on the same audit and does not establish a consistent accuracy gain. In this separate audit the first ranked solver is feasible
+on 77.78% of all 72 rows; the online result above follows each policy's own
+state trajectory and includes bounded retries.
+
+Accuracy measures agreement with the fastest qualifying oracle algorithm.
+Final-profit retention measures the ratio of average profits at the end of
+complete policy trajectories. Admission within deadline counts accepted,
+feasible requests among all online arrivals. These percentages have different
+denominators and should not be treated as interchangeable measures of success.
+
+The evidence supports a faster selector than the controlled sequential
+reference and always-OPT on short synthetic sequences, with a small profit
+trade-off. It does not yet establish superiority over native parallel 5Guard,
+longer-horizon workloads, or the BRAIN topology.
+
+
+## Implementation and retained evidence
+
+- [Performance selector and causal replay](src/secguard/online_selector.py)
+- [Tracked SCIP adapter](src/secguard/solver_compat.py)
+- [Measured replay report](artifacts/objective3_online/README.md)
+- [Full results and decision records](artifacts/objective3_online/results.json)
+- [Training records](artifacts/objective3_online/training.json)
+- [Validation records](artifacts/objective3_online/validation.json)
+- [Held-out common-state audit](artifacts/objective3_online/test_common_state.json)
+- [Paired seed-level intervals](artifacts/objective3_online/paired_intervals.json)
+- [Selection and replay tests](tests/test_online_selector.py)
 
 ## Reproduction
 
 ```powershell
-python -m secguard.algorithm_selector
+# Existing measured experiment configuration; these commands rerun experiments.
+python -m secguard.online_selector --steps 12 --test-seeds 400 401 402 403 404 405
+python -m secguard.online_selector --steps 12 --test-seeds 400 401 402 403 404 405 --audit-only
+
+# Reporting and plotting only; no training or allocation solves.
+python scripts/report_objective3_online.py
+python scripts/plot_objective3_comparison.py
 ```
 
-This command reads the existing synthetic 5Guard traces from
-`external/5guard/saved_data/synthetic/`, trains the selector, evaluates all
-baselines, and regenerates the model, JSON evidence, figure, and diagram.
-
-## Held-out results
-
-The evaluation contains 329 deadline-feasible decision points from held-out
-simulation iterations 7--9.
-
-| Policy | Mean solver time (s) | Mean profit retained | Feasibility/deadline rate |
-|---|---:|---:|---:|
-| Balanced selector (45%) | **1.2245** | 94.63% | 95.14% |
-| Safe selector (60%) | 1.3615 | 95.35% | 95.44% |
-| Always OPT | 1.3760 | **96.05%** | **96.05%** |
-| Always IAR | **0.0087** | 33.44% | 51.98% |
-| Always RNR / training majority | 0.1104 | 78.67% | 79.64% |
-| Quality-constrained oracle | 0.8209 | 99.82% | 100.00% |
-
-Measured FGR/5Guard latency was 0.7523 seconds per decision. For context, the
-independent candidate trajectories give a counterfactual parallel wait of
-1.3760 seconds and a counterfactual sequential sum of 1.5994 seconds. These are
-not causal measurements of the FGR trajectory. The balanced selector therefore:
-
-- executed **one solver instead of four**, a **75.00% reduction in solver calls**;
-- reduced estimated solver work by **23.44%** versus the independent run-all sum;
-- was 11.01% faster than always selecting OPT on the independent trajectories;
-- retained **94.63%** of the best observed profit on average;
-- placed **89.67%** of selections within the 5% profit-loss budget;
-- achieved **95.14%** deadline-feasible selections;
-- was still **62.77% slower** than measured FGR response latency; and
-- recorded 1.34 ms of inference timing per held-out row, including both the
-  balanced and safe prediction batches (not single-request online timing).
-
-The safe 60% profile reduces estimated solver work by 14.88% while retaining
-95.35% profit quality. The balanced and safe profiles now establish computation
-improvements, but neither meets the original 90% response-latency aspiration or
-yet justifies replacing measured FGR execution.
-
-![Objective 3 held-out results](artifacts/objective3_algorithm_selector.png)
-
-![Objective 3 computation trade-off](artifacts/objective3_computation_tradeoff.png)
-
-## Evidence and verification
-
-- Implementation: `src/secguard/algorithm_selector.py`
-- Unit tests: `tests/test_algorithm_selector.py`
-- Metrics: `artifacts/objective3_algorithm_selector.json`
-- Trained model: `artifacts/objective3_selector.joblib`
-- Result figure: `artifacts/objective3_algorithm_selector.png`
-- Computation figure: `artifacts/objective3_computation_tradeoff.png`
-- Architecture diagram: `artifacts/objective3_architecture.png`
-- Complete project test suite: **38 tests passed**
-
-## Limitations and next work
-
-- Counterfactual candidate outcomes come from independent algorithm trajectories,
-  not a single causal replay trajectory.
-- Training and testing use one topology and one seeded traffic generator.
-- The confidence fallback protects quality but substantially limits latency gain.
-- BRAIN-topology evaluation, direct online integration, probability calibration,
-  and broader workload validation remain necessary before claiming generalization.
+The earlier independent-trace experiment is retained in its original numerical
+artifacts for provenance. It is not used as the source for the measurements,
+architecture, or comparisons in this report.

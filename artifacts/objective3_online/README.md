@@ -75,10 +75,10 @@ The common-state audit follows separate behavior trajectories and evaluates only
 
 ## Uncertainty and limits
 
-- Proposed minus fgr_sequential, latency: mean paired delta -1.0597 seconds; seed-level bootstrap 95% interval [-1.1092, -1.0105].
-- Proposed minus fgr_sequential, profit: mean paired delta -33.6830 profit units; seed-level bootstrap 95% interval [-99.7157, -0.0000].
-- Proposed minus rf_opt_fallback, latency: mean paired delta 0.0207 seconds; seed-level bootstrap 95% interval [0.0030, 0.0411].
-- Proposed minus rf_opt_fallback, profit: mean paired delta 2677.1613 profit units; seed-level bootstrap 95% interval [0.0000, 8031.4840].
+- Current selector minus fgr_sequential, latency: mean paired delta -1.0597 seconds; seed-level bootstrap 95% interval [-1.1092, -1.0105].
+- Current selector minus fgr_sequential, profit: mean paired delta -33.6830 profit units; seed-level bootstrap 95% interval [-99.7157, -0.0000].
+- Current selector minus rf_opt_fallback, latency: mean paired delta 0.0207 seconds; seed-level bootstrap 95% interval [0.0030, 0.0411].
+- Current selector minus rf_opt_fallback, profit: mean paired delta 2677.1613 profit units; seed-level bootstrap 95% interval [0.0000, 8031.4840].
 
 The intervals resample whole test seeds. With only a few short sequences, they are descriptive and do not establish broad generalization.
 
