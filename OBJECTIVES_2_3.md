@@ -308,7 +308,7 @@ success and failure classes; the small sample does not guarantee reliable
 probabilities.
 
 See the [measured replay report](artifacts/objective3_online/README.md) for the
-new metrics and [replay comparison figure](artifacts/objective3_online/comparison.png).
+metrics and [three-approach comparison figure](artifacts/objective3_online/approach_comparison.png).
 The benchmark times a sequential cold-rebuilt FGR-style reference. All policy
 timing includes feature extraction, inference, model rebuilding, allocation,
 and any retry.
@@ -350,13 +350,29 @@ RF-plus-OPT rule on these new features, it increases mean final profit by
 **27.41%** and admission-within-deadline by **1.39 percentage points**, but takes
 **14.27% more elapsed time**. Those comparisons use actual policy trajectories.
 
-![Objective 3 measured causal replay](artifacts/objective3_online/comparison.png)
+![Objective 3 previous rule, current selector, and baseline results](artifacts/objective3_online/approach_comparison.png)
 
-*Figure 2. Each policy receives identical incoming sequences and
-updates its own allocation state. Elapsed time includes feature extraction,
-inference, model rebuilding, allocation, and retries. The FGR-style reference
-runs four candidates sequentially; these numbers do not measure a parallel
-production ensemble.*
+*Figure 2. Direct comparison of the previous RF-plus-OPT rule, current
+performance selector, and sequential FGR-style reference. The four panels show
+mean elapsed time, mean final profit, admission within deadline, and
+first-choice oracle-label accuracy. Online metrics use 72 decisions per
+policy; accuracy uses a separate audit with 71 oracle-eligible states. FGR's
+2.82% oracle-label agreement is recorded in the table rather than plotted as
+classifier accuracy. Elapsed time includes selection, rebuilding, allocation,
+and retries. The reference is sequential, not a parallel production ensemble.*
+
+The figure shows the measured trade-off: versus RF plus OPT, the current
+selector gains 27.41% final profit and 1.41 percentage points of oracle-label
+accuracy, but takes 14.27% more elapsed time. Versus the sequential FGR-style
+reference, it reduces elapsed time by 86.49% and retains 99.73% of final profit.
+
+![Objective 3 implemented selection workflows](artifacts/objective3_online/selection_workflow.png)
+
+*Figure 3. Implemented workflows for the previous RF-plus-OPT rule, the current
+performance selector, and the sequential FGR-style reference. Each policy
+receives the same requests but maintains its own allocation state. The RF
+comparator is retrained on the same 27 features. The current selector predicts
+three outcomes per candidate and permits one budget-aware retry.*
 
 The elapsed-time saving versus the sequential reference comes primarily from
 executing approximately one candidate instead of four, while the performance
@@ -424,6 +440,9 @@ python scripts/report_objective3_online.py
 # Regenerate the focused Objective 2 figure from saved results
 python scripts/plot_objective2_focused.py
 
+# Regenerate Objective 3 comparison and workflow figures from saved results
+python scripts/plot_objective3_comparison.py
+
 # Verification
 python -m pytest tests -q
 python -m secguard.objective_status
@@ -439,6 +458,8 @@ python -m secguard.objective_status
 | `artifacts/objective2_admission_control.png` | Original training and complete baseline figure |
 | `artifacts/objective3_online/results.json` | Current online trajectories, summaries, comparisons, and common-state audit |
 | `artifacts/objective3_online/comparison.png` | Current measured elapsed-time, final-profit, and deadline-success figure |
+| `artifacts/objective3_online/approach_comparison.png` | Figure 2: direct three-policy comparison with separate accuracy panel |
+| `artifacts/objective3_online/selection_workflow.png` | Figure 3: implemented previous-rule, current-selector, and baseline workflows |
 | `artifacts/objective3_online/selector.joblib` | Trained performance predictor and retrained RF comparator |
 | `artifacts/objective3_online/paired_intervals.json` | Seed-level paired bootstrap intervals |
 
