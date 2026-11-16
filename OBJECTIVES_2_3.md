@@ -10,10 +10,10 @@ intelligent 5Guard algorithm selection (Objective 3).
 |---|---|---|
 | Decision | Admit, reject, or defer an incoming slice | Select the allocation algorithm for a request |
 | Motivation | Admission consumes resources that later requests may need. | Running every candidate algorithm requires extra computation. |
-| Method | Deep Q-Network (DQN): reinforcement learning | Extra-Trees performance prediction; earlier version used Random Forest classification |
-| Input | 14 numerical features about capacity and the request | 27 actual request, topology, and allocation-state features; earlier version used 22 features |
+| Method | Deep Q-Network (DQN): reinforcement learning | Extra-Trees performance prediction |
+| Input | 14 numerical features about capacity and the request | 27 actual request, topology, and allocation-state features |
 | Output | One action: admit, reject, or defer | One algorithm: OPT, IAR, DTR, or RNR |
-| Evaluation environment | A synthetic admission simulator | Causal synthetic solver replay, with the earlier offline trace experiment retained separately |
+| Evaluation environment | A synthetic admission simulator | Causal synthetic solver replay |
 
 ## Summary of improvements
 
@@ -26,8 +26,6 @@ These improvements use different baselines and should not be added together.
 Objective 2's reward advantage over value density is inconclusive. The new
 Objective 3 result uses measured elapsed time and a sequential cold-rebuilt
 FGR-style reference; it does not establish superiority over a parallel ensemble.
-The earlier offline experiment and its adverse timing result are retained below
-with their original scope.
 
 ## End-to-end workflow
 
@@ -233,45 +231,24 @@ Detailed note: [`objective2.md`](objective2.md)
 
 ## Objective 3: intelligent algorithm selection
 
-### 1. Previous approach and its limitations
+### 1. Methodology and implementation
 
-The earlier implementation used a 400-tree Random Forest classifier. From 22
-request and previous-state features, it predicted one label: OPT, IAR, DTR, or
-RNR. A confidence gate chose OPT when the prediction probability was below
-0.45 in the balanced profile or 0.60 in the safe profile.
-
-Training labels identified the fastest deadline-feasible candidate within the
-configured 5% profit-loss tolerance. Evaluation looked up saved candidate
-outcomes from independently evolving solver trajectories. The resulting
-66.57% label accuracy and 23.44% estimated solver-work saving established an
-offline proof of concept. The selected solver's mean recorded time was still
-62.77% higher than the stored measured FGR response.
-
-Two limitations motivated the changes. The classifier predicted the algorithm
-name without explicitly estimating its runtime, profit, or completion success.
-Also, independent outcome traces did not show how the selector's allocations
-would change subsequent network states. Stored FGR time was the maximum
-candidate runtime even though the local implementation ran candidates
-sequentially, so it did not measure total elapsed execution time.
-
-### 2. Current approach and implementation changes
-
-The newer implementation adds common-state training data, actual resource and
+The implementation uses common-state training data, actual resource and
 request-complexity features, candidate-specific runtime/profit/success
 prediction, validation-only configuration selection, and a budget-aware retry.
 Each policy's accepted allocations update its own next state.
 
-| Component | Previous implementation | Current implementation | Intended effect |
-|---|---|---|---|
-| Prediction task | Classify one algorithm label | Predict runtime, incremental profit, and completion-success score for each algorithm | Compare expected outcomes explicitly |
-| Features | 22 service-profile and historical-state features | 27 actual request, topology-size, and allocation-state features | Represent request difficulty and current resource pressure |
-| Candidate training data | Outcomes from separate solver trajectories | Four candidates evaluated on copies of the same pre-decision state | Make candidate comparisons consistent |
-| Selection rule | Highest class probability, with OPT confidence fallback | Fastest predicted candidate meeting configured quality, feasibility, and deadline gates | Balance computation against expected allocation quality |
-| Failure handling | Fixed OPT fallback for low-confidence predictions | At most one retry when predicted runtime fits the remaining deadline budget | Recover from a failed first choice while accounting for extra work |
-| State transition | Saved-trace lookup | Execute the selected solver and commit its accepted allocation | Measure consequences over an evolving sequence |
-| Timing | Stored candidate solver times | Actual elapsed time and process CPU time, including selection overhead and retries | Measure the policy's execution cost |
+| Component | Implementation | Purpose |
+|---|---|---|
+| Prediction task | Predict runtime, incremental profit, and completion-success score for each algorithm | Compare expected outcomes explicitly |
+| Features | 27 actual request, topology-size, and allocation-state features | Represent request difficulty and current resource pressure |
+| Candidate training data | Four candidates evaluated on copies of the same pre-decision state | Make candidate comparisons consistent |
+| Selection rule | Fastest predicted candidate meeting configured quality, feasibility, and deadline gates | Balance computation against expected allocation quality |
+| Failure handling | At most one retry when predicted runtime fits the remaining deadline budget | Recover from a failed first choice while accounting for extra work |
+| State transition | Execute the selected solver and commit its accepted allocation | Measure consequences over an evolving sequence |
+| Timing | Actual elapsed time and process CPU time, including selection overhead and retries | Measure the policy's execution cost |
 
-The new Extra-Trees model has 128 trees. Its inputs include actual CPU, radio,
+The Extra-Trees model has 128 trees. Its inputs include actual CPU, radio,
 and bandwidth demands; VNF, VNF-instance, and virtual-link counts; topology
 size; active slices; existing placements; demand-based load and remaining
 capacity proxies; fragmentation; isolation; deadline; revenue; and previous
@@ -316,11 +293,11 @@ flowchart TD
     I -->|No| K[Record failure and preserve prior allocation]
 ```
 
-Both versions aim to choose one solver, so avoiding four calls is a comparison
-with the run-all reference, not a new reduction from the earlier classifier.
-The current measured average is 1.028 calls because retries are included.
+The controller aims to execute one solver per decision. The measured average
+is 1.028 calls because bounded retries are included; the run-all reference
+executes four candidates per decision.
 
-### 3. Evaluation design and measured impact
+### 2. Evaluation design and measured impact
 
 The experiment uses 72 training decision points from seeds 100--105, 12
 calibration points from seed 200, and 12 configuration-selection points from
@@ -332,9 +309,9 @@ probabilities.
 
 See the [measured replay report](artifacts/objective3_online/README.md) for the
 new metrics and [replay comparison figure](artifacts/objective3_online/comparison.png).
-The new benchmark times a sequential cold-rebuilt FGR-style reference. It is
-separate from the legacy offline figures below; the original 66.57% accuracy
-and 0.7523-second stored FGR time are not directly comparable with it.
+The benchmark times a sequential cold-rebuilt FGR-style reference. All policy
+timing includes feature extraction, inference, model rebuilding, allocation,
+and any retry.
 
 | Metric | Performance selector | Sequential FGR-style reference | Change |
 |---|---:|---:|---:|
@@ -355,7 +332,7 @@ RF-plus-OPT rule on these new features, it increases mean final profit by
 
 ![Objective 3 measured causal replay](artifacts/objective3_online/comparison.png)
 
-*New replay figure. Each policy receives identical incoming sequences and
+*Figure 2. Each policy receives identical incoming sequences and
 updates its own allocation state. Elapsed time includes feature extraction,
 inference, model rebuilding, allocation, and retries. The FGR-style reference
 runs four candidates sequentially; these numbers do not measure a parallel
@@ -375,18 +352,17 @@ The baselines answer different questions:
 | Always OPT | 57.33% less elapsed time with 99.73% of mean final profit retained |
 | Retrained RF-plus-OPT decision rule | 27.41% higher mean final profit and +1.39 percentage points admission within deadline, at a cost of 14.27% more elapsed time |
 
-The retrained RF comparator uses the new training data and richer features. It
-represents the earlier decision rule under the new replay conditions, not the
-unchanged legacy saved classifier. Consequently, the profit gain against it
-does not isolate the contribution of extra features alone.
+The RF-plus-OPT comparator is a classification baseline trained on the same
+request features and training data. It chooses the predicted algorithm when
+confidence is at least 0.45 and chooses OPT otherwise. This comparison tests
+the selection rules under the same replay conditions.
 
-### 4. Accuracy, profit retention, and scope
+### 3. Accuracy, profit retention, and scope
 
 A separate held-out common-state audit gives **77.46% oracle-label accuracy**
 (55/71 eligible decisions) for the performance selector, versus **76.06%**
-(54/71) for the retrained RF-plus-OPT rule. This is one additional exact match
-on the new audit, not a demonstrated increase from the legacy 66.57% on a
-different dataset. In this separate audit the first ranked solver is feasible
+(54/71) for the retrained RF-plus-OPT baseline. This is one additional exact
+match on the same audit and does not establish a consistent accuracy gain. In this separate audit the first ranked solver is feasible
 on 77.78% of all 72 rows; the online result above follows each policy's own
 state trajectory and includes bounded retries.
 
@@ -399,160 +375,8 @@ denominators and should not be treated as interchangeable measures of success.
 The evidence supports a faster selector than the controlled sequential
 reference and always-OPT on short synthetic sequences, with a small profit
 trade-off. It does not yet establish superiority over native parallel 5Guard,
-longer-horizon workloads, or the BRAIN topology. Earlier results are retained
-below for traceability.
+longer-horizon workloads, or the BRAIN topology.
 
-<details>
-<summary>Earlier offline classifier experiment: methodology and original figures</summary>
-
-#### 1. Problem and approach
-
-Objective 3 uses request features and the previous 5Guard state to choose one
-solver rather than executing all four ensemble candidates. A low-confidence
-prediction falls back to OPT.
-
-Objective 2 decides **whether and when** to serve a request. Objective 3 decides
-**which allocation algorithm** to use. Objective 3 does not itself compute VNF
-placements; the chosen 5Guard algorithm performs the allocation.
-
-![Objective 3 architecture](artifacts/objective3_architecture.png)
-
-*Figure 2. The selector predicts a single solver from request information and
-previous network state, with an OPT fallback for low-confidence predictions.*
-
-#### 2. Input, output, and label generation
-
-| Feature group | Inputs | Count |
-|---|---|---:|
-| Simulation progress | Time fraction | 1 |
-| Request profile | Isolation, CPU, radio, log-scaled bandwidth, revenue, deadline | 6 |
-| Previous FGR state | Profit, migrations, latency, violation cost, overhead, resource efficiency, rejection count | 7 |
-| Service identity | One-hot indicators for four service classes | 4 |
-| Recent arrivals | Four service-class counts over the preceding ten steps, divided by ten | 4 |
-
-The output is one class from **OPT, IAR, DTR, RNR**. The input uses resource
-demands and historical state summaries; the current model does not consume a
-full slice graph or raw physical-network graph.
-
-Supervised labels are constructed from each candidate's saved profit, solver
-time, feasibility, and timeout outcome. At each decision point:
-
-1. Keep candidates that are feasible and meet the request deadline.
-2. Find the best observed profit among those candidates.
-3. Keep candidates within the configured 5% profit-loss tolerance.
-4. Label the row with the fastest remaining candidate.
-
-For example, if OPT has the highest profit but RNR delivers almost the same
-profit in less time, RNR can become the training label. This example describes
-the label rule, not an additional measured result.
-
-Current-step solver outcomes are used to generate labels and evaluate choices;
-they are not prediction features. Previous-state features come from the FGR
-trajectory, while candidate outcomes come from each algorithm's independent
-trajectory. These are therefore offline counterfactual comparisons rather than
-four alternatives replayed from one identical evolving allocation state.
-
-#### 3. Training and inference
-
-The 400-tree Random Forest uses 22 features available before allocation. It
-trains on simulation iterations 0--6 (771 rows) and tests on iterations 7--9
-(329 rows). Its label is the fastest deadline-feasible candidate whose observed
-profit is within 5% of the best feasible candidate. Complete iterations are
-kept together to prevent a random row split from mixing a simulation across
-training and evaluation.
-
-Rows where none of the four candidates is deadline-feasible are excluded when
-building this dataset. The 95.14% success rate therefore applies to the retained
-decision points, not to all possible arrivals or all overload conditions.
-
-The Random Forest has maximum tree depth 14 and minimum leaf size 2. At
-prediction time, the highest-probability class is selected. If that probability
-is below 0.45, the balanced profile chooses OPT instead. The safe profile uses
-0.60. These are configured confidence thresholds, not guaranteed probabilities
-of a correct or feasible allocation. OPT fallback can still miss a deadline.
-
-The 5% tolerance defines the training label, not a guarantee for every model
-prediction. On the held-out rows, only 89.67% of selections actually meet that
-quality budget. The profile comparisons are descriptive held-out results;
-they are not a nested-validation study of threshold selection.
-
-#### 4. Results and impact
-
-| Metric | Result |
-|---|---:|
-| Held-out decisions | 329 |
-| Exact match with oracle algorithm label | **66.57%** |
-| Solver-call reduction vs run-all | **75.00%** |
-| Estimated solver-work reduction | **23.44%** |
-| Mean profit quality retained | **94.63%** |
-| Within-5%-of-best rate | **89.67%** |
-| Deadline-feasible selection rate | **95.14%** |
-| Response latency vs measured FGR | **+62.77% (slower)** |
-| Recorded mean inference timing per held-out row | **1.34 ms** |
-
-The recorded inference timing covers both the balanced and safe prediction
-batches divided by the held-out row count; it is not a single online request
-latency benchmark.
-
-**Accuracy versus quality:** 66.57% is the proportion of final selected
-algorithms that match the oracle label. A different algorithm can still earn
-nearly the same profit, so label accuracy and profit quality need not be equal.
-94.63% is a mean bounded quality score, not classification accuracy or a
-guarantee of that profit in every case.
-
-The exact implemented score for each feasible decision is:
-
-```text
-quality = clip(1 - max(best_profit - selected_profit, 0)
-                   / max(abs(best_profit), 1), 0, 1)
-```
-
-Infeasible choices receive zero quality. For positive best profit of at least
-one unit and selected profit no higher than that reference, this reduces to
-selected profit divided by best profit. The normalization also handles small
-or negative reference profits.
-
-The balanced selector improves computation by running one solver rather than
-four. A safe 60% confidence profile is also retained: it preserves 95.35% profit
-quality while reducing estimated solver work by 14.88%. Response latency still
-does not meet the proposed target, so causal online evaluation remains required.
-
-| Profile / reference | Solver work per decision (s) | Estimated work saved vs run-all sum | Mean profit quality retained |
-|---|---:|---:|---:|
-| Balanced selector, confidence 0.45 | 1.2245 | **23.44%** | 94.63% |
-| Safe selector, confidence 0.60 | 1.3615 | **14.88%** | **95.35%** |
-| Independent run-all sum | 1.5994 | Reference | Not a measured ensemble policy result |
-
-The balanced selector is also 11.01% faster than always choosing OPT on these
-independent trajectories (1.3760 s). However, the measured FGR response is
-0.7523 s. Aggregate work and response latency are different quantities: the
-23.44% work saving is computed from the sum of four independently replayed
-candidate runtimes, rather than a causal online run-all experiment. Solver-call
-counts are an architectural comparison; both savings still require direct
-online validation.
-
-![Objective 3 comparison](artifacts/objective3_algorithm_selector.png)
-
-*Figure 3. Held-out solver-selection comparison, including quality and latency.*
-
-![Objective 3 computational improvement](artifacts/objective3_computation_tradeoff.png)
-
-*Figure 4. Estimated solver work, solver invocations, and the confidence-gate
-trade-off between computation and retained profit quality.*
-
-Figures 3 and 4 show that selecting one candidate reduces estimated aggregate
-solver work. The selected solver can nevertheless be slower than the
-ensemble's stored response time. The safe profile exchanges some computation
-saving for higher profit quality. The original 90% response-latency reduction
-target was not achieved.
-
-The reported solver-time comparisons exclude selector inference, which is
-recorded separately. No CPU-utilization, energy-saving, or cloud-cost saving
-was measured.
-
-Detailed note: [`objective3.md`](objective3.md)
-
-</details>
 
 ## Implementation and verification artifacts
 
@@ -560,10 +384,8 @@ Detailed note: [`objective3.md`](objective3.md)
 |---|---|
 | Admission simulator, reward, DQN, baselines, evaluation | [`src/secguard/admission_control.py`](src/secguard/admission_control.py) |
 | Current performance predictor, state features, replay, and deadline-aware retry | [`src/secguard/online_selector.py`](src/secguard/online_selector.py) |
-| Original offline classifier, label rule, and evaluation | [`src/secguard/algorithm_selector.py`](src/secguard/algorithm_selector.py) |
 | New replay metrics, baselines, and uncertainty intervals | [`artifacts/objective3_online/README.md`](artifacts/objective3_online/README.md) |
 | Admission tests | [`tests/test_admission_control.py`](tests/test_admission_control.py) |
-| Selection tests | [`tests/test_algorithm_selector.py`](tests/test_algorithm_selector.py) |
 | Performance selection, state-feature, and audit tests | [`tests/test_online_selector.py`](tests/test_online_selector.py) |
 | Prototype acceptance checks | [`src/secguard/objective_status.py`](src/secguard/objective_status.py) |
 
@@ -573,9 +395,6 @@ Detailed note: [`objective3.md`](objective3.md)
 # Objective 2
 python -m secguard.admission_control --episodes 2000 `
   --evaluation-episodes 50 --requests 24 --seed 42
-
-# Objective 3: original offline experiment
-python -m secguard.algorithm_selector
 
 # Objective 3: reproduce the current causal replay on final test seeds
 python -m secguard.online_selector --steps 12 --test-seeds 400 401 402 403 404 405
@@ -598,11 +417,6 @@ python -m secguard.objective_status
 | `artifacts/objective2_dqn.npz` | Trained admission DQN |
 | `artifacts/objective2_dqn_vs_greedy.png` | Focused DQN-versus-greedy figure used in this report |
 | `artifacts/objective2_admission_control.png` | Original training and complete baseline figure |
-| `artifacts/objective3_algorithm_selector.json` | Objective 3 numerical evidence |
-| `artifacts/objective3_selector.joblib` | Trained meta-selector |
-| `artifacts/objective3_algorithm_selector.png` | Latency, quality, and confusion figure |
-| `artifacts/objective3_computation_tradeoff.png` | Solver-work, invocation, and quality trade-off |
-| `artifacts/objective3_architecture.png` | Objective 3 architecture diagram |
 | `artifacts/objective3_online/results.json` | Current online trajectories, summaries, comparisons, and common-state audit |
 | `artifacts/objective3_online/comparison.png` | Current measured elapsed-time, final-profit, and deadline-success figure |
 | `artifacts/objective3_online/selector.joblib` | Trained performance predictor and retrained RF comparator |
