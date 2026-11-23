@@ -43,9 +43,9 @@ flowchart TD
 
 ---
 
-## Main Results — Three Full Synthetic Sequences
+## Main Results — Three Full  Sequences
 
-The matched evaluation processed **420 network-slice requests** across three full synthetic sequences (140 requests each).
+The matched evaluation processed **420 network-slice requests** across three full  sequences (140 requests each).
 
 ### Performance Comparison
 
