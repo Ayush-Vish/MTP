@@ -1,37 +1,45 @@
 
 # Objective 3 — Learned Solver Selection for 5Guard
 
-Objective 3 develops a learning-based solver-selection framework that dynamically selects allocation solvers for incoming network slice requests. By replacing brute-force parallel execution with context-aware, guarded solver selection, the framework simultaneously reduces computational overhead, lowers decision latency, and improves both slice admissions and allocation profitability.
+Objective 3 develops a learning-based solver-selection framework that dynamically selects which 5Guard allocation solvers to run for each incoming network slice request. Using a guarded contextual decision tree with a load-based fallback, the framework reduces computational overhead, solver execution time, and decision latency while improving both slice admissions and allocation profitability.
 
 ---
 
 ## System Architecture — How It Works
 
+The main approach is a **guarded decision tree** that selects which 5Guard solvers to run; the chosen solver computes the actual slice allocation.
+
 ```mermaid
-flowchart LR
-    A[Incoming Slice Request<br/>+ Live Network State] --> B[Feature Extraction<br/>27 Request, Topology &<br/>Allocation-State Features]
-    B --> C[Learned Contextual Selector<br/>Extra-Trees / CatBoost Ranker]
-    C --> D{Feasibility &<br/>Profit Guard}
-    D -->|High Confidence| E[Dispatch Primary Solver<br/>OPT / IAR / DTR / RNR]
-    D -->|High Load / Risk| F[Adaptive Cascade /<br/>Fast Heuristic Fallback]
-    E --> G{Feasible Within<br/>6s Deadline?}
-    G -->|Yes| H[Admit Slice &<br/>Update Network State]
-    G -->|No| F
-    F --> H
+flowchart TD
+    A["Incoming slice request + current allocation state"] --> B["Read isolation class, active slice count, and counts by class"]
+    B --> C{"Is the active slice count within the range seen during training for this class?"}
+    C -->|Yes| D["Contextual decision tree chooses a plan"]
+    C -->|No| E["Load-based fallback chooses a plan"]
+    D --> F{"Selected solver plan"}
+    E --> F
+    F -->|"One solver, with an optional retry"| G["Run the first solver. Retry only if it fails and enough time remains."]
+    F -->|"Two solvers"| H["Run both in parallel"]
+    F -->|"Decline early"| K["Reject request and keep current allocation"]
+    G --> I{"Any feasible result received before the deadline?"}
+    H --> I
+    I -->|Yes| J["Commit the highest-profit timely result and update allocation state"]
+    I -->|No| K
+    J --> L["Process the next request"]
+    K --> L
 
 ```
 
-Instead of running all four solvers (`OPT`, `IAR`, `DTR`, `RNR`) in parallel for every request, the framework extracts 27 contextual features, predicts solver performance and feasibility, and dispatches only the most suitable solver—falling back selectively when needed.
+**Training:** `OPT`, `IAR`, `DTR`, and `RNR` are executed from copies of the same allocation state. The measured profit, admissions, latency, CPU time, and solver calls are used to learn when the contextual decision tree should override the load-based fallback plan.
 
 ---
 
 ## What We Built
 
-1. **Common-state measurement.** Evaluated `OPT`, `IAR`, `DTR`, and `RNR` on identical allocation states to benchmark execution time, allocation feasibility, and incremental profit.
-2. **Extra-Trees performance selector.** Trained a machine-learning selector using 27 request, topology, and allocation-state features to predict solver execution time, profitability, and completion performance.
-3. **Ranker and cascade experiments.** Implemented CatBoost-based solver ranking and a learned `OPT`/`IAR` cascade to optimize solver execution order and eliminate redundant computation.
-4. **Guarded contextual solver selection.** Built an adaptive selection and fallback strategy incorporating network load, isolation requirements, and active network-slice state to dynamically choose solver execution plans.
-5. **Matched parallel evaluation.** Benchmarked the proposed selector against parallel 5Guard using the SCIP backend, consistent 6 s deadlines, and identical incoming request sequences.
+1. **Common-state measurement.** Evaluated `OPT`, `IAR`, `DTR`, and `RNR` from identical allocation-state copies to measure execution time, allocation feasibility, CPU time, and incremental profit.
+2. **Extra-Trees performance selector.** Developed a machine-learning selector using 27 request, topology, and allocation-state features to predict solver execution time, profitability, and completion performance.
+3. **Ranker and cascade experiments.** Implemented CatBoost-based solver ranking and a learned `OPT`/`IAR` cascade to optimize solver execution order and reduce unnecessary computation.
+4. **Guarded contextual decision tree.** Built a range-guarded decision tree using isolation class, active slice count, and per-class slice counts to select among single-solver (with optional retry), two-solver parallel, or early-decline plans—falling back to a load-based policy outside the training range.
+5. **Matched parallel evaluation.** Benchmarked the guarded contextual selector against parallel 5Guard using the SCIP backend, consistent 6 s deadlines, and identical incoming request sequences.
 
 ---
 
@@ -83,7 +91,7 @@ The guarded contextual selector outperforms parallel 5Guard across **both comput
 
 ## Conclusion
 
-Objective 3 demonstrates that learned, feasibility-aware solver selection outperforms parallel 5Guard on every evaluated dimension—cutting mean decision latency by **57.97%**, CPU utilization by **76.81%**, and solver calls by **69.88%**, while simultaneously increasing mean admitted slices to **90.33** and boosting mean final profit by **29.21%** (`67,234.00`) with zero solver errors.
+Objective 3 demonstrates that a guarded contextual decision tree with load-based fallback outperforms parallel 5Guard on every evaluated dimension—cutting mean decision latency by **57.97%**, CPU utilization by **76.81%**, and solver calls by **69.88%**, while simultaneously increasing mean admitted slices to **90.33** and boosting mean final profit by **29.21%** (`67,234.00`) with zero solver errors.
 
 ```
 
